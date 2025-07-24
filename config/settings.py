@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "authuser",  # Custom user app
+    "task",  # Task management app
 ]
 
 MIDDLEWARE = [
