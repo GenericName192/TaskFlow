@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if not user.is_authenticated %}
+    <div class="login-register-container">
+        <h2>Welcome to TaskFlow!</h2>
+        <p>Please <a href="{% url 'account_login' %}">login</a> or <a href="{% url 'account_signup' %}">register</a> to continue.</p>
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="welcome-container">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p>You are logged in. This is a placeholder page that will at some point send you to your tasks</p>
+        <a href="{% url 'account_logout' %}">Logout</a>
+    {% endif %}
+{% endblock %}
