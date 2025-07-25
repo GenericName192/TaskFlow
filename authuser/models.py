@@ -8,6 +8,7 @@ class User(AbstractUser):
         'self', on_delete=models.SET_DEFAULT, null=True, blank=True,
         related_name='subordinates', verbose_name='Boss',
         default=None)
+    email = models.EmailField(unique=True, verbose_name='Email Address')
 
     def __str__(self):
         return self.username
