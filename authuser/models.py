@@ -5,9 +5,9 @@ from django.db import models
 class User(AbstractUser):
     """Custom user model extending Django's AbstractUser."""
     boss = models.ForeignKey(
-        'self', on_delete=models.SET_NULL, null=True, blank=True,
+        'self', on_delete=models.SET_DEFAULT, null=True, blank=True,
         related_name='subordinates', verbose_name='Boss',
-        default="No boss assigned")
+        default=None)
 
     def __str__(self):
         return self.username
