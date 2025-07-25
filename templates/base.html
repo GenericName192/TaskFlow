@@ -9,7 +9,7 @@
     <nav class="navbar">
         <div>
             <a href="/">TaskFlow</a>
-            <a href="/tasks">Home</a>
+            <a href="/">Home</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' user.id %}">My Profile</a>
                 <a href="{% url 'logout_view' %}">Logout</a>
