@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ user_profile.username|title }} Profile</h2>
+    <p>Email: {{ user_profile.email }}</p>
+    <p>First Name: {{ user_profile.first_name|title }}</p>
+    <p>Last Name: {{ user_profile.last_name|title }}</p>
+    <p>Boss: {{ user_profile.boss.username|title }}</p>
+    <ul>
+        <h3>Subordinates:</h3>
+        {% if not subordinates_dict %}
+            <p>No subordinates assigned.</p>
+        {% endif %}
+        {% for key, value in subordinates_dict.items %}
+        <li><uL>
+             <a href="{% url 'profile' key.id %}">{{ key.first_name|title }} {{ key.last_name|title }}</a>
+                {% for subordinate in value %}
+                <ul> <a href="{% url 'profile' subordinate.id %}">{{ subordinate.username|title }}</a></ul> 
+                {% endfor %}
+        </li></uL>
+        {% endfor %}
+    </ul>
+    
+
+{% endblock %}

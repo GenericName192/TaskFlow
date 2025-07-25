@@ -14,7 +14,7 @@
         <div>
             <a href="/">TaskFlow</a>
             <a href="/tasks">Home</a>
-            <a href="/about">Profile</a>
+            <a href="{% url 'profile' user.id %}">My Profile</a>
             {% if user.is_authenticated %}
                 <a href="{{ logout_url }}">Logout</a>
             {% else %}
