@@ -29,7 +29,6 @@ def profile(request, user_id):
             subordinate] = list(
             subordinate.get_direct_subordinates()
         )
-        
 
     return render(request, 'authuser/profile.html',
                   {
