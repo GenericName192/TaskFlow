@@ -13,7 +13,7 @@ def index(request):
     return render(request, 'authuser/index.html')
 
 
-@login_required
+@login_required(login_url='login_view')
 def profile(request, user_id):
     """Render the selected user profile page."""
     user = get_object_or_404(User, id=user_id)
@@ -37,10 +37,11 @@ def profile(request, user_id):
                   })
 
 
-@login_required
+@login_required(login_url='login_view')
 def edit_profile(request, user_id):
     if request.user.id != user_id:
-        return render(request, 'authuser/unauthorized.html')
+        messages.error(request, 'You are not authorized to edit this profile.')
+        return redirect('index')
 
     user = get_object_or_404(User, id=user_id)
     form = Update_profile(instance=user)
@@ -55,10 +56,11 @@ def edit_profile(request, user_id):
                   {'user': user, 'form': form})
 
 
-@login_required
+@login_required(login_url='login_view')
 def change_password(request, user_id):
     if request.user.id != user_id:
-        return render(request, 'authuser/unauthorized.html')
+        messages.error(request, 'You cannot change someone else\'s password.')
+        return redirect('index')
 
     user = get_object_or_404(User, id=user_id)
     form = PasswordChangeForm(user=user)
@@ -80,6 +82,10 @@ def change_password(request, user_id):
 
 def register(request):
     """Render the registration page."""
+    if request.user.is_authenticated:
+        messages.info(request, 'You are already logged in.')
+        return redirect('index')
+
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -100,7 +106,7 @@ def register(request):
     return render(request, 'authuser/register.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='login_view')
 def logout_view(request):
     """Handle user logout."""
     from django.contrib.auth import logout
@@ -111,6 +117,10 @@ def logout_view(request):
 
 def login_view(request):
     """Render the login page."""
+    if request.user.is_authenticated:
+        messages.info(request, 'You are already logged in.')
+        return redirect('index')
+
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
