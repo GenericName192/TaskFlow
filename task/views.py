@@ -10,12 +10,7 @@ def task_list(request, user_id):
     """Render the task list page."""
     user = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.created_by = request.user
-            task.assigned_to = user
-            task.save()
+        if task_creation(request, user):
             messages.success(request, 'Task created successfully!')
             return redirect('task_list', user_id=user.id)
     else:
@@ -27,3 +22,39 @@ def task_list(request, user_id):
                        'ongoing_tasks': ongoing_tasks,
                        'completed_tasks': completed_tasks,
                        'form': form})
+
+
+@login_required(login_url='login_view')
+def task_creation(request, user):
+    """Handle task creation."""
+    form = TaskForm(request.POST)
+    if form.is_valid():
+        task = form.save(commit=False)
+        task.created_by = request.user
+        task.assigned_to = user
+        task.save()
+        return True
+    else:
+        messages.error(request, 'Error creating task. Please try again.')
+        return False
+
+
+@login_required(login_url='login_view')
+def mass_task_creation(request, users):
+    """Handle creation of multiple tasks."""
+    errors = []
+    successes = []
+    for user in users:
+        if task_creation(request, user):
+            successes.append(user.first_name + ' ' + user.last_name)
+        else:
+            errors.append({user.first_name + ' ' + user.last_name})
+
+    if successes:
+        messages.success(request,
+                         f"""Successfully created tasks for {len(successes)}\
+                         users.""" + ' '.join(successes))
+    if errors:
+        messages.error(request,
+                       f"""Failed to create tasks for {len(errors)} users.
+                       """ + ' '.join(errors))
