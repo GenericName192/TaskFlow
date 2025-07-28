@@ -29,3 +29,5 @@ class User(AbstractUser):
                 collection.add(subordinate)
                 subordinate.get_all_subordinates(collection)
         return collection
+
+    pass

@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import User
-from .forms import Update_profile, Update_password, UserCreationForm
+from .forms import Update_profile, UserCreationForm
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 
 # Create your views here.
@@ -29,6 +29,7 @@ def profile(request, user_id):
             subordinate] = list(
             subordinate.get_direct_subordinates()
         )
+        
 
     return render(request, 'authuser/profile.html',
                   {
@@ -61,13 +62,19 @@ def change_password(request, user_id):
         return render(request, 'authuser/unauthorized.html')
 
     user = get_object_or_404(User, id=user_id)
-    form = Update_password(user=user)
+    form = PasswordChangeForm(user=user)
     if request.method == 'POST':
-        form = Update_password(user, request.POST)
+        form = PasswordChangeForm(user, request.POST)
         if form.is_valid():
             form.save()
+            user = authenticate(
+                username=user.username,
+                password=form.cleaned_data['new_password1']
+            )
+            login(request, user)
             messages.success(request, 'Password changed successfully!')
             return redirect('profile', user_id=user.id)
+
     return render(request, 'authuser/update_password.html',
                   {'user': user, 'form': form})
 
@@ -77,6 +84,7 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
+            user = form.save
             form.save()
             messages.success(
                 request, 'Account created successfully! Welcome to TaskFlow!'

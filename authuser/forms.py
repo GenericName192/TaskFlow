@@ -1,5 +1,5 @@
 from .models import User
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.contrib.auth.forms import UserCreationForm
 from django.forms.models import ModelForm
 
 
@@ -8,11 +8,6 @@ class Update_profile(ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'boss']
-
-
-class Update_password(SetPasswordForm):
-    """Form for updating user password."""
-    pass
 
 
 class UserCreationForm(UserCreationForm):

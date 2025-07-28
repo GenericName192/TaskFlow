@@ -8,7 +8,7 @@
     <p>Boss: {{ user_profile.boss.username|title }}</p>
     <p>Direct Subordinates: {{ user_profile.subordinates.count }}</p>
     <a href="{% url 'edit_profile' user_profile.id %}">Edit Profile</a>
-    <a href="{% url 'change_password' user_profile.id %}">Change Password
+    <a href="{% url 'change_password' user_profile.id %}">Change Password</a>
 
     <ul>
         <h3>Subordinates:</h3>
