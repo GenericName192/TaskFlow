@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>{{ profile.first_name }} {{ profile.last_name }} Tasks</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">create task</button>
+    </form>
+
+    <h3>Ongoing Tasks</h3>
+    <ul>
+        {% for ongoing_task in ongoing_tasks %}
+            <li>{{ ongoing_task.title }} - {{ ongoing_task.description }} {{ongoing_task.due_date|date:"Y-m-d"}}
+                {{ ongoing_task.created_at|date:"Y-m-d H:i" }} {{ ongoing_task.created_by }}
+            </li>
+        {% empty %}
+            <li>No current tasks.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Completed Tasks</h3>
+    <ul>
+        {% for completed_task in completed_tasks %}
+            <li>{{ completed_task.title }} - {{ completed_task.description }}</li>
+        {% empty %}
+            <li>No completed tasks.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

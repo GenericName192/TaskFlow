@@ -12,6 +12,7 @@
             <a href="/">Home</a>
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' user.id %}">My Profile</a>
+                <a href="{% url 'task_list' user.id %}">My Tasks</a>
                 <a href="{% url 'logout_view' %}">Logout</a>
             {% else %}
                 <a href="{% url 'login_view' %}">Login</a>

@@ -21,4 +21,5 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("authuser.urls")),  # Root path for your main app
+    path("tasks/", include("task.urls")),  # Path for task management app
 ]
