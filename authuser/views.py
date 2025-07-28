@@ -17,23 +17,14 @@ def index(request):
 def profile(request, user_id):
     """Render the selected user profile page."""
     user = get_object_or_404(User, id=user_id)
-    subordinates = (
-        user
-        .get_direct_subordinates()
-        .prefetch_related('subordinates')
-    )
-
-    subordinates_dict = {}
-    for subordinate in subordinates:
-        subordinates_dict[
-            subordinate] = list(
-            subordinate.get_direct_subordinates()
-        )
+    direct_subordinates = user.get_direct_subordinates()
+    all_subordinates = user.get_all_subordinates()
 
     return render(request, 'authuser/profile.html',
                   {
                       'user_profile': user,
-                      'subordinates_dict': subordinates_dict
+                      'direct_subordinates': direct_subordinates,
+                      'all_subordinates': all_subordinates
                   })
 
 

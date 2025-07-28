@@ -11,19 +11,23 @@
     <a href="{% url 'change_password' user_profile.id %}">Change Password</a>
 
     <ul>
-        <h3>Subordinates:</h3>
-        {% if not subordinates_dict %}
-            <p>No subordinates assigned.</p>
-        {% endif %}
-        {% for key, value in subordinates_dict.items %}
-        <li><uL>
-             <a href="{% url 'profile' key.id %}">{{ key.first_name|title }} {{ key.last_name|title }}</a>
-                {% for subordinate in value %}
-                <ul> <a href="{% url 'profile' subordinate.id %}">{{ subordinate.username|title }}</a></ul> 
-                {% endfor %}
-        </li></uL>
+        <h3>Direct Subordinates:</h3>
+        {% for subordinate in direct_subordinates %}
+        <ul>
+             <li><a href="{% url 'profile' subordinate.id %}">{{ subordinate.first_name|title }} {{ subordinate.last_name|title }}</a></li>
+                <p>Email: {{ subordinate.email }}</p>
+        </ul>
+        {% empty %}
+            <p>No direct subordinates.</p>
         {% endfor %}
-    </ul>
-    
+        <h3>All Subordinates:</h3>
+        {% for subordinate in all_subordinates %}
+        <ul>
+            <li><a href="{% url 'profile' subordinate.id %}">{{ subordinate.first_name|title }} {{ subordinate.last_name|title }}</a></li>
+            <p>Email: {{ subordinate.email }}</p>
+        </ul>
+        {% empty %}
+            <p>No subordinates.</p>
+        {% endfor %}
 
 {% endblock %}
