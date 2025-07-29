@@ -75,6 +75,28 @@ def toggle_complete(request, task_id):
     return redirect("task_list", task.assigned_to.id)
 
 
+@login_required(login_url="login_view")
+def task_details(request, task_id):
+    """View all details on a task"""
+    task = get_object_or_404(Task, id=task_id)
+    return render(request, "task/task_details.html", {
+        "task": task
+    })
+
+
+@login_required(login_url="login_view")
+def update_task(request, task_id):
+    """Updates the task"""
+    task = get_object_or_404(Task, id=task_id)
+    form = TaskForm(request.POST or None, instance=task)
+    if form.is_valid():
+        form.save()
+        return redirect("task_list", task.assigned_to.id)
+    return render(request, "task/task_update.html", {
+        "form": form,
+    })
+
+
 def Can_assign_task(user_id):
     """Returns a list of everyone who can assign the user a task"""
     user = get_object_or_404(User, id=user_id)
