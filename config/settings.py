@@ -147,3 +147,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom user model
 AUTH_USER_MODEL = "authuser.User"
+
+STATICFILES_DIRS = [BASE_DIR / "static"]

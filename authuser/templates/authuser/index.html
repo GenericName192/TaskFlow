@@ -1,17 +1,18 @@
-{% extends "base.html" %}
-
-{% block content %}
-    {% if not user.is_authenticated %}
-    <div class="login-register-container">
-        <h2>Welcome to TaskFlow!</h2>
-        <p>Please <a href="{% url 'login_view' %}">login</a> or <a href="{% url 'register' %}">register</a> to continue.</p>
-    </div>
-    {% endif %}
-
-    {% if user.is_authenticated %}
-    <div class="welcome-container">
-        <h2>Welcome, {{ user.username }}!</h2>
-        <p>You are logged in. This is a placeholder page that will at some point send you to your tasks</p>
-        <a href="{% url 'logout_view' %}">Logout</a>
-    {% endif %}
-{% endblock %}
+{% extends "base.html" %} {% block content %} {% if not user.is_authenticated %}
+<div class="login-register-container">
+  <h2>Welcome to TaskFlow!</h2>
+  <p>
+    Please <a href="{% url 'login_view' %}">login</a> or
+    <a href="{% url 'register' %}">register</a> to continue.
+  </p>
+</div>
+{% endif %} {% if user.is_authenticated %}
+<div class="welcome-container">
+  <h2>Welcome, {{ user.username }}!</h2>
+  <p>
+    You are logged in. This is a placeholder page that will at some point send
+    you to your tasks
+  </p>
+  <a href="{% url 'logout_view' %}">Logout</a>
+  {% endif %} {% endblock %}
+</div>
