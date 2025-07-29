@@ -1,7 +1,91 @@
-{% extends "base.html" %} {% block content %}
-<h2>Register</h2>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Save Changes</button>
-</form>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <i class="fas fa-user-plus"></i>
+            <h2>Join TaskFlow</h2>
+            <p class="text-muted">Create your account to get started</p>
+        </div>
+        
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="row">
+                {% for field in form %}
+                <div class="{% if field.name == 'username' or field.name == 'email' %}col-12{% else %}col-md-6{% endif %} mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        {% if field.name == 'username' %}
+                            <i class="fas fa-user me-2"></i>
+                        {% elif field.name == 'email' %}
+                            <i class="fas fa-envelope me-2"></i>
+                        {% elif field.name == 'first_name' %}
+                            <i class="fas fa-id-card me-2"></i>
+                        {% elif field.name == 'last_name' %}
+                            <i class="fas fa-id-card me-2"></i>
+                        {% elif field.name == 'password1' %}
+                            <i class="fas fa-lock me-2"></i>
+                        {% elif field.name == 'password2' %}
+                            <i class="fas fa-lock me-2"></i>
+                        {% elif field.name == 'boss' %}
+                            <i class="fas fa-crown me-2"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+                    
+                    {% if field.name == 'username' %}
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Choose a username" required value="{{ field.value|default:'' }}">>
+                    {% elif field.name == 'email' %}
+                        <input type="email" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Enter your email address" required value="{{ field.value|default:'' }}">>
+                    {% elif field.name == 'first_name' %}
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="First name" required value="{{ field.value|default:'' }}">>
+                    {% elif field.name == 'last_name' %}
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Last name" required value="{{ field.value|default:'' }}">>
+                    {% elif field.name == 'password1' %}
+                        <input type="password" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Create a password" required value="{{ field.value|default:'' }}">>
+                    {% elif field.name == 'password2' %}
+                        <input type="password" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               placeholder="Confirm your password" required value="{{ field.value|default:'' }}">>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    
+                    {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                    <div class="text-danger small mt-1">
+                        <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </div>
+        </form>
+        
+        <div class="text-center">
+            <p class="text-muted">
+                Already have an account? 
+                <a href="{% url 'login_view' %}" class="text-decoration-none">
+                    <i class="fas fa-sign-in-alt me-1"></i>Sign in here
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}

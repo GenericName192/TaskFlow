@@ -94,6 +94,7 @@ def update_task(request, task_id):
         return redirect("task_list", task.assigned_to.id)
     return render(request, "task/task_update.html", {
         "form": form,
+        "task": task,
     })
 
 

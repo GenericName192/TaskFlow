@@ -1,7 +1,75 @@
-{% extends "base.html" %} {% block content %}
-<h2>Edit Profile</h2>
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Save Changes</button>
-</form>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <i class="fas fa-user-edit"></i>
+            <h2>Edit Profile</h2>
+            <p class="text-muted">Update your account information</p>
+        </div>
+        
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="row">
+                {% for field in form %}
+                <div class="{% if field.name == 'username' or field.name == 'email' %}col-12{% else %}col-md-6{% endif %} mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">
+                        {% if field.name == 'username' %}
+                            <i class="fas fa-user me-2"></i>
+                        {% elif field.name == 'email' %}
+                            <i class="fas fa-envelope me-2"></i>
+                        {% elif field.name == 'first_name' %}
+                            <i class="fas fa-id-card me-2"></i>
+                        {% elif field.name == 'last_name' %}
+                            <i class="fas fa-id-card me-2"></i>
+                        {% elif field.name == 'boss' %}
+                            <i class="fas fa-crown me-2"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+                    
+                    {% if field.name == 'username' %}
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               value="{{ field.value|default:'' }}" placeholder="Your username" required>
+                    {% elif field.name == 'email' %}
+                        <input type="email" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               value="{{ field.value|default:'' }}" placeholder="Your email address" required>
+                    {% elif field.name == 'first_name' %}
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               value="{{ field.value|default:'' }}" placeholder="First name">
+                    {% elif field.name == 'last_name' %}
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                               value="{{ field.value|default:'' }}" placeholder="Last name">
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    
+                    {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    
+                    {% for error in field.errors %}
+                    <div class="text-danger small mt-1">
+                        <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="d-flex gap-2 justify-content-center">
+                <a href="{% url 'profile' user.id %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save me-2"></i>Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}

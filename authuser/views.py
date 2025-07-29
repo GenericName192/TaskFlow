@@ -96,8 +96,7 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save
-            form.save()
+            user = form.save()
             messages.success(
                 request, 'Account created successfully! Welcome to TaskFlow!'
             )

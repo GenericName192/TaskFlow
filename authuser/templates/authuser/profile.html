@@ -1,38 +1,116 @@
-{% extends "base.html" %} {% block content %}
-<h2>{{ user_profile.username|title }} Profile</h2>
-<p>Email: {{ user_profile.email }}</p>
-<p>First Name: {{ user_profile.first_name|title }}</p>
-<p>Last Name: {{ user_profile.last_name|title }}</p>
-<p>Boss: {{ user_profile.boss.username|title }}</p>
-<p>Direct Subordinates: {{ user_profile.subordinates.count }}</p>
-<a href="{% url 'edit_profile' user_profile.id %}">Edit Profile</a>
-<a href="{% url 'change_password' user_profile.id %}">Change Password</a>
+{% extends "base.html" %} 
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Profile Header -->
+    <div class="profile-header text-center">
+        <i class="fas fa-user-circle fa-4x mb-3"></i>
+        <h1 class="display-4">{{ user_profile.username|title }}</h1>
+        <p class="lead">{{ user_profile.first_name|title }} {{ user_profile.last_name|title }}</p>
+    </div>
+    
+    <!-- Profile Information -->
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="profile-info">
+                <h3 class="mb-3"><i class="fas fa-info-circle me-2"></i>Profile Information</h3>
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-user me-2"></i>Username:</span>
+                    <span class="detail-value">{{ user_profile.username|title }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-envelope me-2"></i>Email:</span>
+                    <span class="detail-value">{{ user_profile.email }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-id-card me-2"></i>First Name:</span>
+                    <span class="detail-value">{{ user_profile.first_name|title }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-id-card me-2"></i>Last Name:</span>
+                    <span class="detail-value">{{ user_profile.last_name|title }}</span>
+                </div>
+                {% if user_profile.boss %}
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-crown me-2"></i>Boss:</span>
+                    <span class="detail-value">{{ user_profile.boss.username|title }}</span>
+                </div>
+                {% endif %}
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-users me-2"></i>Direct Subordinates:</span>
+                    <span class="detail-value">
+                        <span class="badge bg-primary">{{ user_profile.subordinates.count }}</span>
+                    </span>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="{% url 'edit_profile' user_profile.id %}" class="btn btn-primary">
+                        <i class="fas fa-edit me-2"></i>Edit Profile
+                    </a>
+                    <a href="{% url 'change_password' user_profile.id %}" class="btn btn-outline-primary">
+                        <i class="fas fa-key me-2"></i>Change Password
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <!-- Direct Subordinates -->
+            <div class="profile-info">
+                <h3 class="mb-3"><i class="fas fa-user-friends me-2"></i>Direct Subordinates</h3>
+                {% for subordinate in direct_subordinates %}
+                <div class="subordinate-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">
+                                <a href="{% url 'profile' subordinate.id %}" class="text-decoration-none">
+                                    {{ subordinate.first_name|title }} {{ subordinate.last_name|title }}
+                                </a>
+                            </h5>
+                            <p class="mb-0 text-muted">
+                                <i class="fas fa-envelope me-1"></i>{{ subordinate.email }}
+                            </p>
+                        </div>
+                        <i class="fas fa-chevron-right text-muted"></i>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No direct subordinates.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- All Subordinates -->
+    {% if all_subordinates %}
+    <div class="profile-info mb-4">
+        <h3 class="mb-3"><i class="fas fa-sitemap me-2"></i>All Subordinates</h3>
+        <div class="row">
+            {% for subordinate in all_subordinates %}
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="subordinate-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">
+                                <a href="{% url 'profile' subordinate.id %}" class="text-decoration-none">
+                                    {{ subordinate.first_name|title }} {{ subordinate.last_name|title }}
+                                </a>
+                            </h6>
+                            <small class="text-muted">{{ subordinate.email }}</small>
+                        </div>
+                        <i class="fas fa-chevron-right text-muted"></i>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
 
-<ul>
-  <h3>Direct Subordinates:</h3>
-  {% for subordinate in direct_subordinates %}
-  <ul>
-    <li>
-      <a href="{% url 'profile' subordinate.id %}"
-        >{{ subordinate.first_name|title }} {{ subordinate.last_name|title }}</a
-      >
-    </li>
-    <p>Email: {{ subordinate.email }}</p>
-  </ul>
-  {% empty %}
-  <p>No direct subordinates.</p>
-  {% endfor %}
-  <h3>All Subordinates:</h3>
-  {% for subordinate in all_subordinates %}
-  <ul>
-    <li>
-      <a href="{% url 'profile' subordinate.id %}"
-        >{{ subordinate.first_name|title }} {{ subordinate.last_name|title }}</a
-      >
-    </li>
-    <p>Email: {{ subordinate.email }}</p>
-  </ul>
-  {% empty %}
-  <p>No subordinates.</p>
-  {% endfor %} {% endblock %}
-</ul>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

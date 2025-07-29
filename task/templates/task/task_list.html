@@ -1,41 +1,213 @@
-{% extends "base.html" %} {% block content %}
-<h2>{{ task_owner.first_name }} {{ task_owner.last_name }} Tasks</h2>
-{% if user.id in can_assign %}
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">create task</button>
-</form>
-{% endif %}
-<h3>Ongoing Tasks</h3>
-<ul>
-  {% for ongoing_task in ongoing_tasks %}
-  <li>
-    {{ ongoing_task.title }} - {{ ongoing_task.description }}
-    {{ongoing_task.due_date|date:"Y-m-d"}} {{ ongoing_task.created_by }}
-  </li>
-  {% if task_owner.id == user.id %}
-  <a href="{% url 'toggle_complete' ongoing_task.id %}">Completed</a>
-  {% if ongoing_task.created_by.id == user.id %}
-  <a href="{% url 'update_task' ongoing_task.id %}">Update</a>
-  {% endif %}{% endif %}
-  <a href="{% url 'task_details' ongoing_task.id %}">Details</a>
-  {% empty %}
-  <li>No current tasks.</li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <!-- Task Header -->
+  <div class="task-header text-center">
+    <i class="fas fa-tasks fa-4x mb-3"></i>
+    <h1 class="display-4">
+      {{ task_owner.first_name }} {{ task_owner.last_name }}'s Tasks
+    </h1>
+    <p class="lead">Manage and track your tasks efficiently</p>
+  </div>
 
-<h3>Completed Tasks</h3>
-<ul>
-  {% for completed_task in completed_tasks %}
-  <li>{{ completed_task.title }} - {{ completed_task.description }}</li>
-  {% if task_owner.id == user.id %}
-  <a href="{% url 'toggle_complete' completed_task.id %}">Ongoing</a>
-  {% if completed_task.created_by.id == user.id %}
-  <a href="{% url 'update_task' completed_task.id %}">Update</a>
-  {% endif %}{% endif %}
-  <a href="{% url 'task_details' completed_task.id %}">Details</a>
-  {% empty %}
-  <li>No completed tasks.</li>
-  {% endfor %}
-</ul>
+  <!-- Create Task Form -->
+  {% if user.id in can_assign %}
+  <div class="row mb-4">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-plus-circle me-2"></i>Create New Task
+          </h4>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              {% for field in form %}
+              <div class="{% if field.name == 'description' %}col-12{% else %}col-md-6{% endif %} mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                  {% if field.name == 'title' %}
+                    <i class="fas fa-heading me-2"></i>
+                  {% elif field.name == 'description' %}
+                    <i class="fas fa-align-left me-2"></i>
+                  {% elif field.name == 'due_date' %}
+                    <i class="fas fa-calendar-alt me-2"></i>
+                  {% elif field.name == 'assigned_to' %}
+                    <i class="fas fa-user-check me-2"></i>
+                  {% endif %}
+                  {{ field.label }}
+                </label>
+                
+                {% if field.name == 'description' %}
+                  <textarea class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                            rows="3" placeholder="Enter task description...">{{ field.value|default:'' }}</textarea>
+                {% elif field.name == 'title' %}
+                  <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                         placeholder="Enter task title..." required>
+                {% elif field.name == 'due_date' %}
+                  <input type="date" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" required>
+                {% else %}
+                  {{ field }}
+                {% endif %}
+                
+                {% if field.help_text %}
+                <div class="form-text">{{ field.help_text }}</div>
+                {% endif %} 
+                {% for error in field.errors %}
+                <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Create Task
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row">
+    <!-- Ongoing Tasks -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow h-100">
+        <div class="card-header bg-warning text-dark">
+          <h4 class="mb-0">
+            <i class="fas fa-clock me-2"></i>Ongoing Tasks
+            <span class="badge bg-dark ms-2">{{ ongoing_tasks|length }}</span>
+          </h4>
+        </div>
+        <div class="card-body">
+          {% for ongoing_task in ongoing_tasks %}
+          <div class="task-card">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="mb-1">{{ ongoing_task.title }}</h5>
+              <span class="status-badge status-pending">Pending</span>
+            </div>
+            <p class="text-muted mb-2">
+              {{ ongoing_task.description|truncatewords:15 }}
+            </p>
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <small class="text-muted">
+                  <i class="fas fa-calendar me-1"></i>Due: 
+                  {{ ongoing_task.due_date|date:"M d, Y" }}
+                </small>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted">
+                  <i class="fas fa-user me-1"></i>By: 
+                  {% if ongoing_task.created_by.id == user.id %} You {% else %}
+                  {{ ongoing_task.created_by.first_name }} {% endif %}
+                </small>
+              </div>
+            </div>
+
+            <div class="task-actions">
+              {% if task_owner.id == user.id %}
+              <a
+                href="{% url 'toggle_complete' ongoing_task.id %}"
+                class="btn btn-success btn-sm">
+                <i class="fas fa-check me-1"></i>Mark Complete
+              </a>
+              {% if ongoing_task.created_by.id == user.id %}
+              <a
+                href="{% url 'update_task' ongoing_task.id %}"
+                class="btn btn-warning btn-sm">
+                <i class="fas fa-edit me-1"></i>Update
+              </a>
+              {% endif %} {% endif %}
+              <a
+                href="{% url 'task_details' ongoing_task.id %}"
+                class="btn btn-info btn-sm">
+                <i class="fas fa-eye me-1"></i>More Details
+              </a>
+            </div>
+          </div>
+          {% empty %}
+          <div class="text-center py-5">
+            <i class="fas fa-clipboard-check fa-4x text-muted mb-3"></i>
+            <h5 class="text-muted">No ongoing tasks</h5>
+            <p class="text-muted">All caught up! Great work.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="col-lg-6 mb-4">
+      <div class="card shadow h-100">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-check-circle me-2"></i>Completed Tasks
+            <span class="badge bg-dark ms-2">{{ completed_tasks|length }}</span>
+          </h4>
+        </div>
+        <div class="card-body">
+          {% for completed_task in completed_tasks %}
+          <div class="task-card task-completed">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="mb-1">{{ completed_task.title }}</h5>
+              <span class="status-badge status-completed">Completed</span>
+            </div>
+            <p class="text-muted mb-2">
+              {{ completed_task.description|truncatewords:15 }}
+            </p>
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <small class="text-muted">
+                  <i class="fas fa-calendar me-1"></i>Due: {{ completed_task.due_date|date:"M d, Y" }}
+                </small>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted">
+                  <i class="fas fa-user me-1"></i>By: 
+                  {% if ongoing_task.created_by.id == user.id %} You {% else %}
+                  {{ completed_task.created_by.first_name }} {% endif %}
+                </small>
+              </div>
+            </div>
+
+            <div class="task-actions">
+              {% if task_owner.id == user.id %}
+              <a
+                href="{% url 'toggle_complete' completed_task.id %}"
+                class="btn btn-warning btn-sm">
+                <i class="fas fa-undo me-1"></i>Mark Ongoing
+              </a>
+              {% if completed_task.created_by.id == user.id %}
+              <a
+                href="{% url 'update_task' completed_task.id %}"
+                class="btn btn-warning btn-sm">
+                <i class="fas fa-edit me-1"></i>Update
+              </a>
+              {% endif %} {% endif %}
+              <a
+                href="{% url 'task_details' completed_task.id %}"
+                class="btn btn-info btn-sm">
+                <i class="fas fa-eye me-1"></i>More Details
+              </a>
+            </div>
+          </div>
+          {% empty %}
+          <div class="text-center py-5">
+            <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
+            <h5 class="text-muted">No completed tasks yet</h5>
+            <p class="text-muted">Complete some tasks to see them here.</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 {% endblock %}
