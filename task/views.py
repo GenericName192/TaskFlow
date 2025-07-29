@@ -9,20 +9,22 @@ from .models import Task
 @login_required(login_url='login_view')
 def task_list(request, user_id):
     """Render the task list page."""
-    user = get_object_or_404(User, id=user_id)
+    task_owner = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
-        if task_creation(request, user):
+        if task_creation(request, task_owner):
             messages.success(request, 'Task created successfully!')
-            return redirect('task_list', user_id=user.id)
+            return redirect('task_list', user_id=task_owner.id)
     else:
         form = TaskForm()
-        ongoing_tasks = user.tasks.filter(completed=False)
-        completed_tasks = user.tasks.filter(completed=True)
+        ongoing_tasks = task_owner.tasks.filter(completed=False)
+        completed_tasks = task_owner.tasks.filter(completed=True)
+        can_assign = Can_assign_task(user_id)
         return render(request, 'task/task_list.html',
-                      {'user': user,
+                      {'task_owner': task_owner,
                        'ongoing_tasks': ongoing_tasks,
                        'completed_tasks': completed_tasks,
-                       'form': form})
+                       'form': form,
+                       "can_assign": can_assign})
 
 
 @login_required(login_url='login_view')
@@ -72,3 +74,18 @@ def toggle_complete(request, task_id):
     task.save()
     return redirect("task_list", task.assigned_to.id)
 
+
+def Can_assign_task(user_id):
+    """Returns a list of everyone who can assign the user a task"""
+    user = get_object_or_404(User, id=user_id)
+    bosses = [user.id]
+    boss = user.boss
+    # creates loops that collects the boss until the value is null
+    while boss:
+        # if the user is already in bosses then its stuck in a loop
+        if boss in bosses:
+            break
+        else:
+            bosses.append(boss.id)
+            boss = boss.boss
+    return bosses

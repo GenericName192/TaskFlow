@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>{{ profile.first_name }} {{ profile.last_name }} Tasks</h2>
+    <h2>{{ task_owner.first_name }} {{ task_owner.last_name }} Tasks</h2>
+    {% if user.id in can_assign %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">create task</button>
     </form>
-
+    {% endif %}
     <h3>Ongoing Tasks</h3>
     <ul>
         {% for ongoing_task in ongoing_tasks %}
