@@ -10,27 +10,37 @@
 {% endif %} {% if user.is_authenticated %}
 <div class="welcome-container">
   <h2>Welcome, {{ user.first_name }} {{ user.last_name }}!</h2>
+  <div class="tip-of-the-day">
+    <blockquote>"{{ tip }}"</blockquote>
+  </div>
   <div>
     <h3>Your stats:</h3>
     <ul>
       <li>Total Tasks: {{ total_tasks_count }}</li>
-      <li>Completed Tasks {{ total_completed_tasks }}</li>
+      <li>Completed Tasks {{ completed_tasks_count }}</li>
       <li>Pending Tasks {{ total_ongoing_tasks }}</li>
     </ul>
   </div>
   <div class="upcoming-tasks">
-  <h4>Upcoming Tasks</h4>
-  <ul>
-    {% for task in up_coming_tasks %}
-      <li><a href="{% url 'task_details' task.id %}"> {{ task.title }}</a> – due {{ task.due_date }}</li> 
-    {% empty %}
+    <h4>Upcoming Tasks</h4>
+    <ul>
+      {% for task in up_coming_tasks %}
+      <li>
+        <a href="{% url 'task_details' task.id %}"> {{ task.title }}</a> – due
+        {{ task.due_date }}
+      </li>
+      {% empty %}
       <li>No upcoming tasks</li>
-    {% endfor %}
-  </ul>
-</div>
+      {% endfor %}
+    </ul>
+  </div>
   <div class="quick-actions">
-    <a href="{% url 'task_list' user.id %}" class="btn btn-primary">View My Tasks</a>
-    <a href="{% url 'profile' user.id %}" class="btn btn-secondary">My Profile</a>
+    <a href="{% url 'task_list' user.id %}" class="btn btn-primary"
+      >View My Tasks</a
+    >
+    <a href="{% url 'profile' user.id %}" class="btn btn-primary"
+      >My Profile</a
+    >
   </div>
   {% endif %} {% endblock %}
 </div>

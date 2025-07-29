@@ -5,22 +5,28 @@ from .models import User
 from .forms import Update_profile, UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .tips import get_tip
 
 
 # Create your views here.
 def index(request):
     """Render the index page."""
-    total_tasks_count = request.user.tasks.count()
-    total_completed_tasks = request.user.tasks.filter(completed=True).count()
-    total_ongoing_tasks = total_tasks_count - total_completed_tasks
-    up_coming_tasks = request.user.tasks.all().order_by("due_date")
-    return render(request, 'authuser/index.html',
-                  {
-                      "total_tasks_count": total_tasks_count,
-                      "total_completed_tasks": total_completed_tasks,
-                      "total_ongoing_tasks": total_ongoing_tasks,
-                      "up_coming_tasks": up_coming_tasks
-                  })
+    if request.user.is_authenticated:
+        tasks = request.user.tasks.all()
+        total_tasks_count = len(tasks)
+        completed_tasks_count = len([x for x in tasks if x.completed is True])
+        total_ongoing_tasks = total_tasks_count - completed_tasks_count
+        up_coming_tasks = tasks.filter(completed=False).order_by("due_date")
+        tip = get_tip()
+        content = {
+                    "total_tasks_count": total_tasks_count,
+                    "completed_tasks_count": completed_tasks_count,
+                    "total_ongoing_tasks": total_ongoing_tasks,
+                    "up_coming_tasks": up_coming_tasks,
+                    "tip": tip}
+    else:
+        content = {}
+    return render(request, 'authuser/index.html', content)
 
 
 @login_required(login_url='login_view')
