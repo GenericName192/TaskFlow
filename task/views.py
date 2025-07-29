@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import TaskForm
 from django.contrib import messages
 from authuser.models import User
+from .models import Task
 
 
 @login_required(login_url='login_view')
@@ -58,3 +59,16 @@ def mass_task_creation(request, users):
         messages.error(request,
                        f"""Failed to create tasks for {len(errors)} users.
                        """ + ' '.join(errors))
+
+
+@login_required(login_url='login_view')
+def toggle_complete(request, task_id):
+    """Mark a task as completed."""
+    task = get_object_or_404(Task, id=task_id)
+    if task.completed is True:
+        task.completed = False
+    elif task.completed is False:
+        task.completed = True
+    task.save()
+    return redirect("task_list", task.assigned_to.id)
+
