@@ -3,27 +3,30 @@
 :root {
   --primary-font: "Roboto", sans-serif;
   --secondary-font: "Poppins", sans-serif;
-  --primary-text-color: #2D2D2D;
+  --primary-text-color: black;
   --primary-background-color: #F9FAFB;
-  --secondary-text-color: black;
-  --secondary-background-color: #FFFFFF;
-  --primary-color:#2F80ED;
-  --accent-color: #56CC9D;
+  --secondary-text-color: white;
+  --primary-color:#3c2dcf;
+  --accent-color: #7e2fcc;
 }
 
 /* NavBar styling / footer styling */
 
 .navbar, footer{
     background-color: var(--primary-color);
-    color: var(--primary-text-color);
     font-family: var(--secondary-font);
+}
+
+.navbar .nav-link, .navbar-brand {
+    color: var(--secondary-text-color) !important;
 }
 
 footer{
     padding-bottom: 1%;
     text-align: center;
+    color: var(--secondary-text-color);
 }
 
-footer > a{
-    color: var(--primary-text-color);
+footer a{
+    color: var(--secondary-text-color);
 }
