@@ -1,18 +1,36 @@
 {% extends "base.html" %} {% block content %} {% if not user.is_authenticated %}
 <div class="login-register-container">
-  <h2>Welcome to TaskFlow!</h2>
+  <h1>Welcome to TaskFlow!</h1>
   <p>
-    Please <a href="{% url 'login_view' %}">login</a> or
+    A website designed for you and your subordinates to track and delegate
+    tasks. Please <a href="{% url 'login_view' %}">login</a> or
     <a href="{% url 'register' %}">register</a> to continue.
   </p>
 </div>
 {% endif %} {% if user.is_authenticated %}
 <div class="welcome-container">
-  <h2>Welcome, {{ user.username }}!</h2>
-  <p>
-    You are logged in. This is a placeholder page that will at some point send
-    you to your tasks
-  </p>
-  <a href="{% url 'logout_view' %}">Logout</a>
+  <h2>Welcome, {{ user.first_name }} {{ user.last_name }}!</h2>
+  <div>
+    <h3>Your stats:</h3>
+    <ul>
+      <li>Total Tasks: {{ total_tasks_count }}</li>
+      <li>Completed Tasks {{ total_completed_tasks }}</li>
+      <li>Pending Tasks {{ total_ongoing_tasks }}</li>
+    </ul>
+  </div>
+  <div class="upcoming-tasks">
+  <h4>Upcoming Tasks</h4>
+  <ul>
+    {% for task in up_coming_tasks %}
+      <li><a href="{% url 'task_details' task.id %}"> {{ task.title }}</a> – due {{ task.due_date }}</li> 
+    {% empty %}
+      <li>No upcoming tasks</li>
+    {% endfor %}
+  </ul>
+</div>
+  <div class="quick-actions">
+    <a href="{% url 'task_list' user.id %}" class="btn btn-primary">View My Tasks</a>
+    <a href="{% url 'profile' user.id %}" class="btn btn-secondary">My Profile</a>
+  </div>
   {% endif %} {% endblock %}
 </div>

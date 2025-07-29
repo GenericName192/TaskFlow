@@ -18,7 +18,7 @@
     <link rel="stylesheet" href=" {% static 'css/style.css' %}" />
   </head>
   <body class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'index' %}">TaskFlow</a>
         <button
@@ -78,9 +78,12 @@
       <!-- Main content goes here -->
       {% block content %}{% endblock %}
     </main>
-    <footer class="footer mx-auto">
+    <footer class="footer mx-auto col-12">
       &copy; 2025 TaskFlow. All rights reserved. Created by David Barton
-      <a href="https://github.com/GenericName192">Github</a> <a href="https://www.linkedin.com/in/davidbarton192/">Linkedin</a>
+      <a href="https://github.com/GenericName192" target="_blank">Github</a>
+      <a href="https://www.linkedin.com/in/davidbarton192/" target="_blank"
+        >Linkedin</a
+      >
     </footer>
   </body>
 </html>

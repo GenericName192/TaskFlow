@@ -11,4 +11,19 @@
   --accent-color: #56CC9D;
 }
 
+/* NavBar styling / footer styling */
 
+.navbar, footer{
+    background-color: var(--primary-color);
+    color: var(--primary-text-color);
+    font-family: var(--secondary-font);
+}
+
+footer{
+    padding-bottom: 1%;
+    text-align: center;
+}
+
+footer > a{
+    color: var(--primary-text-color);
+}

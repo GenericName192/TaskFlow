@@ -10,7 +10,17 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 # Create your views here.
 def index(request):
     """Render the index page."""
-    return render(request, 'authuser/index.html')
+    total_tasks_count = request.user.tasks.count()
+    total_completed_tasks = request.user.tasks.filter(completed=True).count()
+    total_ongoing_tasks = total_tasks_count - total_completed_tasks
+    up_coming_tasks = request.user.tasks.all().order_by("due_date")
+    return render(request, 'authuser/index.html',
+                  {
+                      "total_tasks_count": total_tasks_count,
+                      "total_completed_tasks": total_completed_tasks,
+                      "total_ongoing_tasks": total_ongoing_tasks,
+                      "up_coming_tasks": up_coming_tasks
+                  })
 
 
 @login_required(login_url='login_view')
