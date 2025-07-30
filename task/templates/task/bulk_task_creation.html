@@ -4,9 +4,15 @@
 <div class="container">
     <div class="form-container" style="max-width: 600px;">
         <div class="form-header">
+            {% if task_type == 'direct' %}
             <i class="fas fa-user-friends"></i>
             <h2>Create Task for Direct Subordinates</h2>
             <p class="text-muted">Create the same task for all your direct reports</p>
+            {% else %}
+            <i class="fas fa-users"></i>
+            <h2>Create Task for All Subordinates</h2>
+            <p class="text-muted">Create the same task for all subordinates</p>
+            {% endif %}
         </div>
         
         <!-- User Preview Section -->
@@ -25,7 +31,12 @@
             </div>
             <hr>
             <small class="text-muted">
-                <strong>Total:</strong> {{ subordinates|length }} direct subordinate{{ subordinates|length|pluralize }}
+                <strong>Total:</strong> {{ subordinates|length }} 
+                {% if task_type == 'direct' %}
+                    direct subordinate{{ subordinates|length|pluralize }}
+                {% else %}
+                    user{{ subordinates|length|pluralize }}
+                {% endif %}
             </small>
         </div>
         
@@ -72,7 +83,12 @@
             
             <div class="alert alert-warning">
                 <i class="fas fa-exclamation-triangle me-2"></i>
-                <strong>Note:</strong> This will create the same task for all {{ subordinates|length }} of your direct subordinates. 
+                <strong>Note:</strong> This will create the same task for 
+                {% if task_type == 'direct' %}
+                    all {{ subordinates|length }} of your direct subordinates.
+                {% else %}
+                    all {{ subordinates|length }} users listed above.
+                {% endif %}
                 Make sure the task details are correct before proceeding.
             </div>
             

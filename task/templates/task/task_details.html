@@ -86,14 +86,20 @@
                 </a>
                 
                 {% if task.created_by == user or task.assigned_to == user %}
-                <a href="{% url 'update_task' task.id %}" class="btn btn-primary text-white"">
+                <a href="{% url 'update_task' task.id %}" class="btn btn-primary">
                     <i class="fas fa-edit me-2"></i>Update Task
                 </a>
                 {% endif %}
                 
+                {% if task.created_by == user %}
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}">
+                    <i class="fas fa-trash me-2"></i>Delete Task
+                </button>
+                {% endif %}
+                
                 {% if task.assigned_to == user %}
                     {% if task.completed %}
-                    <a href="{% url 'toggle_complete' task.id %}" class="btn btn-warning">
+                    <a href="{% url 'toggle_complete' task.id %}" class="btn btn-outline-primary">
                         <i class="fas fa-undo me-2"></i>Mark as Ongoing
                     </a>
                     {% else %}
@@ -106,6 +112,11 @@
         </div>
     </div>
 </div>
+
+<!-- Include Delete Modal -->
+{% if task.created_by == user %}
+{% include 'task/partials/delete_modal.html' with task=task button_text='Yes, Delete Task' %}
+{% endif %}
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 {% endblock %}

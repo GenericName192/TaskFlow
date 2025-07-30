@@ -120,6 +120,11 @@
                 class="btn btn-outline-primary btn-sm">
                 <i class="fas fa-edit me-1"></i>Update
               </a>
+              <button type="button" class="btn btn-danger btn-sm" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#deleteModal{{ ongoing_task.id }}">
+                <i class="fas fa-trash me-1"></i>Delete
+              </button>
               {% endif %} {% endif %}
               <a
                 href="{% url 'task_details' ongoing_task.id %}"
@@ -186,6 +191,11 @@
                 class="btn btn-outline-primary btn-sm">
                 <i class="fas fa-edit me-1"></i>Update
               </a>
+              <button type="button" class="btn btn-danger btn-sm" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#deleteModal{{ completed_task.id }}">
+                <i class="fas fa-trash me-1"></i>Delete
+              </button>
               {% endif %} {% endif %}
               <a
                 href="{% url 'task_details' completed_task.id %}"
@@ -206,6 +216,20 @@
     </div>
   </div>
 </div>
+
+<!-- Include Delete Modals for Ongoing Tasks -->
+{% for ongoing_task in ongoing_tasks %}
+{% if ongoing_task.created_by.id == user.id %}
+{% include 'task/partials/delete_modal.html' with task=ongoing_task button_text='Delete Task' %}
+{% endif %}
+{% endfor %}
+
+<!-- Include Delete Modals for Completed Tasks -->
+{% for completed_task in completed_tasks %}
+{% if completed_task.created_by.id == user.id %}
+{% include 'task/partials/delete_modal.html' with task=completed_task button_text='Delete Task' %}
+{% endif %}
+{% endfor %}
 
 <link
   rel="stylesheet"

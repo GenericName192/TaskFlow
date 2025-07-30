@@ -59,9 +59,10 @@ def mass_task_creation(request):
             return redirect('mass_task_creation')
     else:
         form = TaskForm
-        return render(request, "task/mass_task_creation.html", {
+        return render(request, "task/bulk_task_creation.html", {
             "subordinates": subordinates,
-            "form": form
+            "form": form,
+            "task_type": "mass"
         })
 
 
@@ -79,12 +80,13 @@ def direct_task_creation(request):
             return redirect('profile', user_id=request.user.id)
         else:
             messages.error(request, f"Something went wrong: {message}")
-            return redirect('mass_task_creation')
+            return redirect('direct_task_creation')
     else:
         form = TaskForm
-        return render(request, "task/direct_task_creation.html", {
+        return render(request, "task/bulk_task_creation.html", {
             "subordinates": subordinates,
-            "form": form
+            "form": form,
+            "task_type": "direct"
         })
 
 
@@ -121,3 +123,19 @@ def update_task(request, task_id):
         "form": form,
         "task": task,
     })
+
+
+@login_required(login_url="login_view")
+def delete_task(request, task_id):
+    """Deletes tasks"""
+    task = get_object_or_404(Task, id=task_id)
+    if task.created_by == request.user:
+        assigned_to_id = task.assigned_to.id
+        task_title = task.title
+        task.delete()
+        messages.success(request,
+                         f'Task "{task_title}" has been deleted successfully.')
+        return redirect("task_list", user_id=assigned_to_id)
+    else:
+        messages.error(request, 'You can only delete tasks that you created.')
+        return redirect("task_list", user_id=task.assigned_to.id)
