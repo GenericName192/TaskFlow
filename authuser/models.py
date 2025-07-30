@@ -9,6 +9,10 @@ class User(AbstractUser):
         related_name='subordinates', verbose_name='Boss',
         default=None)
     email = models.EmailField(unique=True, verbose_name='Email Address')
+    first_name = models.CharField(max_length=50, default="test")
+    last_name = models.CharField(max_length=50, default="test")
+    full_name = models.CharField(max_length=50, null=True, blank=True,
+                                 default=f"{first_name} {last_name}")
 
     def __str__(self):
         return self.username
@@ -29,5 +33,3 @@ class User(AbstractUser):
                 collection.add(subordinate)
                 subordinate.get_all_subordinates(collection)
         return collection
-
-    pass
