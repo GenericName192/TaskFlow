@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     "authuser",  # Custom user app
     "task",  # Task management app
+    "utility",
 ]
 
 SITE_ID = 1
