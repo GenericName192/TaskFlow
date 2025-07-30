@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from .models import User
 from .forms import Update_profile, UserCreationForm
 from django.contrib.auth import login, authenticate
@@ -47,8 +48,7 @@ def profile(request, user_id):
 @login_required(login_url='login_view')
 def edit_profile(request, user_id):
     if request.user.id != user_id:
-        messages.error(request, 'You are not authorized to edit this profile.')
-        return redirect('index')
+        raise PermissionDenied("You do not have access to edit this profile")
 
     user = get_object_or_404(User, id=user_id)
     form = Update_profile(instance=user, user=request.user)
@@ -66,8 +66,7 @@ def edit_profile(request, user_id):
 @login_required(login_url='login_view')
 def change_password(request, user_id):
     if request.user.id != user_id:
-        messages.error(request, 'You cannot change someone else\'s password.')
-        return redirect('index')
+        raise PermissionDenied("You cant change someone elses password")
 
     user = get_object_or_404(User, id=user_id)
     form = PasswordChangeForm(user=user)
