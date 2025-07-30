@@ -45,12 +45,14 @@
                 
                 <!-- Action Buttons -->
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-start">
+                    {% if user.id == user_profile.id %}
                     <a href="{% url 'edit_profile' user_profile.id %}" class="btn btn-primary">
                         <i class="fas fa-edit me-2"></i>Edit Profile
                     </a>
                     <a href="{% url 'change_password' user_profile.id %}" class="btn btn-outline-primary">
                         <i class="fas fa-key me-2"></i>Change Password
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
