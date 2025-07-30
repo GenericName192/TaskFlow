@@ -75,7 +75,7 @@
     <!-- Ongoing Tasks -->
     <div class="col-lg-6 mb-4">
       <div class="card shadow h-100">
-        <div class="card-header bg-warning text-dark">
+        <div class="card-header bg-primary text-white">
           <h4 class="mb-0">
             <i class="fas fa-clock me-2"></i>Ongoing Tasks
             <span class="badge bg-dark ms-2">{{ ongoing_tasks|length }}</span>
@@ -117,7 +117,7 @@
               {% if ongoing_task.created_by.id == user.id %}
               <a
                 href="{% url 'update_task' ongoing_task.id %}"
-                class="btn btn-warning btn-sm">
+                class="btn btn-outline-primary btn-sm">
                 <i class="fas fa-edit me-1"></i>Update
               </a>
               {% endif %} {% endif %}
@@ -177,13 +177,13 @@
               {% if task_owner.id == user.id %}
               <a
                 href="{% url 'toggle_complete' completed_task.id %}"
-                class="btn btn-warning btn-sm">
+                class="btn btn-outline-primary btn-sm">
                 <i class="fas fa-undo me-1"></i>Mark Ongoing
               </a>
               {% if completed_task.created_by.id == user.id %}
               <a
                 href="{% url 'update_task' completed_task.id %}"
-                class="btn btn-warning btn-sm">
+                class="btn btn-outline-primary btn-sm">
                 <i class="fas fa-edit me-1"></i>Update
               </a>
               {% endif %} {% endif %}

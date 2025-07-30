@@ -86,7 +86,7 @@
                 </a>
                 
                 {% if task.created_by == user or task.assigned_to == user %}
-                <a href="{% url 'update_task' task.id %}" class="btn btn-warning">
+                <a href="{% url 'update_task' task.id %}" class="btn btn-primary text-white"">
                     <i class="fas fa-edit me-2"></i>Update Task
                 </a>
                 {% endif %}
