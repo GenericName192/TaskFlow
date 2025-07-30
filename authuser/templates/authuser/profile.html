@@ -69,7 +69,7 @@
                 {% for subordinate in direct_subordinates %}
                 <div class="subordinate-card">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="flex-grow-1">
                             <h5 class="mb-1">
                                 <a href="{% url 'profile' subordinate.id %}" class="text-decoration-none">
                                     {{ subordinate.full_name|title }}
@@ -79,7 +79,12 @@
                                 <i class="fas fa-envelope me-1"></i>{{ subordinate.email }}
                             </p>
                         </div>
-                        <i class="fas fa-chevron-right text-muted"></i>
+                        <div class="d-flex gap-2 align-items-center">
+                            <a href="{% url 'task_list' subordinate.id %}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-tasks me-1"></i>Tasks
+                            </a>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
                     </div>
                 </div>
                 {% empty %}
@@ -108,7 +113,7 @@
             <div class="col-md-6 col-lg-4 mb-3">
                 <div class="subordinate-card">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="flex-grow-1">
                             <h6 class="mb-1">
                                 <a href="{% url 'profile' subordinate.id %}" class="text-decoration-none">
                                     {{ subordinate.full_name|title }}
@@ -116,7 +121,12 @@
                             </h6>
                             <small class="text-muted">{{ subordinate.email }}</small>
                         </div>
-                        <i class="fas fa-chevron-right text-muted"></i>
+                        <div class="d-flex gap-2 align-items-center">
+                            <a href="{% url 'task_list' subordinate.id %}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-tasks me-1"></i>Tasks
+                            </a>
+                            <i class="fas fa-chevron-right text-muted"></i>
+                        </div>
                     </div>
                 </div>
             </div>
