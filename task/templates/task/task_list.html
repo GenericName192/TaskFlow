@@ -4,13 +4,13 @@
   <div class="task-header text-center">
     <i class="fas fa-tasks fa-4x mb-3"></i>
     <h1 class="display-4">
-      {{ task_owner.first_name }} {{ task_owner.last_name }}'s Tasks
+      {{ task_owner.full_name|title }}'s Tasks
     </h1>
     <p class="lead">Manage and track your tasks efficiently</p>
   </div>
 
   <!-- Create Task Form -->
-  {% if user.id in can_assign %}
+  {% if can_assign %}
   <div class="row mb-4">
     <div class="col-lg-8 mx-auto">
       <div class="card shadow">

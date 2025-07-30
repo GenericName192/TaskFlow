@@ -6,7 +6,7 @@
     <div class="profile-header text-center">
         <i class="fas fa-user-circle fa-4x mb-3"></i>
         <h1 class="display-4">{{ user_profile.username|title }}</h1>
-        <p class="lead">{{ user_profile.first_name|title }} {{ user_profile.last_name|title }}</p>
+        <p class="lead">{{ user_profile.full_name|title }}</p>
     </div>
     
     <!-- Profile Information -->
@@ -58,14 +58,21 @@
         <div class="col-lg-6 mb-4">
             <!-- Direct Subordinates -->
             <div class="profile-info">
-                <h3 class="mb-3"><i class="fas fa-user-friends me-2"></i>Direct Subordinates</h3>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="mb-0"><i class="fas fa-user-friends me-2"></i>Direct Subordinates</h3>
+                    {% if direct_subordinates and user_profile.id == user.id %}
+                    <a href="{% url 'direct_task_creation' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-plus-circle me-1"></i>Create Task for All
+                    </a>
+                    {% endif %}
+                </div>
                 {% for subordinate in direct_subordinates %}
                 <div class="subordinate-card">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h5 class="mb-1">
                                 <a href="{% url 'profile' subordinate.id %}" class="text-decoration-none">
-                                    {{ subordinate.first_name|title }} {{ subordinate.last_name|title }}
+                                    {{ subordinate.full_name|title }}
                                 </a>
                             </h5>
                             <p class="mb-0 text-muted">
@@ -88,7 +95,14 @@
     <!-- All Subordinates -->
     {% if all_subordinates %}
     <div class="profile-info mb-4">
-        <h3 class="mb-3"><i class="fas fa-sitemap me-2"></i>All Subordinates</h3>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0"><i class="fas fa-sitemap me-2"></i>All Subordinates</h3>
+            {% if user_profile.id == user.id %}
+            <a href="{% url 'mass_task_creation' %}" class="btn btn-primary btn-sm">
+                <i class="fas fa-users me-1"></i>Create Task for All
+            </a>
+            {% endif %}
+        </div>
         <div class="row">
             {% for subordinate in all_subordinates %}
             <div class="col-md-6 col-lg-4 mb-3">
@@ -97,7 +111,7 @@
                         <div>
                             <h6 class="mb-1">
                                 <a href="{% url 'profile' subordinate.id %}" class="text-decoration-none">
-                                    {{ subordinate.first_name|title }} {{ subordinate.last_name|title }}
+                                    {{ subordinate.full_name|title }}
                                 </a>
                             </h6>
                             <small class="text-muted">{{ subordinate.email }}</small>

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="form-container" style="max-width: 600px;">
+        <div class="form-header">
+            <i class="fas fa-users"></i>
+            <h2>Create Task for all Subordinates</h2>
+            <p class="text-muted">Create the same task for all Subordinates</p>
+        </div>
+        
+        <!-- User Preview Section -->
+        <div class="alert alert-info mb-4">
+            <h5 class="alert-heading">
+                <i class="fas fa-info-circle me-2"></i>Task will be created for:
+            </h5>
+            <div class="row">
+                {% for user in subordinates %}
+                <div class="col-md-6 mb-2">
+                    <span class="badge bg-primary me-1">
+                        <i class="fas fa-user me-1"></i>{{ user.full_name|title }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <small class="text-muted">
+                <strong>Total:</strong> {{ subordinates|length }} user{{ subordinates|length|pluralize }}
+            </small>
+        </div>
+        
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="{{ form.title.id_for_label }}" class="form-label">
+                    <i class="fas fa-heading me-2"></i>{{ form.title.label }}
+                </label>
+                <input type="text" class="form-control" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" 
+                       placeholder="Enter task title..." required>
+                {% for error in form.title.errors %}
+                <div class="text-danger small mt-1">
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.description.id_for_label }}" class="form-label">
+                    <i class="fas fa-align-left me-2"></i>{{ form.description.label }}
+                </label>
+                <textarea class="form-control" name="{{ form.description.name }}" id="{{ form.description.id_for_label }}" 
+                          rows="4" placeholder="Enter task description..."></textarea>
+                {% for error in form.description.errors %}
+                <div class="text-danger small mt-1">
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="mb-4">
+                <label for="{{ form.due_date.id_for_label }}" class="form-label">
+                    <i class="fas fa-calendar-alt me-2"></i>{{ form.due_date.label }}
+                </label>
+                <input type="date" class="form-control" name="{{ form.due_date.name }}" id="{{ form.due_date.id_for_label }}" required>
+                {% for error in form.due_date.errors %}
+                <div class="text-danger small mt-1">
+                    <i class="fas fa-exclamation-circle me-1"></i>{{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Note:</strong> This will create the same task for all {{ subordinates|length }} users listed above. 
+                Make sure the task details are correct before proceeding.
+            </div>
+            
+            <div class="d-flex gap-2 justify-content-center">
+                <a href="{% url 'profile' user.id %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane me-2"></i>Create {{ subordinates|length }} Task{{ subordinates|length|pluralize }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}

@@ -53,7 +53,7 @@ def mass_create_tasks(user_list, form, active_user):
             else:
                 failed_user_list.append(user.full_name)
         if failed_user_list:
-            return False, ", ".join(failed_user_list)
+            return False, ", ".join(failed_user_list) + "failed"
         else:
             try:
                 Task.objects.bulk_create(tasks)

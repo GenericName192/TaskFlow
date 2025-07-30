@@ -4,6 +4,7 @@ from .forms import TaskForm
 from django.contrib import messages
 from authuser.models import User
 from .models import Task
+from utility import utils
 
 
 @login_required(login_url='login_view')
@@ -18,7 +19,7 @@ def task_list(request, user_id):
         form = TaskForm()
         ongoing_tasks = task_owner.tasks.filter(completed=False)
         completed_tasks = task_owner.tasks.filter(completed=True)
-        can_assign = Can_assign_task(user_id)
+        can_assign = utils.Can_assign_task(task_owner, request.user)
         return render(request, 'task/task_list.html',
                       {'task_owner': task_owner,
                        'ongoing_tasks': ongoing_tasks,
@@ -43,24 +44,48 @@ def task_creation(request, user):
 
 
 @login_required(login_url='login_view')
-def mass_task_creation(request, users):
-    """Handle creation of multiple tasks."""
-    errors = []
-    successes = []
-    for user in users:
-        if task_creation(request, user):
-            successes.append(user.first_name + ' ' + user.last_name)
+def mass_task_creation(request):
+    """Handle creation of tasks for all subordinates"""
+    subordinates = request.user.get_all_subordinates()
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        status, message = utils.mass_create_tasks(
+            subordinates, form, request.user)
+        if status:
+            messages.success(request, f"Task made for: {message}")
+            return redirect('profile', user_id=request.user.id)
         else:
-            errors.append({user.first_name + ' ' + user.last_name})
+            messages.error(request, f"Something went wrong: {message}")
+            return redirect('mass_task_creation')
+    else:
+        form = TaskForm
+        return render(request, "task/mass_task_creation.html", {
+            "subordinates": subordinates,
+            "form": form
+        })
 
-    if successes:
-        messages.success(request,
-                         f"""Successfully created tasks for {len(successes)}\
-                         users.""" + ' '.join(successes))
-    if errors:
-        messages.error(request,
-                       f"""Failed to create tasks for {len(errors)} users.
-                       """ + ' '.join(errors))
+
+@login_required(login_url="login_view")
+def direct_task_creation(request):
+    """Handle creation of tasks for all direct subordinates"""
+    subordinates = request.user.get_direct_subordinates()
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        subordinates = request.user.get_direct_subordinates()
+        status, message = utils.mass_create_tasks(
+            subordinates, form, request.user)
+        if status:
+            messages.success(request, f"Task made for: {message}")
+            return redirect('profile', user_id=request.user.id)
+        else:
+            messages.error(request, f"Something went wrong: {message}")
+            return redirect('mass_task_creation')
+    else:
+        form = TaskForm
+        return render(request, "task/direct_task_creation.html", {
+            "subordinates": subordinates,
+            "form": form
+        })
 
 
 @login_required(login_url='login_view')
@@ -96,19 +121,3 @@ def update_task(request, task_id):
         "form": form,
         "task": task,
     })
-
-
-def Can_assign_task(user_id):
-    """Returns a list of everyone who can assign the user a task"""
-    user = get_object_or_404(User, id=user_id)
-    bosses = [user.id]
-    boss = user.boss
-    # creates loops that collects the boss until the value is null
-    while boss:
-        # if the user is already in bosses then its stuck in a loop
-        if boss in bosses:
-            break
-        else:
-            bosses.append(boss.id)
-            boss = boss.boss
-    return bosses
