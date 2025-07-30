@@ -11,8 +11,11 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, verbose_name='Email Address')
     first_name = models.CharField(max_length=50, default="test")
     last_name = models.CharField(max_length=50, default="test")
-    full_name = models.CharField(max_length=50, null=True, blank=True,
-                                 default=f"{first_name} {last_name}")
+
+    @property
+    def full_name(self):
+        """Return the user's full name."""
+        return f"{self.first_name} {self.last_name}".strip()
 
     def __str__(self):
         return self.username
