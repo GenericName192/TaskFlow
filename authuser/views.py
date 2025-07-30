@@ -51,7 +51,7 @@ def edit_profile(request, user_id):
         return redirect('index')
 
     user = get_object_or_404(User, id=user_id)
-    form = Update_profile(instance=user)
+    form = Update_profile(instance=user, user=request.user)
     if request.method == 'POST':
         form = Update_profile(request.POST, instance=user)
         if form.is_valid():

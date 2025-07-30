@@ -18,7 +18,12 @@ def Can_assign_task(task_user, assigning_user):
 
 def can_be_boss(user, new_boss):
     """Check to see if new boss can be assigned as the users boss"""
+    if new_boss is None:
+        return True
     users_subordinates = user.get_all_subordinates()
+    # if the boss is in user_subordinates then it will cause
+    # a circular hierarchy so this returns true if they're not
+    # and false if they are.
     return new_boss not in users_subordinates
 
 
