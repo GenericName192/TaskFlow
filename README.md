@@ -125,7 +125,18 @@ profile page
 
 ## References
 
-<!-- placeholder although chatgpt needs to be in there for help with planning -->
+AI
+chatgpt - helped me intial ideas for design such as the name Taskflow and what fonts to use.
+Co-Pilot - I used copilot a lot as both a rubber duck and also for pair programming, I asked it to avoid giving code and to just talk through problems it found in my project.
+
+Youtube videos
+https://www.youtube.com/watch?v=mndLkCEiflg - helped me with making custom-users
+https://www.youtube.com/@Codemycom - helped me with afew different things accross different videos
+https://www.youtube.com/watch?v=1x0Zdukpjrs - helped with adding custom field validators
+
+Documentation
+https://docs.djangoproject.com/en/5.2/ref/models/querysets/ - Django documentation was very useful for a few different sections.
+
 
 ## Tech
 
