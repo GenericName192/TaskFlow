@@ -71,8 +71,8 @@ class UserCreationForm(UserCreationForm):
                                        "(at least 8 characters)."),
                 'password_too_common': ("That password is too common. "
                                         "Try something more unique!"),
-                'password_entirely_numeric': ("Passwords can't be only numbers. "
-                                              "Please mix in letters too!"),
+                'password_entirely_numeric': ("Passwords can't be only numbers"
+                                              ". Please mix in letters too!"),
             }
         }
 

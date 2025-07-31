@@ -43,9 +43,10 @@
                             rows="3" placeholder="Enter task description...">{{ field.value|default:'' }}</textarea>
                 {% elif field.name == 'title' %}
                   <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
-                         placeholder="Enter task title..." required>
+                         placeholder="Enter task title..." value="{{ field.value|default:'' }}" required>
                 {% elif field.name == 'due_date' %}
-                  <input type="date" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" required>
+                  <input type="date" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                         value="{{ field.value|date:'Y-m-d'|default:'' }}" required>
                 {% else %}
                   {{ field }}
                 {% endif %}
