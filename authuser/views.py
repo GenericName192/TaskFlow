@@ -7,24 +7,16 @@ from .forms import Update_profile, UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .tips import get_tip
+from utility import utils
 
 
 # Create your views here.
 def index(request):
     """Render the index page."""
     if request.user.is_authenticated:
-        tasks = request.user.tasks.all()
-        total_tasks_count = len(tasks)
-        completed_tasks_count = len([x for x in tasks if x.completed is True])
-        total_ongoing_tasks = total_tasks_count - completed_tasks_count
-        up_coming_tasks = tasks.filter(completed=False).order_by("due_date")
+        content = utils.calculate_user_task_statistics(request.user)
         tip = get_tip()
-        content = {
-                    "total_tasks_count": total_tasks_count,
-                    "completed_tasks_count": completed_tasks_count,
-                    "total_ongoing_tasks": total_ongoing_tasks,
-                    "up_coming_tasks": up_coming_tasks,
-                    "tip": tip}
+        content["tip"] = tip
     else:
         content = {}
     return render(request, 'authuser/index.html', content)

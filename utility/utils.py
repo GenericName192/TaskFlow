@@ -111,3 +111,31 @@ def mass_create_tasks(user_list: list, form: ModelForm, active_user: User):
             except Exception as e:
                 return False, str(e)
             return True, ", ".join(success_user_list)
+
+
+def calculate_user_task_statistics(user: User) -> dict:
+    """Takes a user and provides useful statics to be displayed on the
+    index page e.g: upcoming tasks and completed/going counts
+    args:
+        user - The user who is viewing the index page who the stats will
+        be about
+    returns:
+        dict - A dict with all of the stats that will be passed to
+        the index page.
+        - total_tasks_count: total number of tasks the user has.
+        - completed_tasks_count: number of completed tasks the user has.
+        - total_ongoing_tasks: number of ongoing tasks the user has.
+        - up_coming_tasks: QuerySet of upcoming tasks."""
+    tasks = user.tasks.all()
+    total_tasks_count = len(tasks)
+    completed_tasks_count = len([x for x in tasks if x.completed is True])
+    total_ongoing_tasks = total_tasks_count - completed_tasks_count
+    up_coming_tasks = tasks.filter(completed=False).order_by("due_date")
+
+    content = {
+                "total_tasks_count": total_tasks_count,
+                "completed_tasks_count": completed_tasks_count,
+                "total_ongoing_tasks": total_ongoing_tasks,
+                "up_coming_tasks": up_coming_tasks
+                }
+    return content

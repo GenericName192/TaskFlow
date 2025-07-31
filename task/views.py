@@ -46,35 +46,19 @@ def task_creation(request, user: User):
 
 
 @login_required(login_url='login_view')
-def mass_task_creation(request):
+def bulk_task_creation(request, scope="all"):
     """Handle creation of tasks for all subordinates"""
-    subordinates = request.user.get_all_subordinates()
-    if request.method == "POST":
-        form = TaskForm(request.POST)
-        status, message = utils.mass_create_tasks(
-            subordinates, form, request.user)
-        if status:
-            messages.success(request, f"Task made for: {message}")
-            return redirect('profile', user_id=request.user.id)
-        else:
-            messages.error(request, f"Something went wrong: {message}")
-            return redirect('mass_task_creation')
-    else:
-        form = TaskForm
-        return render(request, "task/bulk_task_creation.html", {
-            "subordinates": subordinates,
-            "form": form,
-            "task_type": "mass"
-        })
-
-
-@login_required(login_url="login_view")
-def direct_task_creation(request):
-    """Handle creation of tasks for all direct subordinates"""
-    subordinates = request.user.get_direct_subordinates()
-    if request.method == "POST":
-        form = TaskForm(request.POST)
+    if scope == "all":
+        subordinates = request.user.get_all_subordinates()
+    elif scope == "direct":
         subordinates = request.user.get_direct_subordinates()
+    else:
+        # Handle invalid scope values
+        subordinates = request.user.get_all_subordinates()
+        scope = "all"
+
+    if request.method == "POST":
+        form = TaskForm(request.POST)
         status, message = utils.mass_create_tasks(
             subordinates, form, request.user)
         if status:
@@ -82,13 +66,13 @@ def direct_task_creation(request):
             return redirect('profile', user_id=request.user.id)
         else:
             messages.error(request, f"Something went wrong: {message}")
-            return redirect('direct_task_creation')
+            return redirect('bulk_task_creation', scope=scope)
     else:
         form = TaskForm
         return render(request, "task/bulk_task_creation.html", {
             "subordinates": subordinates,
             "form": form,
-            "task_type": "direct"
+            "task_type": scope
         })
 
 
@@ -98,10 +82,7 @@ def toggle_complete(request, task_id: int):
     the user to mark a task as ongoing or completed."""
     task = get_object_or_404(Task, id=task_id)
     if request.user.id == task.assigned_to.id:
-        if task.completed is True:
-            task.completed = False
-        elif task.completed is False:
-            task.completed = True
+        task.completed = not task.completed
         task.save()
         return redirect("task_list", task.assigned_to.id)
     else:
