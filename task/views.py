@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 
 
 @login_required(login_url='login_view')
-def task_list(request, user_id):
+def task_list(request, user_id: int):
     """Render the task list page."""
     task_owner = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
@@ -30,7 +30,7 @@ def task_list(request, user_id):
 
 
 @login_required(login_url='login_view')
-def task_creation(request, user):
+def task_creation(request, user: User):
     """Handle task creation."""
     form = TaskForm(request.POST)
     if form.is_valid():
@@ -93,8 +93,9 @@ def direct_task_creation(request):
 
 
 @login_required(login_url='login_view')
-def toggle_complete(request, task_id):
-    """Mark a task as completed."""
+def toggle_complete(request, task_id: int):
+    """Toggles the task to either true or false, allowing
+    the user to mark a task as ongoing or completed."""
     task = get_object_or_404(Task, id=task_id)
     if request.user.id == task.assigned_to.id:
         if task.completed is True:
@@ -108,7 +109,7 @@ def toggle_complete(request, task_id):
 
 
 @login_required(login_url="login_view")
-def task_details(request, task_id):
+def task_details(request, task_id: int):
     """View all details on a task"""
     task = get_object_or_404(Task, id=task_id)
     return render(request, "task/task_details.html", {
@@ -117,8 +118,10 @@ def task_details(request, task_id):
 
 
 @login_required(login_url="login_view")
-def update_task(request, task_id):
-    """Updates the task"""
+def update_task(request, task_id: int):
+    """Renders a form that allows the user to update a task
+    but only if they are either the creator or the task is assinged
+    to them."""
     task = get_object_or_404(Task, id=task_id)
     if (request.user.id == task.created_by.id or
             request.user.id == task.assigned_to.id):
@@ -135,8 +138,9 @@ def update_task(request, task_id):
 
 
 @login_required(login_url="login_view")
-def delete_task(request, task_id):
-    """Deletes tasks"""
+def delete_task(request, task_id: int):
+    """Deletes the task with the task_id passed to it, but only if
+    the user is the user who created the task."""
     task = get_object_or_404(Task, id=task_id)
     if task.created_by == request.user:
         assigned_to_id = task.assigned_to.id

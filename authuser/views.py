@@ -31,7 +31,7 @@ def index(request):
 
 
 @login_required(login_url='login_view')
-def profile(request, user_id):
+def profile(request, user_id: int):
     """Render the selected user profile page."""
     user = get_object_or_404(User, id=user_id)
     direct_subordinates = user.get_direct_subordinates()
@@ -46,7 +46,10 @@ def profile(request, user_id):
 
 
 @login_required(login_url='login_view')
-def edit_profile(request, user_id):
+def edit_profile(request, user_id: int):
+    """ Renders a form that allows the user to update all user infomation
+    exepct for password.
+    """
     if request.user.id != user_id:
         raise PermissionDenied("""You do not have permission\
                                to edit this profile""")
@@ -65,7 +68,8 @@ def edit_profile(request, user_id):
 
 
 @login_required(login_url='login_view')
-def change_password(request, user_id):
+def change_password(request, user_id: int):
+    """Renders a form to allow the user to change their password."""
     if request.user.id != user_id:
         raise PermissionDenied("""You do not have permission\
         to change this password""")

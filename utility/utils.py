@@ -1,8 +1,18 @@
 from task.models import Task
+from authuser.models import User
+from django.forms import ModelForm
 
 
-def Can_assign_task(task_user, assigning_user):
-    """Returns true if the user can assign false if they cant"""
+def Can_assign_task(task_user: User, assigning_user: User) -> bool:
+    """Checks to see if a user is able to assign a task to the task_user.
+
+    Args:
+        task_user: A User that the task will be assigned to.
+        assigning_user: A User that the task will be assigned by.
+
+    Returns:
+        bool: True if the user can assign, False if they cannot.
+    """
     can_assign = [task_user.id]
     boss = task_user.boss
     # creates loops that collects the boss until the value is null
@@ -16,8 +26,18 @@ def Can_assign_task(task_user, assigning_user):
     return assigning_user.id in can_assign
 
 
-def can_be_boss(user, new_boss):
-    """Check to see if new boss can be assigned as the users boss"""
+def can_be_boss(user: User, new_boss: User) -> bool:
+    """Check to see if a circular hierarchy would be formed by the
+    user being assigned new_boss as a boss.
+
+    Args:
+        user: The User whose boss may be reassigned.
+        new_boss: The User who it will be reassigned to.
+
+    Returns:
+        bool: True if the user can be assigned without issue, False if it would
+              create a circular hierarchy.
+    """
     if new_boss is None:
         return True
     users_subordinates = user.get_all_subordinates()
@@ -27,7 +47,16 @@ def can_be_boss(user, new_boss):
     return new_boss not in users_subordinates
 
 
-def get_all_team_tasks(user):
+def get_all_team_tasks(user: User) -> dict:
+    """Gets a dict of all of the user's team members and their tasks.
+
+    Args:
+        user: The user whose team you want to view.
+
+    Returns:
+        dict: A dict with each team member's full_name as the key
+              and a list of all of their tasks as the value.
+    """
     user_subordinates = user.get_all_subordinates()
     team_members_and_tasks = {user.full_name: user.tasks.all()}
     for subordinate in user_subordinates:
@@ -35,7 +64,24 @@ def get_all_team_tasks(user):
     return team_members_and_tasks
 
 
-def mass_create_tasks(user_list, form, active_user):
+def mass_create_tasks(user_list: list, form: ModelForm, active_user: User):
+    """ Creates the same task for each user in a user_list
+
+    Validates the form and checks that each user can be assigned a task by the
+    active_user. Uses an all-or-nothing approach - if any user cannot be
+    assigned a task, no tasks are created. On success, uses bulk_create
+    for efficiency. returns a success message.
+
+    Args:
+        user_list: a list of users for whom the tasks should be assigned.
+        form: The form submitted with all the information about the task.
+        active_user: The user who has submitted the form.
+
+    Returns:
+        Tuple:
+            (success_bool, message_string) - Bool to say if it was successful
+            or not and string with the error/success message.
+    """
     if not user_list:
         return False, "empty list detected, please try again"
     if form.is_valid():

@@ -22,5 +22,7 @@ tips = [
 ]
 
 
-def get_tip():
+def get_tip() -> str:
+    """Returns a random string from the tips list
+    used to give a random tip on the landing page."""
     return random.choice(tips)

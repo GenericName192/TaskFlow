@@ -21,11 +21,13 @@ class User(AbstractUser):
         return self.username
 
     def get_direct_subordinates(self):
-        """Return a queryset of direct subordinates."""
+        """Return a queryset of the users who have the current user(self)
+        as their boss."""
         return self.subordinates.all()
 
     def get_all_subordinates(self, collection=None):
-        """Return a set of all subordinates, including indirect ones."""
+        """Return a set of all users who both directly and indirectly
+        under the user in the hierarchy"""
         if collection is None:
             collection = set()
 
