@@ -24,21 +24,14 @@ def index(request):
         content["tip"] = tip
     else:
         content = {}
-        return render(request, INDEX_TEMPLATE, content)
-    if request.user.is_authenticated:
-        content = calculate_user_task_statistics(request.user)
-        tip = get_tip()
-        content["tip"] = tip
-    else:
-        content = {}
-    return render(request, 'authuser/index.html', content)
+    return render(request, INDEX_TEMPLATE, content)
 
 
 @login_required(login_url=LOGIN_URL_NAME)
 def profile(request, user_id: int):
     """Render the selected user profile page."""
-    user = get_object_or_404(User, id=user_id)
-    direct_subordinates = user.get_direct_subordinates()
+    user = get_object_or_404(User, id=user_id).prefetch_related("subordinates")
+    direct_subordinates = user.subordinates.all()
     all_subordinates = user.get_all_subordinates()
 
     return render(request, PROFILE_TEMPLATE,

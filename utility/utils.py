@@ -14,7 +14,7 @@ def Can_assign_task(task_user: User, assigning_user: User) -> bool:
         bool: True if the user can assign, False if they cannot.
     """
     can_assign = [task_user.id]
-    boss = task_user.boss
+    boss = task_user.boss.select_related("boss")
     # creates loops that collects the boss until the value is null
     while boss:
         # if the user is already in bosses then its stuck in a loop
@@ -22,7 +22,7 @@ def Can_assign_task(task_user: User, assigning_user: User) -> bool:
             break
         else:
             can_assign.append(boss.id)
-            boss = boss.boss
+            boss = boss.boss.select_related("boss")
     return assigning_user.id in can_assign
 
 
@@ -57,7 +57,8 @@ def get_all_team_tasks(user: User) -> dict:
         dict: A dict with each team member's full_name as the key
               and a list of all of their tasks as the value.
     """
-    user_subordinates = user.get_all_subordinates()
+    user_subordinates = (user.get_all_subordinates()
+                         .prefetch_related('tasks'))
     team_members_and_tasks = {user.full_name: user.tasks.all()}
     for subordinate in user_subordinates:
         team_members_and_tasks[subordinate.full_name] = subordinate.tasks.all()
@@ -126,7 +127,7 @@ def calculate_user_task_statistics(user: User) -> dict:
         - completed_tasks_count: number of completed tasks the user has.
         - total_ongoing_tasks: number of ongoing tasks the user has.
         - up_coming_tasks: QuerySet of upcoming tasks."""
-    tasks = user.tasks.all()
+    tasks = user.tasks.all().select_related("assigned_to", "created_by")
     total_tasks_count = len(tasks)
     completed_tasks_count = len([x for x in tasks if x.completed is True])
     total_ongoing_tasks = total_tasks_count - completed_tasks_count

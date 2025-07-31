@@ -17,20 +17,24 @@ from utility.constants import (
 def task_list(request, user_id: int):
     """Render the task list page."""
     task_owner = get_object_or_404(User, id=user_id)
-    if request.method == 'POST':
+    if request.method == "POST":
         if task_creation(request, task_owner):
             messages.success(request, "Task created successfully!")
             return redirect(TASK_LIST_URL_NAME, user_id=task_owner.id)
     else:
         form = TaskForm()
-        ongoing_tasks = task_owner.tasks.filter(completed=False)
-        completed_tasks = task_owner.tasks.filter(completed=True)
+        ongoing_tasks = (task_owner.tasks
+                         .filter(completed=False)
+                         .select_related("created_by", "assigned_to"))
+        completed_tasks = (task_owner.tasks
+                           .filter(completed=True)
+                           .select_related("created_by", "assigned_to"))
         can_assign = utils.Can_assign_task(task_owner, request.user)
         return render(request, TASK_LIST_TEMPLATE,
-                      {'task_owner': task_owner,
-                       'ongoing_tasks': ongoing_tasks,
-                       'completed_tasks': completed_tasks,
-                       'form': form,
+                      {"task_owner": task_owner,
+                       "ongoing_tasks": ongoing_tasks,
+                       "completed_tasks": completed_tasks,
+                       "form": form,
                        "can_assign": can_assign})
 
 
@@ -85,7 +89,8 @@ def bulk_task_creation(request, scope="all"):
 def toggle_complete(request, task_id: int):
     """Toggles the task to either true or false, allowing
     the user to mark a task as ongoing or completed."""
-    task = get_object_or_404(Task, id=task_id)
+    task = get_object_or_404(Task.objects.select_related("assigned_to"),
+                             id=task_id)
     if request.user.id == task.assigned_to.id:
         task.completed = not task.completed
         task.save()
@@ -97,7 +102,8 @@ def toggle_complete(request, task_id: int):
 @login_required(login_url=LOGIN_URL_NAME)
 def task_details(request, task_id: int):
     """View all details on a task"""
-    task = get_object_or_404(Task, id=task_id)
+    task = (get_object_or_404(Task, id=task_id)
+            .select_related("assigned_to", "created_by"))
     return render(request, TASK_DETAILS_TEMPLATE, {
         "task": task
     })
@@ -108,7 +114,8 @@ def update_task(request, task_id: int):
     """Renders a form that allows the user to update a task
     but only if they are either the creator or the task is assinged
     to them."""
-    task = get_object_or_404(Task, id=task_id)
+    task = (get_object_or_404(Task, id=task_id)
+            .select_related("assigned_to", "created_by"))
     if (request.user.id == task.created_by.id or
             request.user.id == task.assigned_to.id):
         form = TaskForm(request.POST or None, instance=task)
@@ -127,13 +134,14 @@ def update_task(request, task_id: int):
 def delete_task(request, task_id: int):
     """Deletes the task with the task_id passed to it, but only if
     the user is the user who created the task."""
-    task = get_object_or_404(Task, id=task_id)
+    task = (get_object_or_404(Task, id=task_id)
+            .select_related("assigned_to", "created_by"))
     if task.created_by == request.user:
         assigned_to_id = task.assigned_to.id
         task_title = task.title
         task.delete()
         messages.success(request,
-                         f'Task "{task_title}" has been deleted successfully.')
+                         f"Task '{task_title}' has been deleted successfully.")
         return redirect(TASK_LIST_URL_NAME, user_id=assigned_to_id)
     else:
         raise PermissionDenied("You do not have permission to " +
