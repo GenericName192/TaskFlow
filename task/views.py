@@ -14,7 +14,7 @@ def task_list(request, user_id):
     task_owner = get_object_or_404(User, id=user_id)
     if request.method == 'POST':
         if task_creation(request, task_owner):
-            messages.success(request, 'Task created successfully!')
+            messages.success(request, "Task created successfully!")
             return redirect('task_list', user_id=task_owner.id)
     else:
         form = TaskForm()
@@ -40,7 +40,8 @@ def task_creation(request, user):
         task.save()
         return True
     else:
-        messages.error(request, 'Error creating task. Please try again.')
+        messages.error(request, "Error creating task. " +
+                       "Please check for errors and try again.")
         return False
 
 
@@ -130,7 +131,7 @@ def update_task(request, task_id):
             "task": task,
         })
     else:
-        raise PermissionDenied("You cannot edit someone elses task")
+        raise PermissionDenied("You do not have permission to edit this task")
 
 
 @login_required(login_url="login_view")
@@ -145,4 +146,5 @@ def delete_task(request, task_id):
                          f'Task "{task_title}" has been deleted successfully.')
         return redirect("task_list", user_id=assigned_to_id)
     else:
-        raise PermissionDenied("You cannot delete someone elses task")
+        raise PermissionDenied("You do not have permission to " +
+                               "delete this task")

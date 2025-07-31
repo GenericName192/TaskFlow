@@ -48,7 +48,8 @@ def profile(request, user_id):
 @login_required(login_url='login_view')
 def edit_profile(request, user_id):
     if request.user.id != user_id:
-        raise PermissionDenied("You do not have access to edit this profile")
+        raise PermissionDenied("""You do not have permission\
+                               to edit this profile""")
 
     user = get_object_or_404(User, id=user_id)
     form = Update_profile(instance=user, user=request.user)
@@ -66,7 +67,8 @@ def edit_profile(request, user_id):
 @login_required(login_url='login_view')
 def change_password(request, user_id):
     if request.user.id != user_id:
-        raise PermissionDenied("You cant change someone elses password")
+        raise PermissionDenied("""You do not have permission\
+        to change this password""")
 
     user = get_object_or_404(User, id=user_id)
     form = PasswordChangeForm(user=user)
