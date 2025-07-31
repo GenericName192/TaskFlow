@@ -7,14 +7,26 @@ from .forms import Update_profile, UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .tips import get_tip
-from utility import utils
+from utility.constants import (
+    LOGIN_URL_NAME, INDEX_URL_NAME, PROFILE_URL_NAME,
+    INDEX_TEMPLATE, PROFILE_TEMPLATE, EDIT_PROFILE_TEMPLATE,
+    LOGIN_TEMPLATE, REGISTER_TEMPLATE, UPDATE_PASSWORD_TEMPLATE
+)
+from utility.utils import calculate_user_task_statistics
 
 
 # Create your views here.
 def index(request):
     """Render the index page."""
     if request.user.is_authenticated:
-        content = utils.calculate_user_task_statistics(request.user)
+        content = calculate_user_task_statistics(request.user)
+        tip = get_tip()
+        content["tip"] = tip
+    else:
+        content = {}
+        return render(request, INDEX_TEMPLATE, content)
+    if request.user.is_authenticated:
+        content = calculate_user_task_statistics(request.user)
         tip = get_tip()
         content["tip"] = tip
     else:
@@ -22,14 +34,14 @@ def index(request):
     return render(request, 'authuser/index.html', content)
 
 
-@login_required(login_url='login_view')
+@login_required(login_url=LOGIN_URL_NAME)
 def profile(request, user_id: int):
     """Render the selected user profile page."""
     user = get_object_or_404(User, id=user_id)
     direct_subordinates = user.get_direct_subordinates()
     all_subordinates = user.get_all_subordinates()
 
-    return render(request, 'authuser/profile.html',
+    return render(request, PROFILE_TEMPLATE,
                   {
                       'user_profile': user,
                       'direct_subordinates': direct_subordinates,
@@ -37,7 +49,7 @@ def profile(request, user_id: int):
                   })
 
 
-@login_required(login_url='login_view')
+@login_required(login_url=LOGIN_URL_NAME)
 def edit_profile(request, user_id: int):
     """ Renders a form that allows the user to update all user infomation
     exepct for password.
@@ -53,13 +65,13 @@ def edit_profile(request, user_id: int):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
-            return redirect('profile', user_id=user.id)
+            return redirect(PROFILE_URL_NAME, user_id=user.id)
 
-    return render(request, 'authuser/edit_profile.html',
+    return render(request, EDIT_PROFILE_TEMPLATE,
                   {'user': user, 'form': form})
 
 
-@login_required(login_url='login_view')
+@login_required(login_url=LOGIN_URL_NAME)
 def change_password(request, user_id: int):
     """Renders a form to allow the user to change their password."""
     if request.user.id != user_id:
@@ -78,9 +90,9 @@ def change_password(request, user_id: int):
             )
             login(request, user)
             messages.success(request, 'Password changed successfully!')
-            return redirect('profile', user_id=user.id)
+            return redirect(PROFILE_URL_NAME, user_id=user.id)
 
-    return render(request, 'authuser/update_password.html',
+    return render(request, UPDATE_PASSWORD_TEMPLATE,
                   {'user': user, 'form': form})
 
 
@@ -88,7 +100,7 @@ def register(request):
     """Render the registration page."""
     if request.user.is_authenticated:
         messages.info(request, 'You are already logged in.')
-        return redirect('index')
+        return redirect(INDEX_URL_NAME)
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -103,26 +115,26 @@ def register(request):
             )
             if user is not None:
                 login(request, user)
-                return redirect('index')
+                return redirect(INDEX_URL_NAME)
     else:
         form = UserCreationForm()
-    return render(request, 'authuser/register.html', {'form': form})
+    return render(request, REGISTER_TEMPLATE, {'form': form})
 
 
-@login_required(login_url='login_view')
+@login_required(login_url=LOGIN_URL_NAME)
 def logout_view(request):
     """Handle user logout."""
     from django.contrib.auth import logout
     logout(request)
     messages.success(request, 'You have been logged out successfully.')
-    return redirect('index')
+    return redirect(INDEX_URL_NAME)
 
 
 def login_view(request):
     """Render the login page."""
     if request.user.is_authenticated:
         messages.info(request, 'You are already logged in.')
-        return redirect('index')
+        return redirect(INDEX_URL_NAME)
 
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -134,8 +146,8 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Welcome back!')
-                return redirect('index')
+                return redirect(INDEX_URL_NAME)
     else:
         form = AuthenticationForm()
 
-    return render(request, 'authuser/login.html', {'form': form})
+    return render(request, LOGIN_TEMPLATE, {'form': form})
