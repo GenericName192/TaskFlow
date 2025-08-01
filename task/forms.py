@@ -19,5 +19,6 @@ class TaskForm(ModelForm):
         if due_date:  # if a due_date has been set
             if due_date.date() < date.today():
                 self.add_error("due_date",
-                               "The due date cannot be in the past")
+                               "You cannont set the due date "
+                               + "to be in the past")
         return self.cleaned_data

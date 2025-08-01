@@ -47,6 +47,7 @@ def get_task_list_data(task_owner, user):
                                .filter(completed=True)
                                .select_related("created_by", "assigned_to"))
     data["can_assign"] = utils.Can_assign_task(task_owner, user)
+    data["task_owner"] = task_owner
     return data
 
 
