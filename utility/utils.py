@@ -13,17 +13,8 @@ def Can_assign_task(task_user: User, assigning_user: User) -> bool:
     Returns:
         bool: True if the user can assign, False if they cannot.
     """
-    can_assign = [task_user.id]
-    boss = task_user.boss
-    # creates loops that collects the boss until the value is null
-    while boss:
-        # if the user is already in bosses then its stuck in a loop
-        if boss in can_assign:
-            break
-        else:
-            can_assign.append(boss.id)
-            boss = boss.boss
-    return assigning_user.id in can_assign
+    subordinates = assigning_user.get_all_subordinates()
+    return task_user in subordinates or task_user == assigning_user
 
 
 def can_be_boss(user: User, new_boss: User) -> bool:
