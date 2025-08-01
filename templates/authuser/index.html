@@ -99,7 +99,7 @@
                   <div>
                     <h6 class="mb-1">
                       <a href="{% url 'task_details' task.id %}" class="text-decoration-none">
-                        {{ task.title }}
+                        {{ task.title|title }}
                       </a>
                     </h6>
                     <small class="text-muted">
