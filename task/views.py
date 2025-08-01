@@ -18,40 +18,36 @@ def task_list(request, user_id: int):
     """Render the task list page."""
     task_owner = get_object_or_404(User, id=user_id)
     if request.method == "POST":
-        if task_creation(request, task_owner):
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.created_by = request.user
+            task.assigned_to = task_owner
+            task.save()
             messages.success(request, "Task created successfully!")
             return redirect(TASK_LIST_URL_NAME, user_id=task_owner.id)
+        else:
+            data = get_task_list_data(task_owner, request.user)
+            data["form"] = form
+            messages.error(request, "Error creating task. " +
+                           "Please check for errors and try again.")
+            return render(request, TASK_LIST_TEMPLATE, data)
     else:
-        form = TaskForm()
-        ongoing_tasks = (task_owner.tasks
-                         .filter(completed=False)
-                         .select_related("created_by", "assigned_to"))
-        completed_tasks = (task_owner.tasks
-                           .filter(completed=True)
-                           .select_related("created_by", "assigned_to"))
-        can_assign = utils.Can_assign_task(task_owner, request.user)
-        return render(request, TASK_LIST_TEMPLATE,
-                      {"task_owner": task_owner,
-                       "ongoing_tasks": ongoing_tasks,
-                       "completed_tasks": completed_tasks,
-                       "form": form,
-                       "can_assign": can_assign})
+        data = get_task_list_data(task_owner, request.user)
+        data["form"] = TaskForm()
+        return render(request, TASK_LIST_TEMPLATE, data)
 
 
-@login_required(login_url=LOGIN_URL_NAME)
-def task_creation(request, user: User):
-    """Handle task creation."""
-    form = TaskForm(request.POST)
-    if form.is_valid():
-        task = form.save(commit=False)
-        task.created_by = request.user
-        task.assigned_to = user
-        task.save()
-        return True
-    else:
-        messages.error(request, "Error creating task. " +
-                       "Please check for errors and try again.")
-        return False
+def get_task_list_data(task_owner, user):
+    data = {}
+    data["ongoing_tasks"] = (task_owner.tasks
+                             .filter(completed=False)
+                             .select_related("created_by", "assigned_to"))
+    data["completed_tasks"] = (task_owner.tasks
+                               .filter(completed=True)
+                               .select_related("created_by", "assigned_to"))
+    data["can_assign"] = utils.Can_assign_task(task_owner, user)
+    return data
 
 
 @login_required(login_url=LOGIN_URL_NAME)

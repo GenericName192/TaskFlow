@@ -386,21 +386,45 @@ footer a{
     padding: 0 1rem;
 }
 
-.messages div {
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    border-radius: 0.5rem;
-    font-family: var(--primary-font);
-    background-color: var(--success-bg-light);
-    color: var(--success-text-dark);
-    border: 1px solid #c3e6cb;
-    position: relative;
+/* Force ALL messages to be red by default - very specific selector */
+.messages div,
+.messages div.message-error,
+.messages div.error,
+.messages div[data-level="40"] {
+    padding: 1rem !important;
+    margin-bottom: 0.5rem !important;
+    border-radius: 0.5rem !important;
+    font-family: var(--primary-font) !important;
+    position: relative !important;
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+    border: 1px solid #f5c6cb !important;
 }
 
-.messages div:before {
-    content: "✓";
-    font-weight: bold;
-    margin-right: 0.5rem;
+.messages div:before,
+.messages div.message-error:before,
+.messages div.error:before,
+.messages div[data-level="40"]:before {
+    content: "✗" !important;
+    font-weight: bold !important;
+    margin-right: 0.5rem !important;
+    color: var(--danger-color) !important;
+}
+
+/* Success messages - very specific selectors */
+.messages div.message-success,
+.messages div.success,
+.messages div[data-level="25"] {
+    background-color: var(--success-bg-light) !important;
+    color: var(--success-text-dark) !important;
+    border: 1px solid #c3e6cb !important;
+}
+
+.messages div.message-success:before,
+.messages div.success:before,
+.messages div[data-level="25"]:before {
+    content: "✓" !important;
+    color: var(--success-color) !important;
 }
 
 /* Responsive adjustments */

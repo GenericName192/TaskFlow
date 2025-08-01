@@ -40,7 +40,7 @@
                 
                 {% if field.name == 'description' %}
                   <textarea class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
-                            rows="3" placeholder="Enter task description...">{{ field.value|default:'' }}</textarea>
+                            rows="3" placeholder="Enter task description..." value="{{ field.value|default:'' }}" ></textarea>
                 {% elif field.name == 'title' %}
                   <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" 
                          placeholder="Enter task title..." value="{{ field.value|default:'' }}" required>

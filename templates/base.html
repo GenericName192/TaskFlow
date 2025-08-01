@@ -64,7 +64,9 @@
     {% if messages %}
     <div class="messages">
       {% for message in messages %}
-      <div>{{ message }}</div>
+      <div class="message-{{ message.level_tag }} {{ message.tags }}" data-level="{{ message.level }}">
+        {{ message }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}
