@@ -45,7 +45,11 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout_view' %}">Logout</a>
+              <button type="button" class="nav-link btn btn-link" 
+                      data-bs-toggle="modal" data-bs-target="#logoutModal"
+                      style="border: none; background: none;">
+                Logout
+              </button>
             </li>
             {% else %}
             <li class="nav-item">
@@ -75,6 +79,12 @@
       <!-- Main content goes here -->
       {% block content %}{% endblock %}
     </main>
+    
+    <!-- Include Logout Modal for authenticated users -->
+    {% if user.is_authenticated %}
+    {% include 'authuser/partials/logout_modal.html' %}
+    {% endif %}
+    
     <footer class="footer mx-auto col-12">
       &copy; 2025 TaskFlow. All rights reserved. Created by David Barton
       <a href="https://github.com/GenericName192" target="_blank">Github</a>
