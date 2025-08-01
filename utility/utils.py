@@ -14,7 +14,7 @@ def Can_assign_task(task_user: User, assigning_user: User) -> bool:
         bool: True if the user can assign, False if they cannot.
     """
     can_assign = [task_user.id]
-    boss = task_user.boss.select_related("boss")
+    boss = task_user.boss
     # creates loops that collects the boss until the value is null
     while boss:
         # if the user is already in bosses then its stuck in a loop
@@ -22,7 +22,7 @@ def Can_assign_task(task_user: User, assigning_user: User) -> bool:
             break
         else:
             can_assign.append(boss.id)
-            boss = boss.boss.select_related("boss")
+            boss = boss.boss
     return assigning_user.id in can_assign
 
 

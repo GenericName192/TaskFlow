@@ -30,7 +30,8 @@ def index(request):
 @login_required(login_url=LOGIN_URL_NAME)
 def profile(request, user_id: int):
     """Render the selected user profile page."""
-    user = get_object_or_404(User, id=user_id).prefetch_related("subordinates")
+    user = get_object_or_404(User.objects.prefetch_related("subordinates"),
+                             id=user_id)
     direct_subordinates = user.subordinates.all()
     all_subordinates = user.get_all_subordinates()
 
