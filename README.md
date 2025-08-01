@@ -134,6 +134,7 @@ https://www.youtube.com/watch?v=mndLkCEiflg - helped me with making custom-users
 https://www.youtube.com/@Codemycom - helped me with afew different things accross different videos
 https://www.youtube.com/watch?v=1x0Zdukpjrs - helped with adding custom field validators
 https://www.youtube.com/watch?v=3NDGnj19GiA - helped me understand prefetch and select related
+https://www.youtube.com/watch?v=N_HLNV2UQjg - helped with writing my unit tests
 
 Documentation
 https://docs.djangoproject.com/en/5.2/ref/models/querysets/ - Django documentation was very useful for a few different sections.
