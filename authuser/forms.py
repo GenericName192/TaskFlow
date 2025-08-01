@@ -26,7 +26,7 @@ class Update_profile(ModelForm):
         return self.cleaned_data
 
 
-class UserCreationForm(UserCreationForm):
+class AuthUserCreationForm(UserCreationForm):
     """Form for creating a new user."""
 
     def __init__(self, *args, **kwargs):

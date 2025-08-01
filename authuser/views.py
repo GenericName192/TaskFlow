@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from .models import User
-from .forms import Update_profile, UserCreationForm
+from .forms import Update_profile, AuthUserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .tips import get_tip
@@ -97,7 +97,7 @@ def register(request):
         return redirect(INDEX_URL_NAME)
 
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = AuthUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             messages.success(
@@ -111,7 +111,7 @@ def register(request):
                 login(request, user)
                 return redirect(INDEX_URL_NAME)
     else:
-        form = UserCreationForm()
+        form = AuthUserCreationForm()
     return render(request, REGISTER_TEMPLATE, {'form': form})
 
 
