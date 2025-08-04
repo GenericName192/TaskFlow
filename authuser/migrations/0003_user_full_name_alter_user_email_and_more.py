@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name="full_name",
             field=models.CharField(
                 blank=True,
-                default="<django.db.models.fields.CharField> <django.db.models.fields.CharField>",
-                max_length=50,
+                default="",
+                max_length=100,
                 null=True,
             ),
         ),
