@@ -99,8 +99,9 @@ def toggle_complete(request, task_id: int):
 @login_required(login_url=LOGIN_URL_NAME)
 def task_details(request, task_id: int):
     """View all details on a task"""
-    task = (get_object_or_404(Task, id=task_id)
-            .select_related("assigned_to", "created_by"))
+    task = (get_object_or_404(Task.objects
+                              .select_related("assigned_to", "created_by"),
+                              id=task_id))
     return render(request, TASK_DETAILS_TEMPLATE, {
         "task": task
     })
@@ -111,8 +112,9 @@ def update_task(request, task_id: int):
     """Renders a form that allows the user to update a task
     but only if they are either the creator or the task is assinged
     to them."""
-    task = (get_object_or_404(Task, id=task_id)
-            .select_related("assigned_to", "created_by"))
+    task = (get_object_or_404(Task.objects
+                              .select_related("assigned_to", "created_by"),
+                              id=task_id))
     if (request.user.id == task.created_by.id or
             request.user.id == task.assigned_to.id):
         form = TaskForm(request.POST or None, instance=task)
@@ -131,8 +133,9 @@ def update_task(request, task_id: int):
 def delete_task(request, task_id: int):
     """Deletes the task with the task_id passed to it, but only if
     the user is the user who created the task."""
-    task = (get_object_or_404(Task, id=task_id)
-            .select_related("assigned_to", "created_by"))
+    task = (get_object_or_404(Task.objects
+                              .select_related("assigned_to", "created_by"),
+                              id=task_id))
     if task.created_by == request.user:
         assigned_to_id = task.assigned_to.id
         task_title = task.title

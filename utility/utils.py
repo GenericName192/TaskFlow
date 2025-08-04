@@ -103,6 +103,8 @@ def mass_create_tasks(user_list: list, form: ModelForm, active_user: User):
             except Exception as e:
                 return False, str(e)
             return True, ", ".join(success_user_list)
+    else:
+        return False, "The form is invalid, please try again."
 
 
 def calculate_user_task_statistics(user: User) -> dict:
