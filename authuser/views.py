@@ -133,14 +133,12 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
-            )
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'Welcome back!')
-                return redirect(INDEX_URL_NAME)
+            # If form is valid, the user exists and password is correct
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, 'Welcome back!')
+            return redirect(INDEX_URL_NAME)
+        # If form is not valid, it will contain the authentication errors
     else:
         form = AuthenticationForm()
 
