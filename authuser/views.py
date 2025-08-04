@@ -13,6 +13,7 @@ from utility.constants import (
     LOGIN_TEMPLATE, REGISTER_TEMPLATE, UPDATE_PASSWORD_TEMPLATE
 )
 from utility.utils import calculate_user_task_statistics
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -32,14 +33,23 @@ def profile(request, user_id: int):
     """Render the selected user profile page."""
     user = get_object_or_404(User.objects.prefetch_related("subordinates"),
                              id=user_id)
-    direct_subordinates = user.subordinates.all()
-    all_subordinates = user.get_all_subordinates()
+    dirct_sub = Paginator(user.subordinates.all(), 5)
+    direct_sub_page = request.GET.get("direct_sub_page")
+    direct_subordinates = dirct_sub.get_page(direct_sub_page)
+
+    # Convert set to list for pagination
+    all_subordinates_set = user.get_all_subordinates()
+    all_sub_count = len(all_subordinates_set)
+    all_sub = Paginator(list(all_subordinates_set), 6)
+    all_sub_page = request.GET.get("all_sub_page")
+    all_subordinates = all_sub.get_page(all_sub_page)
 
     return render(request, PROFILE_TEMPLATE,
                   {
                       'user_profile': user,
                       'direct_subordinates': direct_subordinates,
-                      'all_subordinates': all_subordinates
+                      'all_subordinates': all_subordinates,
+                      "all_sub_count": all_sub_count
                   })
 
 

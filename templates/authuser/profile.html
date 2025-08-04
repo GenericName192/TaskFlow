@@ -42,6 +42,12 @@
                         <span class="badge bg-primary">{{ user_profile.subordinates.count }}</span>
                     </span>
                 </div>
+                <div class="detail-item">
+                    <span class="detail-label"><i class="fas fa-users me-2"></i>All Subordinates:</span>
+                    <span class="detail-value">
+                        <span class="badge bg-primary">{{ all_sub_count }}</span>
+                    </span>
+                </div>
                 
                 <!-- Action Buttons -->
                 <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-start">
@@ -95,6 +101,51 @@
                     <p class="text-muted">No direct subordinates.</p>
                 </div>
                 {% endfor %}
+                
+                <!-- Direct Subordinates Pagination -->
+                {% if direct_subordinates.has_other_pages %}
+                <nav aria-label="Direct subordinates pagination" class="mt-3">
+                    <ul class="pagination pagination-sm justify-content-center">
+                        {% if direct_subordinates.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?direct_sub_page=1{% if request.GET.all_sub_page %}&all_sub_page={{ request.GET.all_sub_page }}{% endif %}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?direct_sub_page={{ direct_subordinates.previous_page_number }}{% if request.GET.all_sub_page %}&all_sub_page={{ request.GET.all_sub_page }}{% endif %}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for num in direct_subordinates.paginator.page_range %}
+                            {% if direct_subordinates.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > direct_subordinates.number|add:'-3' and num < direct_subordinates.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?direct_sub_page={{ num }}{% if request.GET.all_sub_page %}&all_sub_page={{ request.GET.all_sub_page }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if direct_subordinates.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?direct_sub_page={{ direct_subordinates.next_page_number }}{% if request.GET.all_sub_page %}&all_sub_page={{ request.GET.all_sub_page }}{% endif %}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?direct_sub_page={{ direct_subordinates.paginator.num_pages }}{% if request.GET.all_sub_page %}&all_sub_page={{ request.GET.all_sub_page }}{% endif %}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -134,6 +185,51 @@
             </div>
             {% endfor %}
         </div>
+        
+        <!-- All Subordinates Pagination -->
+        {% if all_subordinates.has_other_pages %}
+        <nav aria-label="All subordinates pagination" class="mt-3">
+            <ul class="pagination justify-content-center">
+                {% if all_subordinates.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?all_sub_page=1{% if request.GET.direct_sub_page %}&direct_sub_page={{ request.GET.direct_sub_page }}{% endif %}" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?all_sub_page={{ all_subordinates.previous_page_number }}{% if request.GET.direct_sub_page %}&direct_sub_page={{ request.GET.direct_sub_page }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                
+                {% for num in all_subordinates.paginator.page_range %}
+                    {% if all_subordinates.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > all_subordinates.number|add:'-3' and num < all_subordinates.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?all_sub_page={{ num }}{% if request.GET.direct_sub_page %}&direct_sub_page={{ request.GET.direct_sub_page }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if all_subordinates.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?all_sub_page={{ all_subordinates.next_page_number }}{% if request.GET.direct_sub_page %}&direct_sub_page={{ request.GET.direct_sub_page }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?all_sub_page={{ all_subordinates.paginator.num_pages }}{% if request.GET.direct_sub_page %}&direct_sub_page={{ request.GET.direct_sub_page }}{% endif %}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
     </div>
     {% endif %}
 </div>
