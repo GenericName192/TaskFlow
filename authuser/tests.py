@@ -104,13 +104,6 @@ class AuthUserViewTests(BaseAuthUserTest):
     def setUp(self):
         super().setUp()
         self.client = Client()
-        # self.index = self.client.get(reverse("index"))
-        # self.profile = self.client.get(reverse("profile"))
-        # self.edit_profile = self.client.get(reverse("edit_profile"))
-        # self.change_password = self.client.get(reverse("change_password"))
-        # self.register = self.client.get(reverse("register"))
-        # self.logout_view = self.client.get(reverse("logout_view"))
-        # self.login_view = self.client.get(reverse("login_view"))
         self.test_task = Task.objects.create(
             title="Do the thing",
             description="Do it, Do it now",
