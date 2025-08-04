@@ -3,3 +3,4 @@ __pycache__/
 env.py
 db.sqlite3
 todo.md
+staticfiles/
