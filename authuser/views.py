@@ -33,7 +33,7 @@ def profile(request, user_id: int):
     """Render the selected user profile page."""
     user = get_object_or_404(User.objects.prefetch_related("subordinates"),
                              id=user_id)
-    dirct_sub = Paginator(user.subordinates.all(), 5)
+    dirct_sub = Paginator(user.subordinates.all(), 4)
     direct_sub_page = request.GET.get("direct_sub_page")
     direct_subordinates = dirct_sub.get_page(direct_sub_page)
 
