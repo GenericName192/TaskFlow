@@ -3,6 +3,7 @@ var chatBotModal = document.getElementById("chatbotModal")
 chatBotModal.addEventListener("shown.bs.modal", function(){
     // Remove aria-hidden when modal is shown to fix accessibility issue
     this.removeAttribute("aria-hidden");
+    document.getElementById("chatbotToggle").style.visibility = "hidden";
     document.getElementById("chatInput").focus();
     document.getElementById("sendButton").addEventListener("click", sendMessage);
     document.getElementById("chatInput").addEventListener("keydown", check_keystroke)})
@@ -10,6 +11,7 @@ chatBotModal.addEventListener("shown.bs.modal", function(){
 chatBotModal.addEventListener("hidden.bs.modal", function(){
     // Add aria-hidden when modal is hidden
     this.setAttribute("aria-hidden", "true");
+    document.getElementById("chatbotToggle").style.visibility = "visible";
     document.getElementById("sendButton").removeEventListener("click", sendMessage);
     document.getElementById("chatInput").removeEventListener("keydown", check_keystroke)})
 
