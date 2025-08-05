@@ -69,14 +69,14 @@
                 <a href="{% url 'task_list' user.id %}" class="btn btn-success btn-lg">
                     <i class="fas fa-tasks me-2"></i>My Tasks
                 </a>
-                <a href="{% url 'logout_view' %}" class="btn btn-outline-secondary btn-lg">
+                <a href="{% url 'logout_view' %}" class="btn btn-outline-dark btn-lg">
                     <i class="fas fa-sign-out-alt me-2"></i>Logout & Re-login
                 </a>
                 {% else %}
                 <a href="{% url 'login_view' %}" class="btn btn-warning btn-lg">
                     <i class="fas fa-sign-in-alt me-2"></i>Login
                 </a>
-                <a href="{% url 'register' %}" class="btn btn-outline-warning btn-lg">
+                <a href="{% url 'register' %}" class="btn btn-outline-dark btn-lg">
                     <i class="fas fa-user-plus me-2"></i>Register
                 </a>
                 {% endif %}
