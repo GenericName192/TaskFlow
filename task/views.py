@@ -94,8 +94,10 @@ def toggle_complete(request, task_id: int):
     if request.user.id == task.assigned_to.id:
         task.completed = not task.completed
         task.save()
+        messages.success(request, "Task toggled successfully")
         return redirect(TASK_LIST_URL_NAME, task.assigned_to.id)
     else:
+        messages.error(request, "You can only toggle your own tasks.")
         return redirect(TASK_LIST_URL_NAME, task.assigned_to.id)
 
 
@@ -123,6 +125,9 @@ def update_task(request, task_id: int):
         form = TaskForm(request.POST or None, instance=task)
         if form.is_valid():
             form.save()
+            messages.success(request,
+                             f"Task '{task.title}' has been " +
+                             "updated successfully.")
             return redirect(TASK_LIST_URL_NAME, task.assigned_to.id)
         return render(request, TASK_UPDATE_TEMPLATE, {
             "form": form,
