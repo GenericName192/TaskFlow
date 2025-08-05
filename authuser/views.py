@@ -65,11 +65,14 @@ def edit_profile(request, user_id: int):
     user = get_object_or_404(User, id=user_id)
     form = Update_profile(instance=user, user=request.user)
     if request.method == 'POST':
-        form = Update_profile(request.POST, instance=user)
+        form = Update_profile(request.POST, instance=user,  user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
             return redirect(PROFILE_URL_NAME, user_id=user.id)
+        else:
+            return render(request, EDIT_PROFILE_TEMPLATE,
+                          {"user": user, "form": form})
 
     return render(request, EDIT_PROFILE_TEMPLATE,
                   {'user': user, 'form': form})
