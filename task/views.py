@@ -43,10 +43,12 @@ def get_task_list_data(task_owner, user):
     data["ongoing_tasks"] = (task_owner.tasks
                              .filter(completed=False)
                              .select_related("created_by", "assigned_to")
-                             .order_by('due_date').values())
+                             .order_by('due_date'))
     data["completed_tasks"] = (task_owner.tasks
                                .filter(completed=True)
-                               .select_related("created_by", "assigned_to"))
+                               .select_related("created_by", "assigned_to")
+                               .order_by('due_date'))
+    data["can_assign"] = utils.Can_assign_task(task_owner, user)
     data["can_assign"] = utils.Can_assign_task(task_owner, user)
     data["task_owner"] = task_owner
     return data
