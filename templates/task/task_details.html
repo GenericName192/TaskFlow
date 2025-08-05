@@ -1,122 +1,131 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="container mt-4">
-    <div class="detail-container">
-        <!-- Header -->
-        <div class="detail-header">
-            <i class="fas fa-clipboard-list fa-4x mb-3"></i>
-            <h1 class="display-5">{{ task.title }}</h1>
-            <p class="lead">Task Details & Information</p>
-        </div>
-        
-        <!-- Body -->
-        <div class="detail-body">
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-heading me-2"></i>Title
-                </span>
-                <span class="detail-value">{{ task.title }}</span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-align-left me-2"></i>Description
-                </span>
-                <span class="detail-value">{{ task.description|default:"No description provided" }}</span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-check-circle me-2"></i>Status
-                </span>
-                <span class="detail-value">
-                    {% if task.completed %}
-                        <span class="status-badge status-completed">Completed</span>
-                    {% else %}
-                        <span class="status-badge status-pending">Ongoing</span>
-                    {% endif %}
-                </span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-calendar-plus me-2"></i>Created At
-                </span>
-                <span class="detail-value">{{ task.created_at|date:"F d, Y g:i A" }}</span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-calendar-alt me-2"></i>Due Date
-                </span>
-                <span class="detail-value">{{ task.due_date|date:"F d, Y" }}</span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-user-check me-2"></i>Assigned To
-                </span>
-                <span class="detail-value">
-                    <a href="{% url 'profile' task.assigned_to.id %}" class="text-decoration-none">
-                        {{ task.assigned_to.full_name|title }}
-                    </a>
-                    <br>
-                    <small class="text-muted">{{ task.assigned_to.email }}</small>
-                </span>
-            </div>
-            
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-user-edit me-2"></i>Created By
-                </span>
-                <span class="detail-value">
-                    <a href="{% url 'profile' task.created_by.id %}" class="text-decoration-none">
-                        {{ task.created_by.full_name|title }}
-                    </a>
-                    <br>
-                    <small class="text-muted">{{ task.created_by.email }}</small>
-                </span>
-            </div>
-            
-            <!-- Action Buttons -->
-            <div class="mt-4 d-flex gap-2 flex-wrap justify-content-center">
-                <a href="{% url 'task_list' task.assigned_to.id %}" class="btn btn-outline-primary">
-                    <i class="fas fa-arrow-left me-2"></i>Back to Tasks
-                </a>
-                
-                {% if task.created_by == user or task.assigned_to == user %}
-                <a href="{% url 'update_task' task.id %}" class="btn btn-primary">
-                    <i class="fas fa-edit me-2"></i>Update Task
-                </a>
-                {% endif %}
-                
-                {% if task.created_by == user %}
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ task.id }}">
-                    <i class="fas fa-trash me-2"></i>Delete Task
-                </button>
-                {% endif %}
-                
-                {% if task.assigned_to == user %}
-                    {% if task.completed %}
-                    <a href="{% url 'toggle_complete' task.id %}" class="btn btn-outline-primary">
-                        <i class="fas fa-undo me-2"></i>Mark as Ongoing
-                    </a>
-                    {% else %}
-                    <a href="{% url 'toggle_complete' task.id %}" class="btn btn-success">
-                        <i class="fas fa-check me-2"></i>Mark as Complete
-                    </a>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
+  <div class="detail-container">
+    <!-- Header -->
+    <div class="detail-header">
+      <i class="fas fa-clipboard-list fa-4x mb-3"></i>
+      <h1 class="display-5">{{ task.title }}</h1>
+      <p class="lead">Task Details & Information</p>
     </div>
+
+    <!-- Body -->
+    <div class="detail-body">
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-heading me-2"></i>Title
+        </span>
+        <span class="detail-value">{{ task.title }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-align-left me-2"></i>Description
+        </span>
+        <span class="detail-value"
+          >{{ task.description|default:"No description provided" }}</span
+        >
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-check-circle me-2"></i>Status
+        </span>
+        <span class="detail-value">
+          {% if task.completed %}
+          <span class="status-badge status-completed">Completed</span>
+          {% else %}
+          <span class="status-badge status-pending">Ongoing</span>
+          {% endif %}
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-calendar-plus me-2"></i>Created At
+        </span>
+        <span class="detail-value"
+          >{{ task.created_at|date:"F d, Y g:i A" }}</span
+        >
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-calendar-alt me-2"></i>Due Date
+        </span>
+        <span class="detail-value">{{ task.due_date|date:"F d, Y" }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-user-check me-2"></i>Assigned To
+        </span>
+        <span class="detail-value">
+          <a
+            href="{% url 'profile' task.assigned_to.id %}"
+            class="text-decoration-none">
+            {{ task.assigned_to.full_name|title }}
+          </a>
+          <br />
+          <small class="text-muted">{{ task.assigned_to.email }}</small>
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">
+          <i class="fas fa-user-edit me-2"></i>Created By
+        </span>
+        <span class="detail-value">
+          <a
+            href="{% url 'profile' task.created_by.id %}"
+            class="text-decoration-none">
+            {{ task.created_by.full_name|title }}
+          </a>
+          <br />
+          <small class="text-muted">{{ task.created_by.email }}</small>
+        </span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-4 d-flex gap-2 flex-wrap justify-content-center">
+        <a
+          href="{% url 'task_list' task.assigned_to.id %}"
+          class="btn btn-outline-primary">
+          <i class="fas fa-arrow-left me-2"></i>Back to Tasks
+        </a>
+
+        {% if task.created_by == user or task.assigned_to == user %}
+        <a href="{% url 'update_task' task.id %}" class="btn btn-primary">
+          <i class="fas fa-edit me-2"></i>Update Task
+        </a>
+        {% endif %} {% if task.created_by == user %}
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteModal{{ task.id }}">
+          <i class="fas fa-trash me-2"></i>Delete Task
+        </button>
+        {% endif %} {% if task.assigned_to == user %} {% if task.completed %}
+        <a
+          href="{% url 'toggle_complete' task.id %}"
+          class="btn btn-outline-primary">
+          <i class="fas fa-undo me-2"></i>Mark as Ongoing
+        </a>
+        {% else %}
+        <a href="{% url 'toggle_complete' task.id %}" class="btn btn-success">
+          <i class="fas fa-check me-2"></i>Mark as Complete
+        </a>
+        {% endif %} {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Include Delete Modal -->
-{% if task.created_by == user %}
-{% include 'task/partials/delete_modal.html' with task=task button_text='Yes, Delete Task' %}
+{% if task.created_by == user %} {% include 'task/partials/delete_modal.html' with task=task button_text='Yes, Delete Task' %}
 {% endif %}
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 {% endblock %}
