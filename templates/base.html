@@ -21,7 +21,7 @@
       integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
       crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=3" />
-    <script src="{% static 'js/chat_bot.js' %}"></script>
+    <script defer src="{% static 'js/chat_bot.js' %}"></script>
   </head>
   <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg">
@@ -105,12 +105,13 @@
             <!-- Chat Messages Container -->
             <div id="chatMessages" class="chat-messages mb-3">
               <div class="chat-message bot-message">
-                <div class="message-content">
+                <span class="message-content">
                   <i class="fas fa-robot me-2"></i>
-                  <span>Hello! I'm your TaskFlow assistant. How can I help you today?</span>
-                </div>
-                <small class="text-muted">Just now</small>
+                  Hello! I'm your TaskFlow assistant. How can I help you today?
+                </span>
+                <span class="time-stamp">Just now</span>
               </div>
+              <span hidden id="user_id">{{user.id}}</span>
             </div>
             
             <!-- Chat Input -->
@@ -126,7 +127,7 @@
     </div>
     
     <!-- Floating Chat Button -->
-    <button id="chatbotToggle" class="btn btn-primary" 
+    <button id="chatbotToggle" class="btn btn-primary" aria-label="Button to open up the chatbot modal" 
             data-bs-toggle="modal" data-bs-target="#chatbotModal">
       <i class="fas fa-comments"></i>
     </button>

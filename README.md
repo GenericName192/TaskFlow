@@ -135,12 +135,16 @@ https://www.youtube.com/@Codemycom - helped me with afew different things accros
 https://www.youtube.com/watch?v=1x0Zdukpjrs - helped with adding custom field validators
 https://www.youtube.com/watch?v=3NDGnj19GiA - helped me understand prefetch and select related
 https://www.youtube.com/watch?v=N_HLNV2UQjg - helped with writing my unit tests
+https://www.youtube.com/watch?v=HBA6BSmBiT4 - helped me with the JS event listeners needed for the chatbot
 
 Documentation
 https://docs.djangoproject.com/en/5.2/ref/models/querysets/ - Django documentation was very useful for a few different sections.
 
 W3schools
 https://www.w3schools.com/python/python_lists_comprehension.asp - reminder on how list comprehension works
+
+Old projects
+https://github.com/GenericName192/CI-hackathon-chatbot - reminder of how to do some the JS.
 
 
 ## Tech
