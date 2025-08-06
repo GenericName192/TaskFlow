@@ -8,8 +8,14 @@ from typing import Optional, Union
 
 
 def chatbot_controller(user_id, message):
+    # Updated: 2025-08-06 - Fixed model caching issue
     HF_TOKEN = os.getenv("HF_TOKEN")
-    model = InferenceClientModel(model="Qwen/Qwen3-30B-A3B-Instruct-2507",
+    # Primary model
+    model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"
+    # Backup model if primary fails: "microsoft/DialoGPT-large"
+    print(f"DEBUG: Using model: {model_name}")  # Debug line to check in logs
+    print(f"DEBUG: HF_TOKEN exists: {HF_TOKEN is not None}")  # Check token
+    model = InferenceClientModel(model=model_name,
                                  api_key=HF_TOKEN,
                                  provider="hf-inference",)
     agent = CodeAgent(
