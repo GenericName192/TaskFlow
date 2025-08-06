@@ -8,13 +8,11 @@ from typing import Optional, Union
 
 
 def chatbot_controller(user_id, message):
-    HF_TOKEN = os.getenv("HF_TOKEN")
-    print(f"DEBUG: HF_TOKEN exists: {HF_TOKEN is not None}")
-    # Try a known working model first
-    model_name = "Qwen/Qwen2.5-Coder-32B-Instruct"
-    print(f"DEBUG: Using model: {model_name}")
-    model_test = InferenceClientModel(model_id=model_name,
-                                      api_key=HF_TOKEN,)
+    GIT_HUB_TOKEN = os.getenv("GIT_HUB_TOKEN")
+    model_name = "openai/gpt-4o-mini"
+    model = InferenceClientModel(model_id=model_name,
+                                 api_key=GIT_HUB_TOKEN,
+                                 provider="github")
     agent = CodeAgent(
         tools=[create_task,
                find_task,
@@ -23,7 +21,7 @@ def chatbot_controller(user_id, message):
                update_task,
                read_task,
                create_many_tasks],
-        model=model_test,
+        model=model,
         max_steps=5,
         verbosity_level=2
         )
