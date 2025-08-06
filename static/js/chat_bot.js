@@ -33,7 +33,6 @@ function sendMessage() {
   const input = document.getElementById("chatInput");
   const chat = document.getElementById("chatMessages");
   const userId = document.getElementById("sendButton").dataset.user;
-  console.log(userId);
 
   if (input.value.trim() !== "") {
     const date = new Date();

@@ -1,4 +1,4 @@
-from smolagents import CodeAgent, InferenceClientModel, tool
+from smolagents import CodeAgent, tool, LiteLLMModel
 from task.models import Task
 from authuser.models import User
 import os
@@ -10,9 +10,9 @@ from typing import Optional, Union
 def chatbot_controller(user_id, message):
     GIT_HUB_TOKEN = os.getenv("GIT_HUB_TOKEN")
     model_name = "openai/gpt-4o-mini"
-    model = InferenceClientModel(model_id=model_name,
-                                 api_key=GIT_HUB_TOKEN,
-                                 provider="github")
+    model = LiteLLMModel(model_id=model_name,
+                         api_key=GIT_HUB_TOKEN,
+                         api_base="https://models.github.ai/inference")
     agent = CodeAgent(
         tools=[create_task,
                find_task,
@@ -25,12 +25,13 @@ def chatbot_controller(user_id, message):
         max_steps=5,
         verbosity_level=2
         )
-    prompt = f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-            {SYSTEM_PROMPT} The ID for the user is {user_id}
-            <|eot_id|><|start_header_id|>user<|end_header_id|>
-            {message}
-            <|eot_id|><|start_header_id|>assistant<|end_header_id|>
-            """
+    # prompt = [{"role": "system", "content": f"""{SYSTEM_PROMPT}
+    #            The ID for the user is {user_id}"""},
+    #           {"role": "user", "content": message}]
+    prompt = f"""
+    role: system content: {SYSTEM_PROMPT} The ID for the user is {user_id}
+    role: user content: {message}
+    """
     return agent.run(prompt)
 
 
@@ -152,28 +153,36 @@ def delete_task(task: Task, confirmation: bool) -> str:
 
 
 @tool
-def find_task(task_title: str) -> Union[str, Task]:
+def find_task(task_title: str, user: User) -> Union[str, Task]:
     """
     Function to help you find a task, it takes the task_title and attempts
-    to find it. if it fails returns a string to let you know, report this to
+    to find it. You must use find_user first to get the User object you are
+    currently talking to. Then the function will filter their tasks for tasks
+    with the same title.
+    if it fails returns a string to let you know, report this to
     the user
     Args:
         task_title: string the title of the task the user is looking for.
+        user: The current user you are talking to.
 
     returns:
         String: if the Task has not been found, report this to the user
         Task: if the Task has been found this can now be used in other
         functions
     """
-    try:
-        task = Task.objects.filter(title__icontains=task_title)
-    except Task.DoesNotExist:
+    users_tasks = Task.objects.filter(assigned_to=user)
+    if not users_tasks:
+        return "You currently have no tasks"
+    task = users_tasks.filter(title__icontains=task_title)
+    if not task:
         return "Task not found, please try again with the task title"
     else:
         if len(task) > 1:
             return "Too many tasks found, please try be more specific"
         else:
-            return task
+            # Return the first (and should be only) task object,
+            # not the QuerySet
+            return task[0]
 
 
 @tool
@@ -187,6 +196,9 @@ def update_task(task: Task, fields: dict) -> str:
     in format 'YYYY-MM-DD' that cannot be in the past, and 'completed' -
     bool if the task is completed or not. if the User gives you an invalid
     field or an invalid typing report back to them the fields and their typing.
+    if The task is completed completed is true and if ongoing it is false, if
+    you are asked to either complete a task or move it to ongoing you must
+    update completed to be either true of false.
     Args:
         task: a Task object you will need to use find_task to get this.
         fields: a dictionary containing at lease one of the following:
