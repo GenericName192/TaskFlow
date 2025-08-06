@@ -125,7 +125,6 @@
                 </span>
                 <span class="time-stamp">Just now</span>
               </div>
-              <span hidden id="user_id">{{user.id}}</span>
             </div>
 
             <!-- Chat Input -->
@@ -140,7 +139,8 @@
                 class="btn btn-primary"
                 type="button"
                 id="sendButton"
-                area-label="Button to send message to chatbot">
+                area-label="Button to send message to chatbot"
+                data-user="{{user.id}}">
                 <i class="fas fa-paper-plane"></i>
               </button>
             </div>

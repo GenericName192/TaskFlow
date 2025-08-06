@@ -136,6 +136,7 @@ https://www.youtube.com/watch?v=1x0Zdukpjrs - helped with adding custom field va
 https://www.youtube.com/watch?v=3NDGnj19GiA - helped me understand prefetch and select related
 https://www.youtube.com/watch?v=N_HLNV2UQjg - helped with writing my unit tests
 https://www.youtube.com/watch?v=HBA6BSmBiT4 - helped me with the JS event listeners needed for the chatbot
+https://www.youtube.com/watch?v=lc1sOvRaFpg - reminder on how to use data attributes and how to get JS and Django to talk
 
 Documentation
 https://docs.djangoproject.com/en/5.2/ref/models/querysets/ - Django documentation was very useful for a few different sections.
