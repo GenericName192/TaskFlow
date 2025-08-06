@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("authuser.urls")),  # Root path for your main app
     path("tasks/", include("task.urls")),  # Path for task management app
+    path("chat-bot/", include("chatbot.urls"))  # Path for chatbot management.
 ]

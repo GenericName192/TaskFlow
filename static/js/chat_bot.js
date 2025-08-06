@@ -107,7 +107,7 @@ function sendMessageToDjango(user_message, user_id) {
       .then((response) => response.json())
       .then((data) => {
         // get the actual message from the response data
-        displayReply(data);
+        displayReply(response);
       })
       .catch((error) =>
         displayReply("Something has gone wrong: " + String(error))
