@@ -85,7 +85,7 @@ function displayReply(reply) {
   messageDiv.classList.add("chat-message", "bot-message");
   const message = document.createElement("span");
   message.classList.add("message-content");
-  message.innerHTML = `<i class="fas fa-robot me-2"></i>${reply.value}`;
+  message.innerHTML = `<i class="fas fa-robot me-2"></i>${reply.response || reply.value || reply}`;
   const timeStamp = document.createElement("span");
   timeStamp.classList.add("time-stamp");
   timeStamp.textContent = time;
@@ -107,7 +107,7 @@ function sendMessageToDjango(user_message, user_id) {
       .then((response) => response.json())
       .then((data) => {
         // get the actual message from the response data
-        displayReply(response);
+        displayReply(data);
       })
       .catch((error) =>
         displayReply("Something has gone wrong: " + String(error))

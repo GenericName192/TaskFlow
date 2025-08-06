@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from utility.constants import LOGIN_URL_NAME
 import json
 from django.http import HttpResponseNotAllowed, JsonResponse
-from chatbot_tools import chatbot_controller
+from .chatbot_tools import chatbot_controller
 
 
 @login_required(login_url=LOGIN_URL_NAME)

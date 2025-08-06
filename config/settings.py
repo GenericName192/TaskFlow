@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "authuser",  # Custom user app
     "task",  # Task management app
     "utility",
+    "chatbot",
 ]
 
 SITE_ID = 1
