@@ -8,13 +8,19 @@ from typing import Optional, Union
 
 
 def chatbot_controller(user_id, message):
-    # Updated: 2025-08-06 - Fixed model caching issue
+    # CACHE BUSTER: 2025-08-06-15:30 - FORCE NEW MODEL NAME
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    
     HF_TOKEN = os.getenv("HF_TOKEN")
-    # Primary model
-    model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"
+    # PRIMARY MODEL - CHANGED TO FORCE CACHE CLEAR
+    # model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"  # Original
+    model_name = "microsoft/DialoGPT-large"  # TEMP: Known working model
     # Backup model if primary fails: "microsoft/DialoGPT-large"
     print(f"DEBUG: Using model: {model_name}")  # Debug line to check in logs
     print(f"DEBUG: HF_TOKEN exists: {HF_TOKEN is not None}")  # Check token
+    logger.info(f"LOGGER: Model being used: {model_name}")  # Extra logging
     model = InferenceClientModel(model=model_name,
                                  api_key=HF_TOKEN,
                                  provider="hf-inference",)
