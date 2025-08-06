@@ -15,8 +15,9 @@ def chatbot_controller(user_id, message):
     
     HF_TOKEN = os.getenv("HF_TOKEN")
     # PRIMARY MODEL - CHANGED TO FORCE CACHE CLEAR
-    # model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"  # Original
-    model_name = "microsoft/DialoGPT-large"  # TEMP: Known working model
+    # model_name = "Qwen/Qwen3-30B-A3B-Instruct-2507"  # Original - has issues
+    # model_name = "microsoft/DialoGPT-large"  # TEMP: Known working model
+    model_name = "meta-llama/Meta-Llama-3-8B-Instruct"  # Try Llama instead
     # Backup model if primary fails: "microsoft/DialoGPT-large"
     print(f"DEBUG: Using model: {model_name}")  # Debug line to check in logs
     print(f"DEBUG: HF_TOKEN exists: {HF_TOKEN is not None}")  # Check token
