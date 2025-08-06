@@ -96,7 +96,7 @@ function displayReply(reply) {
 }
 
 function sendMessageToDjango(user_message, user_id) {
-  let url = "chat-bot/";
+  let url = "/chat-bot/";  // Use absolute URL with leading slash
   const csrftoken = getCookie("csrftoken");
   try {
     fetch(url, {
