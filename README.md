@@ -1,7 +1,9 @@
 # TaskFlow
 ### By David Barton
 
-<!-- placeholder for image of site and link -->
+https://ci-david-barton-task-flow-85f82739c5b8.herokuapp.com/
+
+![Website landing page](/documentation/TaskFlow-landing-page.png)
 
 ## Index
 1. [Overview](#overview)
@@ -22,7 +24,7 @@
 
 
 ## overview
-A to do website created using Django allowing you to track yours and your subordinates tasks
+A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. If you would like to test it the password for all of the test users is Placeholder123 with a username of Testuser0 - testuser20 please do not change the passwords.
 
 ## UX Design Process
 
@@ -55,6 +57,8 @@ A to do website created using Django allowing you to track yours and your subord
 - As a manager, I want to ask the chatbot to assign a task to all my subordinates so that I can quickly delegate work.
 - As a user, I want the chatbot to list my pending tasks so that I can quickly review my workload.
 
+All have been achived at this point but the last chatbot story of giving a list of pending tasks however this will be added if I have time.
+
 ### wireframes
 
 Main page
@@ -65,36 +69,129 @@ Main page
 
 ![desktop wireframe](/documentation/capstone-pc-main-page.png)
 
-Profile page
+![chatbot wireframe](/documentation/capstone-chat-bot-view.png)
 
-<!-- placeholder I am still thinking about how to display profile-->
+These were the orginal wireframes I designed for the project, however the project ended up growing in scoop
+and new wireframes were needed and some designers were changed, for example the desktop wireframe ended up
+making the page feel too cluttered so I went with the tablet wireframe for all sizes above the tablet.
+and the moblie wireframe for anything smaller.
+
+here are the wireframes for the addiontal pages added:
+
+<!-- placeholder wireframes for profile and landing page -->
 
 ### color schemes
 
-<!-- placeholder color schemes -->
+The color scheme grew as the scoop of the project did, orginally I had the following planned with the help of chatGPT:
+
+but in the end the scheme grew with the end result being:
+
+![color scheme](/documentation/TaskFlow-color-scheme.png)
+
+##### Primary Colors
+Primary Purple: #3c2dcf (Main brand color - used for navigation, buttons)
+Accent Purple: #7e2fcc (Lighter purple for gradients and hover states)
+White: #ffffff (Clean backgrounds, button text)
+##### Text Colors
+Primary Text: #212529 (Dark gray for main content)
+Secondary Text: #ffffff (White text on colored backgrounds)
+##### Background Colors
+Primary Background: #F9FAFB (Very light gray for page backgrounds)
+Light Background: #f8f9fa (Slightly different light gray for cards)
+Border Color: #e0e4e7 (Light gray for borders)
+##### Status Colors
+Success Green: #198754 (Completed tasks, success messages)
+Success Light: #d4edda (Success background)
+Success Text: #155724 (Success text)
+Danger Red: #dc3545 (Delete buttons, error messages)
+Warning Yellow: #fff3cd (Warning backgrounds)
+Warning Text: #856404 (Warning text)
 
 ### fonts
 
-<!-- paceholder fonts -->
+The fonts I went with were Roboto for the primary and Poppins for secondary, I wanted to go with a professional look and I felt these served that well. They were picked in collaboration with ChatGPT.
 
 ## features
 
 Main page
-<!-- Placeholder for pictures -->
  - list of tasks
  - add task
  - chatbot 
 
 profile page
-<!-- placeholder for pictures -->
  - profile picture
  - user data with ability to update it
  - list of subordinates
  - managers name
 
+These were the orginally planned features with an optional chatbot if I had time, however as I started to make the project I added an additional landing page
+
+#### Landing page
+
+![Landing page](/documentation/TaskFlow-landing-page.png)
+
+As you can see the landing page shows some stats on your current tasks as well as a list of upcoming tasks. 
+Also has a link to the main 2 pages profile and task list
+
+#### Task list page
+
+![task list page](/documentation/TaskFlow-tasks-one.png)
+![task list page](/documentation/TaskFlow-tasks-two.png)
+
+This is where you can perform your crud functionality on your tasks, can create at the top read update and delete below.
+
+##### Task update
+
+![task update page](/documentation/TaskFlow-update_task.png)
+
+##### Task details
+
+![task details page](/documentation/TaskFlow-task-details.png)
+
+##### Task delete
+
+![task details page](/documentation/TaskFlow-delete-task.png)
+
+#### Profile page
+
+![profile page](/documentation/TaskFlow-profile-one.png)
+
+![profile page](/documentation/TaskFlow-profile-two.png)
+
+This is where you can view your user account aswell as update infomation to it, you can also view a list of all direct and indirect subordinates.
+
+##### Change user details
+
+![change user details](/documentation/TaskFlow-edit-profile.png)
+
+##### Change password
+
+![change password](/documentation/TaskFlow-change-password.png)
+
+#### Chat bot
+
+![chatbot](/documentation/capstone-chat-bot-view.png)
+
+Is part of of the base.html therefore can be viewed on any page.
+
+#### Custom error pages
+
+##### 404 page not found
+
+![404 page](/documentation/TaskFlow-404-error.png)
+
+##### 403 access denied
+
+![403 page](/documentation/TaskFlow-403-error.png)
+
+##### 500 server issue
+
+![500 page](/documentation/TaskFlow-500-error.png)
+
 ## improvements and future developement
 
-<!-- placeholder improvements cant do until near the end -->
+The AI could use with more tools atm its functionality is quite limited and to the point it hasnt manage to hit all the user stories yet. I also feel like there are some database optimizations that could be done to make the site run faster.
+I also once again did not spend enough time planning and as such there were a lot of changes made during the development cycle that I should have decided on during the planning process I feel like I did better then I have done in the past the ERD I did helped but I still feel like this is an area of improvement for me.
 
 ## testing and validation
 
@@ -104,23 +201,24 @@ profile page
 
 ### Code Creation
 
-<!-- placeholder -->
+Copilot did alot of the styling on this project I wired up the front end pages and then let Copilot take the lead on the visuals of it and then tweaked them as and when I felt it was needed. I think it did a smashing job as the website looks good and required fairly limited intervention beyond giving it things like the fonts to use and the general color schemee. Beyond that I didnt user code creation much opting to ask Copilot for hints rather then code generation, I know I want to work in the back end side of things and I felt because of this it was important I got as much practice as I could in this area.
 
 ### Debugging
 
-<!-- placeholder -->
+I used Copilot again for debugging, helping me by giving me hints and pointing out likely areas to check when trying to find where a bug was occuring. It proved very helpful for the most part and spend up a lot of the small bug fixes that needed doing. That being said when I moved onto the chat bot and using smolagents Copilot actually slowed me down it sent me down many rabbit holes and massively over complicated problems, when I went to ChatGPT to seek addional support it largely did the same. In the end the problem was solved by me going through the documentation myself and I would have spent a lot less time on wiring up the chat bot if I had just done that from the start.
 
 ### Performance and Experience
 
-<!-- placeholder -->
+Copilot was very useful in improving the performance while I do still have some database optimizations that could be done I at first had a lot of N + 1 issues and Copilot pointed me in the right direction telling me to reserach both bulkcreate and select_related to helping me improve performance. I also feel like as a developer have AI do some of the grunt work is also very helpful and improves your performance as a developer. That being said it did make some weird and sometimes unhelpful suggestions like moving all error messages to a singluar file and importing them all, I end up doing this for URLs and templates as I felt it had some value there but refused to implement the suggestion for error messages as it was a pointless abstraction.
 
 ### Development Process
 
-<!-- placeholder -->
+Over all I feel like the use of AI massively helped speed up the development process and also pushed me to do things in a better way then I would have perhaps done otherwise, I frequently asked for feedback and it quite rightly criticized some of my initial ideas on how to solve problems.
+
 
 ## Database
 
-<!-- placeholder but will most likely talk about postgres hosted by CI -->
+The database is a Postgres database hosted by Code insitute
 ![ERD](/documentation/capstoneERD.png)
 
 ## References
@@ -137,6 +235,7 @@ https://www.youtube.com/watch?v=3NDGnj19GiA - helped me understand prefetch and 
 https://www.youtube.com/watch?v=N_HLNV2UQjg - helped with writing my unit tests
 https://www.youtube.com/watch?v=HBA6BSmBiT4 - helped me with the JS event listeners needed for the chatbot
 https://www.youtube.com/watch?v=lc1sOvRaFpg - reminder on how to use data attributes and how to get JS and Django to talk
+https://www.youtube.com/watch?v=RxUc6ZWwgfw - showed me how to use session storage allowing me to save the chatbots chat history.
 
 Documentation
 https://docs.djangoproject.com/en/5.2/ref/models/querysets/ - Django documentation was very useful for a few different sections.
@@ -157,8 +256,10 @@ https://github.com/GenericName192/CI-hackathon-chatbot - reminder of how to do s
 - Copilot
 - ChatGPT
 - postgres
+- smolagents
+- openai/gpt-4o-mini
 
 
 ## Learning Points
 
-<!-- placeholder -->
+It's hard to sum up learning points as I feel like I've learnt an awful lot, I learnt a lot makeing a custom user, trying to do some database optimizations and an awful lot wireing up my first chatbot using agents. As for thing I would have done differently I think its the same learning points I've had before - be more ambitious and spend more time thinking and planning before building.
