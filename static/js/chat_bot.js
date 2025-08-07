@@ -3,6 +3,7 @@ const chatBotModal = document.getElementById("chatbotModal");
 chatBotModal.addEventListener("shown.bs.modal", function () {
   // Remove aria-hidden when modal is shown to fix accessibility issue
   this.removeAttribute("aria-hidden");
+  sessionStorage.setItem("chat-log", JSON.stringify([])); // Initialize empty array
   document.getElementById("chatbotToggle").style.visibility = "hidden";
   document.getElementById("chatInput").focus();
   document.getElementById("sendButton").addEventListener("click", sendMessage);
@@ -14,6 +15,7 @@ chatBotModal.addEventListener("shown.bs.modal", function () {
 chatBotModal.addEventListener("hidden.bs.modal", function () {
   // Add aria-hidden when modal is hidden
   this.setAttribute("aria-hidden", "true");
+  sessionStorage.removeItem("chat-log"); // Clear conversation history
   document.getElementById("chatbotToggle").style.visibility = "visible";
   document
     .getElementById("sendButton")
@@ -40,6 +42,14 @@ function sendMessage() {
       hour: "2-digit",
       minute: "2-digit",
     });
+
+    let conversation = JSON.parse(sessionStorage.getItem("chat-log")) || [];
+    conversation.push({
+      role: "user",
+      content: input.value, 
+    });
+    sessionStorage.setItem("chat-log", JSON.stringify(conversation)); // Save back to storage
+
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("chat-message", "user-message");
     const message = document.createElement("span");
@@ -67,7 +77,7 @@ function sendMessage() {
     chat.appendChild(loadingIcon);
     messageDiv.scrollIntoView({ behavior: "smooth" });
 
-    sendMessageToDjango(input.value, userId);
+    sendMessageToDjango(conversation, userId); // Send full conversation history
     input.value = "";
   }
 }
@@ -80,6 +90,14 @@ function displayReply(reply) {
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  let conversation = JSON.parse(sessionStorage.getItem("chat-log")) || [];
+  conversation.push({
+    role: "assistant",
+    content: reply.response || reply.value || reply,
+  });
+  sessionStorage.setItem("chat-log", JSON.stringify(conversation)); // Save back to storage
+
   const messageDiv = document.createElement("div");
   messageDiv.classList.add("chat-message", "bot-message");
   const message = document.createElement("span");
@@ -94,14 +112,14 @@ function displayReply(reply) {
   messageDiv.scrollIntoView({ behavior: "smooth" });
 }
 
-function sendMessageToDjango(user_message, user_id) {
+function sendMessageToDjango(conversation, user_id) {
   let url = "/chat-bot/";  // Use absolute URL with leading slash
   const csrftoken = getCookie("csrftoken");
   try {
     fetch(url, {
       method: "POST",
       headers: { "X-CSRFToken": csrftoken, "Content-Type": "application/json" },
-      body: JSON.stringify({ user: user_id, message: user_message }),
+      body: JSON.stringify({ user: user_id, conversation: conversation }), // Send conversation instead of message
     })
       .then((response) => response.json())
       .then((data) => {

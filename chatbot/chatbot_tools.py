@@ -7,7 +7,7 @@ from utility.utils import Can_assign_task
 from typing import Optional, Union
 
 
-def chatbot_controller(user_id, message):
+def chatbot_controller(user_id, conversation):
     GIT_HUB_TOKEN = os.getenv("GIT_HUB_TOKEN")
     model_name = "openai/gpt-4o-mini"
     model = LiteLLMModel(model_id=model_name,
@@ -22,16 +22,18 @@ def chatbot_controller(user_id, message):
                read_task,
                create_many_tasks],
         model=model,
-        max_steps=5,
-        verbosity_level=2
+        max_steps=4,
+        verbosity_level=0
         )
-    # prompt = [{"role": "system", "content": f"""{SYSTEM_PROMPT}
-    #            The ID for the user is {user_id}"""},
-    #           {"role": "user", "content": message}]
-    prompt = f"""
-    role: system content: {SYSTEM_PROMPT} The ID for the user is {user_id}
-    role: user content: {message}
-    """
+
+    # Build the conversation string with system prompt and conversation history
+    prompt = f"role: system, content: {SYSTEM_PROMPT} " \
+             f"The ID for the user is {user_id}\n"
+
+    # Add each message from the conversation history
+    for message in conversation:
+        prompt += f"role: {message['role']}, content: {message['content']}\n"
+
     return agent.run(prompt)
 
 
@@ -133,7 +135,8 @@ def delete_task(task: Task, confirmation: bool) -> str:
     Function to delete a task, you will need to user find_task to get the
     task object. This function also requires confirmation, before calling this
     check with the user that they are aware this cannot be undone, if they
-    confirm they want it deleted then do so.
+    confirm they want it deleted then do so. You must get user input again
+    before calling this function.
     Args:
         task: Task object that is going to deleted user find_task to get this
         confirmation: bool if you have told the user this action cannot be
@@ -252,7 +255,7 @@ def create_many_tasks(assigner: User, title: str,
     Function for if the user asks you to create tasks for their subordinates
     type can only accept the arguements 'direct' or 'all' if you are unsure as
     to which one it is ask the user for clarification before calling
-    this function.
+    this function. Only ever run this function once.
     Args:
         assigner: User object for the user that you are talking to must
         find_user to get.
@@ -268,7 +271,7 @@ def create_many_tasks(assigner: User, title: str,
     """
     if type in ["direct", "all"]:
         subordinates = get_subordinates(assigner, type)
-        if subordinates:
+        if isinstance(subordinates, list):
             tasks = []
             failed_user_list = []
             for user in subordinates:
@@ -287,7 +290,7 @@ def create_many_tasks(assigner: User, title: str,
                 return """The user does not have permission to assign tasks \
             to the following users: """ + ", ".join(failed_user_list)
         else:
-            return "That user has no subordinates"
+            return subordinates
     else:
         return "Subordinate types can only be direct or all"
 

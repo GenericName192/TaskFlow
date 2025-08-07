@@ -12,8 +12,8 @@ def chat_bot_view(request):
         try:
             data = json.loads(request.body)
             user_id = data["user"]
-            message = data["message"]
-            reply["response"] = chatbot_controller(user_id, message)
+            conversation = data["conversation"]
+            reply["response"] = chatbot_controller(user_id, conversation)
         except json.JSONDecodeError as e:
             reply["response"] = "something has gone wrong: " + str(e)
         except KeyError as e:
