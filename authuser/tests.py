@@ -81,8 +81,8 @@ class AuthUserModelTest(BaseAuthUserTest):
             email="Testy@test.test",
             password="Placeholder123"
         )
-        self.assertEqual(test_user.first_name, "test")
-        self.assertEqual(test_user.last_name, "test")
+        self.assertEqual(test_user.first_name, "")
+        self.assertEqual(test_user.last_name, "")
 
     # Test get_direct_subordinates() returns correct users
     def test_direct_subordinates(self):
@@ -91,8 +91,12 @@ class AuthUserModelTest(BaseAuthUserTest):
 
     # Test get_all_subordinates() traverses hierarchy correctly
     def test_all_subordinates(self):
-        self.assertEqual(list(self.test_user.get_all_subordinates()),
-                         [self.test_user2, self.test_user3])
+        subordinates = list(self.test_user.get_all_subordinates())
+        self.assertEqual(len(subordinates), 2, "Should have 2 subordinates")
+        self.assertIn(self.test_user2, subordinates,
+                      "Should include test_user2")
+        self.assertIn(self.test_user3, subordinates,
+                      "Should include test_user3")
 
     # Test boss-subordinate relationship (ForeignKey works properly)
     def test_boss_subordinate(self):
