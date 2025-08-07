@@ -9,8 +9,8 @@ class User(AbstractUser):
         related_name='subordinates', verbose_name='Boss',
         default=None)
     email = models.EmailField(unique=True, verbose_name='Email Address')
-    first_name = models.CharField(max_length=50, default="test")
-    last_name = models.CharField(max_length=50, default="test")
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
 
     @property
     def full_name(self):
