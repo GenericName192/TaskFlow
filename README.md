@@ -61,7 +61,7 @@ All have been achived at this point but the last chatbot story of giving a list 
 
 ### wireframes
 
-Main page
+Task list page
 
 ![moblie wireframe](/documentation/capstone-moblie-main-page.png)
 
@@ -78,7 +78,11 @@ and the moblie wireframe for anything smaller.
 
 here are the wireframes for the addiontal pages added:
 
-<!-- placeholder wireframes for profile and landing page -->
+![moblie wireframe landing page](/documentation/landing-page-wireframe-moblie.png)
+![tablet and up wireframe landing page](/documentation/landing-page-wireframe-tablet-up.png)
+
+![moblie wireframe profile page](/documentation/profile-moblie-view.png)
+![tablet and up wireframe profile page](/documentation/profile-tablet-and-up-wireframe.png)
 
 ### color schemes
 
