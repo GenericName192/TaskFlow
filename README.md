@@ -195,7 +195,48 @@ I also once again did not spend enough time planning and as such there were a lo
 
 ## testing and validation
 
-<!-- placeholder cant do until near the end -->
+### HTML validation
+
+authuser
+![landing page](/documentation/landingpage-val.png)
+![profile](/documentation/profile-val.png)
+![edit profile](/documentation/profile-edit-val.png)
+![change password](/documentation/change-password-val.png)
+
+tasks
+![task list](/documentation/task-view-val.png)
+![task details](/documentation/task-detail-val.png)
+![task update](/documentation/task-update-val.png)
+![bulk task creation](/documentation/bulk-create-val.png)
+
+errors
+![404](/documentation/404val.png)
+![403](/documentation/403-val.png)
+![500](/documentation/500-val.png)
+
+### CSS validation
+
+![css validation](/documentation/css-validation.png)
+
+### Python validation
+
+![authuser model](/documentation/authuser-model-val.png)
+![authuser views](/documentation/authuser-views-val.png)
+
+![chatbot tools](/documentation/chatbot-tools-val.png)
+![chatbot views](/documentation/chatbot-views-val.png)
+
+![task models](/documentation/python-task-view-val.png)
+![task views](/documentation/task-view-val.png)
+
+![utils](/documentation/utils-val.png)
+
+### js validation
+
+![js val](/documentation/js-val.png)
+
+I also have a series of 66 unit tests that were written in collaboration with copilot that can be found in the tests.py in each app. I did a series of manual tests with me and a family member checking that each feature worked correctly.
+There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable.
 
 ## AI Implmentation
 
