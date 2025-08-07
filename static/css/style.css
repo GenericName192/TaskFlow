@@ -109,7 +109,6 @@ footer a {
 }
 
 .card:hover {
-  transform: translateY(-5px);
   box-shadow: var(--shadow-hover);
 }
 
@@ -160,7 +159,6 @@ footer a {
 .content-card:hover {
   border-color: var(--primary-color);
   box-shadow: var(--shadow);
-  transform: translateY(-2px);
 }
 
 /* Subordinate Cards */
@@ -176,7 +174,6 @@ footer a {
 .subordinate-card:hover {
   border-color: var(--primary-color);
   box-shadow: var(--shadow);
-  transform: translateY(-2px);
 }
 
 /* Task Card Styles */
@@ -193,7 +190,6 @@ footer a {
 .task-card:hover {
   border-color: var(--primary-color);
   box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
 }
 
 .task-card:last-child {
@@ -218,7 +214,6 @@ footer a {
 }
 
 .task-completed {
-    opacity: 0.7;
     background-color: var(--light-background);
 }
 

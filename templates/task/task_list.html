@@ -117,14 +117,6 @@
             </div>
 
             <div class="task-actions">
-              <!-- Debug Info -->
-              <small class="text-muted d-block mb-2">
-                User ID: {{ user.id }} | Assigned To: {{ ongoing_task.assigned_to.id|default:"None" }} 
-                ({{ ongoing_task.assigned_to.full_name|default:"No Name" }}) |
-                Created By: {{ ongoing_task.created_by.id|default:"None" }} 
-                ({{ ongoing_task.created_by.full_name|default:"No Name" }})
-              </small>
-
               {% if ongoing_task.assigned_to.id == user.id %}
               <a
                 href="{% url 'toggle_complete' ongoing_task.id %}"
@@ -199,14 +191,6 @@
             </div>
 
             <div class="task-actions">
-              <!-- Debug Info -->
-              <small class="text-muted d-block mb-2">
-                User ID: {{ user.id }} | Assigned To: {{ completed_task.assigned_to.id|default:"None" }}
-                ({{ completed_task.assigned_to.full_name|default:"No Name" }}) |
-                Created By: {{ completed_task.created_by.id|default:"None" }}
-                ({{ completed_task.created_by.full_name|default:"No Name" }})
-              </small>
-
               {% if completed_task.assigned_to.id == user.id %}
               <a
                 href="{% url 'toggle_complete' completed_task.id %}"
