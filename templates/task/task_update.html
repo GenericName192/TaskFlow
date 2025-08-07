@@ -1,11 +1,12 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="container">
   <div class="form-container">
-    <div class="form-header">
+    <div class="detail-header">
       <i class="fas fa-edit"></i>
       <h2>Update Task</h2>
-      <p class="text-muted">Modify task details and information</p>
+      <p class="mb-0">Modify task details and information</p>
     </div>
+    <div class="detail-body">
 
     <form method="post" class="needs-validation" novalidate>
       {% csrf_token %}
@@ -13,7 +14,7 @@
       <div class="row">
         {% for field in form %}
         <div
-          class="{% if field.name == 'description' %}col-12{% else %}col-md-6{% endif %} mb-3">
+          class="{% if field.name == 'description' or field.name == 'title' %}col-12{% else %}col-md-6{% endif %} mb-3">
           <label for="{{ field.id_for_label }}" class="form-label">
             {% if field.name == 'title' %}
             <i class="fas fa-heading me-2"></i>
@@ -93,6 +94,7 @@
         </button>
       </div>
     </form>
+    </div>
   </div>
 </div>
 
