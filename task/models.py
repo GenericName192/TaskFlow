@@ -6,8 +6,8 @@ class Task(models.Model):
     """Model representing a task."""
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    due_date = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateField(auto_now_add=True)
+    due_date = models.DateField(null=True, blank=True)
     completed = models.BooleanField(default=False)
     assigned_to = models.ForeignKey(
         'authuser.User', on_delete=models.CASCADE, null=False, blank=False,
