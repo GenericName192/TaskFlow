@@ -121,7 +121,10 @@
               <div class="chat-message bot-message">
                 <span class="message-content">
                   <i class="fas fa-robot me-2"></i>
-                  Hello! I'm your TaskFlow assistant. How can I help you today?
+                  Hello! I'm your TaskFlow assistant. How can I help you today? This is currently a beta version of this bot therefore unfortunately
+                  I am currently only able to perform the following: create tasks for you, updating one of your tasks for you 
+                  (I will need the title of the task), deleting tasks, reading tasks Information for you and creating tasks for all your direct or indirect
+                  subordinates. Please put all Information in "quotation marks" as it helps me to understand.
                 </span>
                 <span class="time-stamp">Just now</span>
               </div>
@@ -142,6 +145,7 @@
                 area-label="Button to send message to chatbot"
                 data-user="{{user.id}}">
                 <i class="fas fa-paper-plane"></i>
+                <small hidden>Shh I'm not really here!</small>
               </button>
             </div>
           </div>

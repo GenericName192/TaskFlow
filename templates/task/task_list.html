@@ -126,7 +126,7 @@
               {% endif %} {% if ongoing_task.created_by.id == user.id or ongoing_task.assigned_to.id == user.id %}
               <a
                 href="{% url 'update_task' ongoing_task.id %}"
-                class="btn btn-outline-primary btn-sm">
+                class="btn btn-primary btn-sm">
                 <i class="fas fa-edit me-1"></i>Update
               </a>
               {% endif %} {% if ongoing_task.created_by.id == user.id %}
@@ -194,14 +194,8 @@
               {% if completed_task.assigned_to.id == user.id %}
               <a
                 href="{% url 'toggle_complete' completed_task.id %}"
-                class="btn btn-outline-primary btn-sm">
+                class="btn btn-warning btn-sm">
                 <i class="fas fa-undo me-1"></i>Mark Ongoing
-              </a>
-              {% endif %} {% if completed_task.created_by.id == user.id or completed_task.assigned_to.id == user.id %}
-              <a
-                href="{% url 'update_task' completed_task.id %}"
-                class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-edit me-1"></i>Update
               </a>
               {% endif %} {% if completed_task.created_by.id == user.id %}
               <button

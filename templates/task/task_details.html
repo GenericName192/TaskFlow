@@ -94,9 +94,11 @@
         </a>
 
         {% if task.created_by == user or task.assigned_to == user %}
+        {% if not task.completed %}
         <a href="{% url 'update_task' task.id %}" class="btn btn-primary">
           <i class="fas fa-edit me-2"></i>Update Task
         </a>
+        {% endif %}
         {% endif %} {% if task.created_by == user %}
         <button
           type="button"
