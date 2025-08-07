@@ -264,6 +264,21 @@ footer a {
   box-shadow: var(--shadow);
 }
 
+.detail-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: var(--white);
+  text-align: center;
+  padding: 2rem;
+}
+
+.detail-header h1 {
+  margin-bottom: 0.5rem;
+}
+
+.detail-body {
+  padding: 2rem;
+}
+
 .detail-item {
   display: flex;
   justify-content: space-between;
