@@ -1,3 +1,4 @@
+/* jshint esversion: 11*/
 const chatBotModal = document.getElementById("chatbotModal");
 
 chatBotModal.addEventListener("shown.bs.modal", function () {
