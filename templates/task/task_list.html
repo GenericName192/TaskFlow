@@ -89,7 +89,7 @@
         <div class="card-header bg-primary text-white">
           <h4 class="mb-0">
             <i class="fas fa-clock me-2"></i>Ongoing Tasks
-            <span class="badge bg-dark ms-2">{{ ongoing_tasks|length }}</span>
+            <span class="badge bg-dark ms-2">{{ ongoing_tasks.paginator.count }}</span>
           </h4>
         </div>
         <div class="card-body">
@@ -153,6 +153,43 @@
           </div>
           {% endfor %}
         </div>
+        
+        <!-- Pagination for Ongoing Tasks -->
+        {% if ongoing_tasks.has_other_pages %}
+        <div class="card-footer">
+          <nav aria-label="Ongoing tasks pagination">
+            <ul class="pagination pagination-sm justify-content-center mb-0">
+              {% if ongoing_tasks.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?ongoing_page={{ ongoing_tasks.previous_page_number }}{% if request.GET.completed_page %}&completed_page={{ request.GET.completed_page }}{% endif %}">
+                    <i class="fas fa-angle-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+              
+              {% for num in ongoing_tasks.paginator.page_range %}
+                {% if ongoing_tasks.number == num %}
+                  <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% elif num > ongoing_tasks.number|add:'-3' and num < ongoing_tasks.number|add:'3' %}
+                  <li class="page-item">
+                    <a class="page-link" href="?ongoing_page={{ num }}{% if request.GET.completed_page %}&completed_page={{ request.GET.completed_page }}{% endif %}">{{ num }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if ongoing_tasks.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?ongoing_page={{ ongoing_tasks.next_page_number }}{% if request.GET.completed_page %}&completed_page={{ request.GET.completed_page }}{% endif %}">
+                    <i class="fas fa-angle-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
       </div>
     </div>
 
@@ -162,7 +199,7 @@
         <div class="card-header bg-success text-white">
           <h4 class="mb-0">
             <i class="fas fa-check-circle me-2"></i>Completed Tasks
-            <span class="badge bg-dark ms-2">{{ completed_tasks|length }}</span>
+            <span class="badge bg-dark ms-2">{{ completed_tasks.paginator.count }}</span>
           </h4>
         </div>
         <div class="card-body">
@@ -221,6 +258,43 @@
           </div>
           {% endfor %}
         </div>
+        
+        <!-- Pagination for Completed Tasks -->
+        {% if completed_tasks.has_other_pages %}
+        <div class="card-footer">
+          <nav aria-label="Completed tasks pagination">
+            <ul class="pagination pagination-sm justify-content-center mb-0">
+              {% if completed_tasks.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?completed_page={{ completed_tasks.previous_page_number }}{% if request.GET.ongoing_page %}&ongoing_page={{ request.GET.ongoing_page }}{% endif %}">
+                    <i class="fas fa-angle-left"></i>
+                  </a>
+                </li>
+              {% endif %}
+              
+              {% for num in completed_tasks.paginator.page_range %}
+                {% if completed_tasks.number == num %}
+                  <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                  </li>
+                {% elif num > completed_tasks.number|add:'-3' and num < completed_tasks.number|add:'3' %}
+                  <li class="page-item">
+                    <a class="page-link" href="?completed_page={{ num }}{% if request.GET.ongoing_page %}&ongoing_page={{ request.GET.ongoing_page }}{% endif %}">{{ num }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+              
+              {% if completed_tasks.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?completed_page={{ completed_tasks.next_page_number }}{% if request.GET.ongoing_page %}&ongoing_page={{ request.GET.ongoing_page }}{% endif %}">
+                    <i class="fas fa-angle-right"></i>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

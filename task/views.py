@@ -6,6 +6,7 @@ from authuser.models import User
 from .models import Task
 from utility import utils
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from utility.constants import (
     LOGIN_URL_NAME, PROFILE_URL_NAME, TASK_LIST_URL_NAME,
     BULK_TASK_CREATION_URL_NAME, TASK_LIST_TEMPLATE,
@@ -27,28 +28,39 @@ def task_list(request, user_id: int):
             messages.success(request, "Task created successfully!")
             return redirect(TASK_LIST_URL_NAME, user_id=task_owner.id)
         else:
-            data = get_task_list_data(task_owner, request.user)
+            data = get_task_list_data(task_owner, request.user, request)
             data["form"] = form
             messages.error(request, "Error creating task. " +
                            "Please check for errors and try again.")
             return render(request, TASK_LIST_TEMPLATE, data)
     else:
-        data = get_task_list_data(task_owner, request.user)
+        data = get_task_list_data(task_owner, request.user, request)
         data["form"] = TaskForm()
         return render(request, TASK_LIST_TEMPLATE, data)
 
 
-def get_task_list_data(task_owner, user):
+def get_task_list_data(task_owner, user, request=None):
     data = {}
-    data["ongoing_tasks"] = (task_owner.tasks
-                             .filter(completed=False)
-                             .select_related("created_by", "assigned_to")
-                             .order_by('due_date'))
-    data["completed_tasks"] = (task_owner.tasks
-                               .filter(completed=True)
-                               .select_related("created_by", "assigned_to")
-                               .order_by('due_date'))
-    data["can_assign"] = utils.Can_assign_task(task_owner, user)
+
+    ongoing_tasks = (task_owner.tasks
+                     .filter(completed=False)
+                     .select_related("created_by", "assigned_to")
+                     .order_by('due_date'))
+    completed_tasks = (task_owner.tasks
+                       .filter(completed=True)
+                       .select_related("created_by", "assigned_to")
+                       .order_by('due_date'))
+
+    # Pagination for ongoing tasks
+    ongoing_page = request.GET.get('ongoing_page', 1) if request else 1
+    ongoing_paginator = Paginator(ongoing_tasks, 4)  # 4 tasks per page
+    data["ongoing_tasks"] = ongoing_paginator.get_page(ongoing_page)
+
+    # Pagination for completed tasks
+    completed_page = request.GET.get('completed_page', 1) if request else 1
+    completed_paginator = Paginator(completed_tasks, 4)  # 4 tasks per page
+    data["completed_tasks"] = completed_paginator.get_page(completed_page)
+
     data["can_assign"] = utils.Can_assign_task(task_owner, user)
     data["task_owner"] = task_owner
     return data
