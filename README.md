@@ -295,13 +295,146 @@ The only errors I had for wave were missing headings and redundant links but I d
 ![landing page](/documentation/Wave-landing-page.png)
 ![profile page](/documentation/profile-wave.png)
 ![task page](/documentation/task-list-wave.png)
-</details>
 
 ### Testing
 
-I have a series of 66 unit tests that were written in collaboration with copilot that can be found in the tests.py in each app. I also did a series of manual tests with me and a family member checking that each feature worked correctly.
-There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. 
+I have a series of 66 unit tests that were written in collaboration with copilot that can be found in the tests.py in each app. 
+
+![unit tests](/documentation/unit-tests.png)
+
+I also did a series of manual tests with me and a family member checking that each feature worked correctly.
+There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. Some users have reported a bug with the AI saying unexpected token < I have been unable to reproduce this bug so I am unsure as to what it causing it. This is something I would like to spend more time on trying to fix.
 I will however be adding a video of some testing of the chatbot incase the API key has been used up by the time of CIs testing.
+
+# TaskFlow Application Testing Matrix
+
+| Component | Functionality | Test Type | Status | Notes |
+|-----------|--------------|-----------|---------|-------|
+| **USER AUTHENTICATION & MODELS** |
+| User Model | User creation | Unit | ✅ Pass | AuthUserModelTest.test_User_model_creation |
+| User Model | Full name property | Unit | ✅ Pass | AuthUserModelTest.test_full_name |
+| User Model | String representation | Unit | ✅ Pass | AuthUserModelTest.test_string |
+| User Model | Email uniqueness constraint | Unit | ✅ Pass | AuthUserModelTest.test_email_unique |
+| User Model | Default field values | Unit | ✅ Pass | AuthUserModelTest.test_defaults |
+| User Model | Direct subordinates query | Unit | ✅ Pass | AuthUserModelTest.test_direct_subordinates |
+| User Model | All subordinates hierarchy | Unit | ✅ Pass | AuthUserModelTest.test_all_subordinates |
+| User Model | Boss-subordinate relationship | Unit | ✅ Pass | AuthUserModelTest.test_boss_subordinate |
+| **AUTHENTICATION VIEWS** |
+| Login View | Valid credentials login | Unit | ✅ Pass | AuthUserViewTests.test_login_valid_credentials |
+| Login View | Invalid credentials handling | Unit | ✅ Pass | AuthUserViewTests.test_login_invalid_credentials |
+| Login View | Redirect after login | Unit | ✅ Pass | AuthUserViewTests.test_login_redirect |
+| Registration View | Valid data registration | Unit | ✅ Pass | AuthUserViewTests.test_registration_valid_data |
+| Registration View | Duplicate username prevention | Unit | ✅ Pass | AuthUserViewTests.test_registration_duplicate_username |
+| Logout View | Logout functionality | Unit | ✅ Pass | AuthUserViewTests.test_logout_functionality |
+| Login View | Template rendering | Manual | ✅  Pass | Manual testing required |
+| Registration View | Form field validation display | Manual | ✅  Pass | Manual testing required |
+| **INDEX/LANDING PAGE** |
+| Index View | Authenticated user display | Unit | ✅ Pass | AuthUserViewTests.test_index_authenticated |
+| Index View | Unauthenticated user display | Unit | ✅ Pass | AuthUserViewTests.test_index_unauthenticated |
+| Index View | Tip of the day functionality | Unit | ✅ Pass | AuthUserViewTests.test_index_tip |
+| Index View | Task statistics display | Manual | ✅  Pass | Manual testing required |
+| Index View | Quick action buttons | Manual | ✅  Pass | Manual testing required |
+| **PROFILE MANAGEMENT** |
+| Profile View | Own profile edit buttons | Unit | ✅ Pass | AuthUserViewTests.test_profile_edit_on_own_profile |
+| Profile View | Other profile edit restrictions | Unit | ✅ Pass | AuthUserViewTests.test_profile_edit_on_other_profile |
+| Profile View | Subordinates display | Unit | ✅ Pass | AuthUserViewTests.test_profile_shows_subordinates |
+| Profile View | Boss information display | Unit | ✅ Pass | AuthUserViewTests.test_profile_shows_boss |
+| Profile View | 404 for non-existent user | Unit | ✅ Pass | AuthUserViewTests.test_profile_404_for_nonexistent_user |
+| Edit Profile | Owner access control | Unit | ✅ Pass | AuthUserViewTests.test_edit_profile_owner_access |
+| Edit Profile | Form pre-population | Unit | ✅ Pass | AuthUserViewTests.test_edit_profile_form_prepopulated |
+| Edit Profile | Successful update | Unit | ✅ Pass | AuthUserViewTests.test_edit_profile_successful_update |
+| Edit Profile | Validation error display | Unit | ✅ Pass | AuthUserViewTests.test_edit_profile_validation_errors |
+| Edit Profile | Permission denied for others | Unit | ✅ Pass | AuthUserViewTests.test_edit_profile_permission_denied |
+| Change Password | Owner access control | Unit | ✅ Pass | AuthUserViewTests.test_change_password_owner_access |
+| Change Password | Successful password change | Unit | ✅ Pass | AuthUserViewTests.test_change_password_successful |
+| Change Password | Form validation | Unit | ✅ Pass | AuthUserViewTests.test_change_password_validation |
+| Change Password | User stays logged in | Unit | ✅ Pass | AuthUserViewTests.test_change_password_stays_logged_in |
+| Change Password | Permission denied for others | Unit | ✅ Pass | AuthUserViewTests.test_change_password_permission_denied |
+| **TASK MODELS & FORMS** |
+| Task Model | Task creation | Unit | ✅ Pass | TaskModelTest.test_task_creation |
+| Task Model | String representation | Unit | ✅ Pass | TaskModelTest.test_task_str |
+| Task Model | Task completion toggle | Unit | ✅ Pass | TaskModelTest.test_task_completion |
+| Task Form | Valid form submission | Unit | ✅ Pass | TaskFormTest.test_valid_form |
+| Task Form | Past due date validation | Unit | ✅ Pass | TaskFormTest.test_form_past_due_date_validation |
+| Task Form | Required fields validation | Unit | ✅ Pass | TaskFormTest.test_form_required_fields |
+| Task Form | Form save functionality | Unit | ✅ Pass | TaskFormTest.test_form_save |
+| Task Form | Description max length (500 chars) | Unit | ✅ Pass | Automatic Django validation |
+| **TASK VIEWS & FUNCTIONALITY** |
+| Task List | Authenticated user access | Unit | ✅ Pass | TaskViewTest.test_task_list_authenticated |
+| Task List | Login required | Unit | ✅ Pass | TaskViewTest.test_task_list_requires_login |
+| Task List | Task creation via POST | Unit | ✅ Pass | TaskViewTest.test_task_creation_via_post |
+| Task List | Pagination (4 per page) | Manual | ✅  Pass | Manual testing required |
+| Task Toggle | Completion toggle | Unit | ✅ Pass | TaskViewTest.test_toggle_task_completion |
+| Task Details | Task details view | Unit | ✅ Pass | TaskViewTest.test_task_details_view |
+| Task Update | Permission control | Unit | ✅ Pass | TaskViewTest.test_task_update_permission |
+| Task Update | Form styling and layout | Manual | ✅  Pass | Manual testing required |
+| Task Delete | Permission control | Unit | ✅ Pass | TaskViewTest.test_task_delete_permission |
+| Task Delete | Confirmation modal | Manual | ✅  Pass | Manual testing required |
+| Bulk Tasks | Mass task creation | Manual | ✅  Pass | Manual testing required |
+| **UTILITY FUNCTIONS** |
+| Can Assign Task | Manager to subordinate | Unit | ✅ Pass | CanAssignTaskTest.test_manager_can_assign_to_subordinate |
+| Can Assign Task | CEO to hierarchy | Unit | ✅ Pass | CanAssignTaskTest.test_ceo_can_assign_to_hierarchy |
+| Can Assign Task | User to self | Unit | ✅ Pass | CanAssignTaskTest.test_user_can_assign_to_self |
+| Can Assign Task | Non-subordinate restriction | Unit | ✅ Pass | CanAssignTaskTest.test_cannot_assign_to_non_subordinate |
+| Can Assign Task | Subordinate to manager restriction | Unit | ✅ Pass | CanAssignTaskTest.test_subordinate_cannot_assign_to_manager |
+| Can Be Boss | Valid boss assignment | Unit | ✅ Pass | CanBeBossTest.test_valid_boss_assignment |
+| Can Be Boss | None boss validity | Unit | ✅ Pass | CanBeBossTest.test_none_boss_valid |
+| Can Be Boss | Circular hierarchy prevention | Unit | ✅ Pass | CanBeBossTest.test_prevents_circular_hierarchy |
+| Can Be Boss | Self-boss prevention | Unit | ✅ Pass | CanBeBossTest.test_prevents_self_boss |
+| Get Team Tasks | Manager team tasks | Unit | ✅ Pass | GetTeamTasksTest.test_manager_gets_team_tasks |
+| Get Team Tasks | Employee own tasks | Unit | ✅ Pass | GetTeamTasksTest.test_employee_gets_own_tasks |
+| Mass Create Tasks | Successful creation | Unit | ✅ Pass | MassCreateTasksTest.test_successful_mass_creation |
+| Mass Create Tasks | Empty user list | Unit | ✅ Pass | MassCreateTasksTest.test_empty_user_list |
+| Mass Create Tasks | Invalid form handling | Unit | ✅ Pass | MassCreateTasksTest.test_invalid_form |
+| Mass Create Tasks | Permission failure | Unit | ✅ Pass | MassCreateTasksTest.test_permission_failure |
+| Task Statistics | Basic statistics calculation | Unit | ✅ Pass | TaskStatisticsTest.test_basic_statistics |
+| Task Statistics | User with no tasks | Unit | ✅ Pass | TaskStatisticsTest.test_user_with_no_tasks |
+| Task Statistics | User with completed tasks only | Unit | ✅ Pass | TaskStatisticsTest.test_user_with_only_completed_tasks |
+| **CHATBOT FUNCTIONALITY** |
+| Chatbot Controller | AI agent initialization | Manual | ✅  Pass | Requires AI service testing |
+| Chatbot Tools | Create task tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot Tools | Find task tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot Tools | Find user tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot Tools | Delete task tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot Tools | Update task tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot Tools | Read task tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot Tools | Create many tasks tool | Manual | ✅  Pass | Requires AI integration testing |
+| Chatbot View | POST request handling | Manual | ✅  Pass | Manual testing required |
+| **FRONTEND JAVASCRIPT** |
+| Chat Interface | Modal show/hide | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | Message sending | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | Message display | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | Conversation persistence | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | Enter key submission | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | Loading indicators | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | Error message display | Manual | ✅  Pass | Manual testing required |
+| Chat Interface | CSRF token handling | Manual | ✅  Pass | Manual testing required |
+| **SECURITY & PERMISSIONS** |
+| Authentication | Login required decorators | Unit | ✅ Pass | Multiple tests across views |
+| Authentication | Redirect to login | Unit | ✅ Pass | AuthUserViewTests.test_login_required_edit_profile |
+| Permissions | Edit own profile only | Unit | ✅ Pass | AuthUserViewTests.test_edit_own_profile_only |
+| Permissions | Change own password only | Unit | ✅ Pass | AuthUserViewTests.test_change_own_password_only |
+| Permissions | 403 for unauthorized access | Unit | ✅ Pass | AuthUserViewTests.test_403_for_unauthorized_access |
+| Permissions | URL ID manipulation prevention | Unit | ✅ Pass | AuthUserViewTests.test_url_id_manipulation |
+| **ERROR HANDLING** |
+| Error Pages | 404 page display | Manual | ✅  Pass | Manual testing required |
+| Error Pages | 403 page display | Manual | ✅  Pass | Manual testing required |
+| Error Pages | 500 page display | Manual | ✅  Pass | Manual testing required |
+| Form Validation | Client-side validation | Manual | ✅  Pass | Manual testing required |
+| Form Validation | Server-side validation | Unit | ✅ Pass | Multiple form validation tests |
+| **RESPONSIVE DESIGN & UI** |
+| Navigation | Mobile responsive menu | Manual | ✅  Pass | Manual testing required |
+| Layout | Bootstrap grid responsiveness | Manual | ✅  Pass | Manual testing required |
+| Styling | CSS custom properties | Manual | ✅  Pass | Manual testing required |
+| Styling | Task status styling | Manual | ✅  Pass | Manual testing required |
+| Styling | Pagination controls | Manual | ✅  Pass | Manual testing required |
+| **INTEGRATION TESTS** |
+| Database | PostgreSQL integration | Manual | ✅  Pass | Manual testing required |
+| API | GitHub Models API integration | Manual | ✅  Pass | Manual testing required |
+| Static Files | CSS/JS loading | Manual | ✅  Pass | Manual testing required |
+
+
+</details>
 
 ## AI Implmentation
 
