@@ -60,8 +60,7 @@
                   class="form-control"
                   name="{{ field.name }}"
                   id="{{ field.id_for_label }}"
-                  value="{{ field.value|date:'Y-m-d'|default:'' }}"
-                  required />
+                  value="{{ field.value|date:'Y-m-d'|default:'' }}" />
                 {% else %} {{ field }} {% endif %} {% if field.help_text %}
                 <div class="form-text">{{ field.help_text }}</div>
                 {% endif %} {% for error in field.errors %}
