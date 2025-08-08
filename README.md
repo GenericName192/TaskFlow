@@ -279,8 +279,6 @@ utils
 
 ![js val](/documentation/js-val.png)
 
-I also have a series of 66 unit tests that were written in collaboration with copilot that can be found in the tests.py in each app. I did a series of manual tests with me and a family member checking that each feature worked correctly.
-There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable.
 
 ### Lighthouse
 
@@ -298,6 +296,12 @@ The only errors I had for wave were missing headings and redundant links but I d
 ![profile page](/documentation/profile-wave.png)
 ![task page](/documentation/task-list-wave.png)
 </details>
+
+### Testing
+
+I have a series of 66 unit tests that were written in collaboration with copilot that can be found in the tests.py in each app. I also did a series of manual tests with me and a family member checking that each feature worked correctly.
+There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. 
+I will however be adding a video of some testing of the chatbot incase the API key has been used up by the time of CIs testing.
 
 ## AI Implmentation
 
@@ -330,7 +334,7 @@ The database is a Postgres database hosted by Code insitute
 The user is a self referencing table were users can be bosses of other uses, I made my own custom user to do this inheriting from AbstractUser, it ended up with less fields then I had planned due to profile picture being cut because of my API key to Cloudinary being almost used up and I was worried it would run out during the developement of this project.
 
 ### Task table
-The task table had 2 one to many relationships with the user table, one being created_by which would track which user created the task and another being assigned_to which would track which user the task belonged to.
+The task table has 2 one to many relationships with the user table, one being created_by which would track which user created the task and another being assigned_to which would track which user the task belonged to.
 
 </details>
 
