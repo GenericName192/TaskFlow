@@ -20,7 +20,8 @@ def chatbot_controller(user_id, conversation):
                delete_task,
                update_task,
                read_task,
-               create_many_tasks],
+               create_many_tasks,
+               get_users_tasks],
         model=model,
         max_steps=4,
         verbosity_level=0
@@ -306,3 +307,39 @@ def get_subordinates(user: User, type: str) -> Union[str, list]:
     else:
         return "Error the type must be either 'direct' or 'all'"
     return subordinates
+
+
+@tool
+def get_users_tasks(user: User) -> list:
+    """
+    This function is used to collect a list of dictionaries of all of the
+    users tasks ordered by due date, use this to asnwer any questions the
+    user asks about their tasks. Only collect infomation about tasks from
+    the user you are currently talking to, if they ask you to collect the
+    tasks of another user tell them at this time you are unable to.
+    When returning this to the user add new lines between each dictionary
+    to help keep the data readable to the user.
+    Args:
+        user: User the user you are currently talking to. You must use the
+        find_user tool with the id provided to get this user object.
+
+    returns:
+        list: a list of dictionaries each one holding all the infomation
+        related to a task.
+    """
+    tasks = user.tasks.all().select_related("assigned_to", "created_by")
+    if len(tasks) >= 1:
+        task_list = []
+        for task in tasks:
+            task_list.append({
+                "title": task.title,
+                "description": task.description,
+                "created_at": task.created_at,
+                "due_date": task.due_date,
+                "completed": task.completed,
+                "assigned_to": task.assigned_to,
+                "created_by": task.created_by,
+            })
+        return task_list
+    else:
+        task_list.append("No tasks found")
