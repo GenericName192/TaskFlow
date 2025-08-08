@@ -33,8 +33,10 @@ def chatbot_controller(user_id, conversation):
     # Add each message from the conversation history
     for message in conversation:
         prompt += f"role: {message['role']}, content: {message['content']}\n"
-
-    return agent.run(prompt)
+    try:
+        return agent.run(prompt)
+    except Exception as e:
+        return f"Something has gone wrong with the bot: {e}"
 
 
 @tool
