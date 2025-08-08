@@ -23,7 +23,7 @@ https://ci-david-barton-task-flow-85f82739c5b8.herokuapp.com/
 11. [Learning points](#learning-points)
 
 
-## overview
+## Overview
 A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. If you would like to test it the password for all of the test users is Placeholder123 with a username of Testuser0 - testuser20 please do not change the passwords.
 
 ## UX Design Process
@@ -59,7 +59,7 @@ A to do website created using Django allowing you to track yours and your subord
 
 All have been achived at this point but the last chatbot story of giving a list of pending tasks however this will be added if I have time.
 
-### wireframes
+### Wireframes
 
 Task list page
 
@@ -79,12 +79,14 @@ and the moblie wireframe for anything smaller.
 here are the wireframes for the addiontal pages added:
 
 ![moblie wireframe landing page](/documentation/landing-page-wireframe-moblie.png)
+
 ![tablet and up wireframe landing page](/documentation/landing-page-wireframe-tablet-up.png)
 
 ![moblie wireframe profile page](/documentation/profile-moblie-view.png)
+
 ![tablet and up wireframe profile page](/documentation/profile-tablet-and-up-wireframe.png)
 
-### color schemes
+### Color schemes
 
 The color scheme grew as the scoop of the project did, orginally I had the following planned with the help of chatGPT:
 
@@ -93,17 +95,21 @@ but in the end the scheme grew with the end result being:
 ![color scheme](/documentation/TaskFlow-color-scheme.png)
 
 ##### Primary Colors
+
 Primary Purple: #3c2dcf (Main brand color - used for navigation, buttons)
 Accent Purple: #7e2fcc (Lighter purple for gradients and hover states)
 White: #ffffff (Clean backgrounds, button text)
 ##### Text Colors
+
 Primary Text: #212529 (Dark gray for main content)
 Secondary Text: #ffffff (White text on colored backgrounds)
 ##### Background Colors
+
 Primary Background: #F9FAFB (Very light gray for page backgrounds)
 Light Background: #f8f9fa (Slightly different light gray for cards)
 Border Color: #e0e4e7 (Light gray for borders)
 ##### Status Colors
+
 Success Green: #198754 (Completed tasks, success messages)
 Success Light: #d4edda (Success background)
 Success Text: #155724 (Success text)
@@ -111,18 +117,18 @@ Danger Red: #dc3545 (Delete buttons, error messages)
 Warning Yellow: #fff3cd (Warning backgrounds)
 Warning Text: #856404 (Warning text)
 
-### fonts
+### Fonts
 
 The fonts I went with were Roboto for the primary and Poppins for secondary, I wanted to go with a professional look and I felt these served that well. They were picked in collaboration with ChatGPT.
 
-## features
+## Features
 
 Main page
  - list of tasks
  - add task
  - chatbot 
 
-profile page
+Profile page
  - profile picture
  - user data with ability to update it
  - list of subordinates
@@ -140,6 +146,7 @@ Also has a link to the main 2 pages profile and task list
 #### Task list page
 
 ![task list page](/documentation/TaskFlow-tasks-one.png)
+
 ![task list page](/documentation/TaskFlow-tasks-two.png)
 
 This is where you can perform your crud functionality on your tasks, can create at the top read update and delete below.
@@ -162,7 +169,7 @@ This is where you can perform your crud functionality on your tasks, can create 
 
 ![profile page](/documentation/TaskFlow-profile-two.png)
 
-This is where you can view your user account aswell as update infomation to it, you can also view a list of all direct and indirect subordinates.
+This is where you can view your user account aswell as update infomation to it, you can also view a list of all direct and indirect subordinates. I in the end decided to remove the profile picture part as I was running low on the API key I had planned to use for this and felt it didnt really add anything
 
 ##### Change user details
 
@@ -192,30 +199,33 @@ Is part of of the base.html therefore can be viewed on any page.
 
 ![500 page](/documentation/TaskFlow-500-error.png)
 
-## improvements and future developement
+## Improvements and Future Developement
 
 The AI could use with more tools atm its functionality is quite limited and to the point it hasnt manage to hit all the user stories yet. I also feel like there are some database optimizations that could be done to make the site run faster.
 I also once again did not spend enough time planning and as such there were a lot of changes made during the development cycle that I should have decided on during the planning process I feel like I did better then I have done in the past the ERD I did helped but I still feel like this is an area of improvement for me.
 
-## testing and validation
+## Testing and Validation
 
-### HTML validation
+### HTML Validation
 
 There was some feedback under info for each page but I decided to ignore this as it was an error introduced by prettier my formatter.
 
-authuser
+Users
+
 ![landing page](/documentation/landingpage-val.png)
 ![profile](/documentation/profile-val.png)
 ![edit profile](/documentation/profile-edit-val.png)
 ![change password](/documentation/change-password-val.png)
 
-tasks
+Tasks
+
 ![task list](/documentation/task-view-val.png)
 ![task details](/documentation/task-detail-val.png)
 ![task update](/documentation/task-update-val.png)
 ![bulk task creation](/documentation/bulk-create-val.png)
 
-errors
+Errors
+
 ![404](/documentation/404val.png)
 ![403](/documentation/403-val.png)
 ![500](/documentation/500-val.png)
@@ -226,18 +236,28 @@ errors
 
 ### Python validation
 
+authuser model
 ![authuser model](/documentation/authuser-model-val.png)
+
+authuser views
 ![authuser views](/documentation/authuser-views-val.png)
 
+chatbot tools
 ![chatbot tools](/documentation/chatbot-tools-val.png)
+
+chatbot views
 ![chatbot views](/documentation/chatbot-views-val.png)
 
+task models
 ![task models](/documentation/python-task-view-val.png)
+
+task views
 ![task views](/documentation/task-view-val.png)
 
+utils
 ![utils](/documentation/utils-val.png)
 
-### js validation
+### JS validation
 
 ![js val](/documentation/js-val.png)
 
@@ -291,6 +311,7 @@ chatgpt - helped me intial ideas for design such as the name Taskflow and what f
 Co-Pilot - I used copilot a lot as both a rubber duck and also for pair programming, I asked it to avoid giving code and to just talk through problems it found in my project.
 
 Youtube videos
+
 https://www.youtube.com/watch?v=mndLkCEiflg - helped me with making custom-users
 https://www.youtube.com/@Codemycom - helped me with afew different things accross different videos
 https://www.youtube.com/watch?v=1x0Zdukpjrs - helped with adding custom field validators
@@ -301,14 +322,20 @@ https://www.youtube.com/watch?v=lc1sOvRaFpg - reminder on how to use data attrib
 https://www.youtube.com/watch?v=RxUc6ZWwgfw - showed me how to use session storage allowing me to save the chatbots chat history.
 
 Documentation
+
 https://docs.djangoproject.com/en/5.2/ref/models/querysets/ - Django documentation was very useful for a few different sections.
 
 W3schools
+
 https://www.w3schools.com/python/python_lists_comprehension.asp - reminder on how list comprehension works
 
 Old projects
+
 https://github.com/GenericName192/CI-hackathon-chatbot - reminder of how to do some the JS.
 
+hugging face course
+
+https://huggingface.co/learn/agents-course/unit0/introduction - I started doing this during the course and referenced back to it during the project.
 
 ## Tech
 
@@ -318,9 +345,9 @@ https://github.com/GenericName192/CI-hackathon-chatbot - reminder of how to do s
 - Bootstrap
 - Copilot
 - ChatGPT
-- postgres
-- smolagents
-- openai/gpt-4o-mini
+- Postgres
+- Smolagents
+- Openai/gpt-4o-mini
 
 
 ## Learning Points
