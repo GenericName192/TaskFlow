@@ -1,7 +1,9 @@
 # TaskFlow
 ### By David Barton
 
-https://ci-david-barton-task-flow-85f82739c5b8.herokuapp.com/
+live site - https://ci-david-barton-task-flow-85f82739c5b8.herokuapp.com/
+
+project board -  https://github.com/users/GenericName192/projects/6/views/1
 
 ![Website landing page](/documentation/TaskFlow-landing-page.png)
 
@@ -27,9 +29,12 @@ https://ci-david-barton-task-flow-85f82739c5b8.herokuapp.com/
 A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. If you would like to test it the password for all of the test users is Placeholder123 with a username of Testuser0 - testuser20 please do not change the passwords.
 
 ## UX Design Process
+<details>
+
+project board -  https://github.com/users/GenericName192/projects/6/views/1
 
 ### User stories
-
+<details>
 1. Authentication & Profiles
 
 - As a user, I want to sign up and log in so that I can securely access my tasks.
@@ -58,9 +63,11 @@ A to do website created using Django allowing you to track yours and your subord
 - As a user, I want the chatbot to list my pending tasks so that I can quickly review my workload.
 
 All have been achived at this point but the last chatbot story of giving a list of pending tasks however this will be added if I have time.
+</details>
 
 ### Wireframes
 
+<details>
 Task list page
 
 ![moblie wireframe](/documentation/capstone-moblie-main-page.png)
@@ -85,9 +92,11 @@ here are the wireframes for the addiontal pages added:
 ![moblie wireframe profile page](/documentation/profile-moblie-view.png)
 
 ![tablet and up wireframe profile page](/documentation/profile-tablet-and-up-wireframe.png)
+</details>
 
 ### Color schemes
 
+<details>
 The color scheme grew as the scoop of the project did, orginally I had the following planned with the help of chatGPT:
 
 but in the end the scheme grew with the end result being:
@@ -116,13 +125,18 @@ Success Text: #155724 (Success text)
 Danger Red: #dc3545 (Delete buttons, error messages)
 Warning Yellow: #fff3cd (Warning backgrounds)
 Warning Text: #856404 (Warning text)
+</details>
 
 ### Fonts
 
+<details>
 The fonts I went with were Roboto for the primary and Poppins for secondary, I wanted to go with a professional look and I felt these served that well. They were picked in collaboration with ChatGPT.
+</details>
+</details>
 
 ## Features
 
+<details>
 Main page
  - list of tasks
  - add task
@@ -198,14 +212,18 @@ Is part of of the base.html therefore can be viewed on any page.
 ##### 500 server issue
 
 ![500 page](/documentation/TaskFlow-500-error.png)
+</details>
 
 ## Improvements and Future Developement
 
+<details>
 The AI could use with more tools atm its functionality is quite limited and to the point it hasnt manage to hit all the user stories yet. I also feel like there are some database optimizations that could be done to make the site run faster.
 I also once again did not spend enough time planning and as such there were a lot of changes made during the development cycle that I should have decided on during the planning process I feel like I did better then I have done in the past the ERD I did helped but I still feel like this is an area of improvement for me.
+</details>
 
 ## Testing and Validation
 
+<details>
 ### HTML Validation
 
 There was some feedback under info for each page but I decided to ignore this as it was an error introduced by prettier my formatter.
@@ -279,9 +297,11 @@ The only errors I had for wave were missing headings and redundant links but I d
 ![landing page](/documentation/Wave-landing-page.png)
 ![profile page](/documentation/profile-wave.png)
 ![task page](/documentation/task-list-wave.png)
+</details>
 
 ## AI Implmentation
 
+<details>
 ### Code Creation
 
 Copilot did alot of the styling on this project I wired up the front end pages and then let Copilot take the lead on the visuals of it and then tweaked them as and when I felt it was needed. I think it did a smashing job as the website looks good and required fairly limited intervention beyond giving it things like the fonts to use and the general color schemee. Beyond that I didnt user code creation much opting to ask Copilot for hints rather then code generation, I know I want to work in the back end side of things and I felt because of this it was important I got as much practice as I could in this area.
@@ -297,15 +317,26 @@ Copilot was very useful in improving the performance while I do still have some 
 ### Development Process
 
 Over all I feel like the use of AI massively helped speed up the development process and also pushed me to do things in a better way then I would have perhaps done otherwise, I frequently asked for feedback and it quite rightly criticized some of my initial ideas on how to solve problems.
-
+</details>
 
 ## Database
 
+<details>
 The database is a Postgres database hosted by Code insitute
+
 ![ERD](/documentation/capstoneERD.png)
+
+### User table
+The user is a self referencing table were users can be bosses of other uses, I made my own custom user to do this inheriting from AbstractUser, it ended up with less fields then I had planned due to profile picture being cut because of my API key to Cloudinary being almost used up and I was worried it would run out during the developement of this project.
+
+### Task table
+The task table had 2 one to many relationships with the user table, one being created_by which would track which user created the task and another being assigned_to which would track which user the task belonged to.
+
+</details>
 
 ## References
 
+<details>
 AI
 chatgpt - helped me intial ideas for design such as the name Taskflow and what fonts to use.
 Co-Pilot - I used copilot a lot as both a rubber duck and also for pair programming, I asked it to avoid giving code and to just talk through problems it found in my project.
@@ -336,8 +367,10 @@ https://github.com/GenericName192/CI-hackathon-chatbot - reminder of how to do s
 hugging face course
 
 https://huggingface.co/learn/agents-course/unit0/introduction - I started doing this during the course and referenced back to it during the project.
+</details>
 
 ## Tech
+<details>
 
 - CSS
 - HTML
@@ -348,8 +381,10 @@ https://huggingface.co/learn/agents-course/unit0/introduction - I started doing 
 - Postgres
 - Smolagents
 - Openai/gpt-4o-mini
-
+</details>
 
 ## Learning Points
 
+<details>
 It's hard to sum up learning points as I feel like I've learnt an awful lot, I learnt a lot makeing a custom user, trying to do some database optimizations and an awful lot wireing up my first chatbot using agents. As for thing I would have done differently I think its the same learning points I've had before - be more ambitious and spend more time thinking and planning before building.
+</details>
