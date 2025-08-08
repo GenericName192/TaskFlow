@@ -201,6 +201,8 @@ I also once again did not spend enough time planning and as such there were a lo
 
 ### HTML validation
 
+There was some feedback under info for each page but I decided to ignore this as it was an error introduced by prettier my formatter.
+
 authuser
 ![landing page](/documentation/landingpage-val.png)
 ![profile](/documentation/profile-val.png)
@@ -241,6 +243,22 @@ errors
 
 I also have a series of 66 unit tests that were written in collaboration with copilot that can be found in the tests.py in each app. I did a series of manual tests with me and a family member checking that each feature worked correctly.
 There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable.
+
+### Lighthouse
+
+I have implimented some caching via whitenoise so performance is a bit hard to test on intial loading of the page so these are for the second loading of the page the one that lighthouse does during the testing.
+
+![landing page](/documentation/landing-page-lighthouse.png)
+![profile page](/documentation/profile-lighthouse.png)
+![task page](/documentation/task-list-lighthouse.png)
+
+### Wave
+
+The only errors I had for wave were missing headings and redundant links but I decided to not fix these due to time restraints
+
+![landing page](/documentation/Wave-landing-page.png)
+![profile page](/documentation/profile-wave.png)
+![task page](/documentation/task-list-wave.png)
 
 ## AI Implmentation
 
