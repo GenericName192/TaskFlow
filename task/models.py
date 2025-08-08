@@ -5,7 +5,7 @@ from django.db import models
 class Task(models.Model):
     """Model representing a task."""
     title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, max_length=500)
     created_at = models.DateField(auto_now_add=True)
     due_date = models.DateField(null=True, blank=True)
     completed = models.BooleanField(default=False)
