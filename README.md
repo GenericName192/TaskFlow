@@ -303,7 +303,7 @@ I have a series of 66 unit tests that were written in collaboration with copilot
 ![unit tests](/documentation/unit-tests.png)
 
 I also did a series of manual tests with me and a family member checking that each feature worked correctly.
-There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. Some users have reported a bug with the AI saying unexpected token < I have been unable to reproduce this bug so I am unsure as to what it causing it. This is something I would like to spend more time on trying to fix.
+There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. Some users have reported a bug with the AI saying unexpected token < I have been unable to reproduce this bug so I am unsure as to what it causing it. This is something I would like to spend more time on trying to fix. There is also a bug with the AI sometimes returning its thoughts as well as the answer to the prompt, I have tried to address this in the system prompt but it still sometimes happens.
 I will however be adding a video of some testing of the chatbot incase the API key has been used up by the time of CIs testing.
 
 # TaskFlow Application Testing Matrix
