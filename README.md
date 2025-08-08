@@ -62,7 +62,7 @@ project board -  https://github.com/users/GenericName192/projects/6/views/1
 - As a manager, I want to ask the chatbot to assign a task to all my subordinates so that I can quickly delegate work.
 - As a user, I want the chatbot to list my pending tasks so that I can quickly review my workload.
 
-All have been achived at this point but the last chatbot story of giving a list of pending tasks however this will be added if I have time.
+All have been achived at this point but the last chatbot story the feature works but it doesnt return a very user friendly response, this is something I'm working on.
 </details>
 
 ### Wireframes
@@ -198,6 +198,7 @@ This is where you can view your user account aswell as update infomation to it, 
 ![chatbot](/documentation/capstone-chat-bot-view.png)
 
 Is part of of the base.html therefore can be viewed on any page.
+It currently can create tasks, update tasks, read tasks, delete tasks, create tasks for both direct and indirect subordinates and return infomation on all of your current tasks.
 
 #### Custom error pages
 
@@ -217,7 +218,7 @@ Is part of of the base.html therefore can be viewed on any page.
 ## Improvements and Future Developement
 
 <details>
-The AI could use with more tools atm its functionality is quite limited and to the point it hasnt manage to hit all the user stories yet. I also feel like there are some database optimizations that could be done to make the site run faster.
+The AI could use with more tools atm its functionality is quite limited and there are still some bugs in it. I also feel like there are some database optimizations that could be done to make the site run faster.
 I also once again did not spend enough time planning and as such there were a lot of changes made during the development cycle that I should have decided on during the planning process I feel like I did better then I have done in the past the ERD I did helped but I still feel like this is an area of improvement for me.
 </details>
 
