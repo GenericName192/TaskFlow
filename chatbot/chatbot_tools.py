@@ -9,7 +9,7 @@ from typing import Optional, Union
 
 def chatbot_controller(user_id, conversation):
     GIT_HUB_TOKEN = os.getenv("GIT_HUB_TOKEN")
-    model_name = "openai/gpt-4o-mini"
+    model_name = "openai/gpt-4.1"
     model = LiteLLMModel(model_id=model_name,
                          api_key=GIT_HUB_TOKEN,
                          api_base="https://models.github.ai/inference")
@@ -50,7 +50,8 @@ def create_task(assigner: User,
     Use this to create a task You will need to use the find_user tool
     first to get both the assigner and the target_user. If the user does not
     provide a description you can either repeat the title or add something
-    appropriate.
+    appropriate. Do not call this function more then once unless expressly
+    told to.
     Args:
         assigner: The user who is currently logged in your system message
             inculdes their ID, use find_user to get the User object.
@@ -179,6 +180,7 @@ def find_task(task_title: str, user: User) -> Union[str, Task]:
     users_tasks = Task.objects.filter(assigned_to=user)
     if not users_tasks:
         return "You currently have no tasks"
+    task_title = task_title.strip('"')
     task = users_tasks.filter(title__icontains=task_title)
     if not task:
         return "Task not found, please try again with the task title"
