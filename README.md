@@ -291,7 +291,7 @@ I have implimented some caching via whitenoise so performance is a bit hard to t
 
 ### Wave
 
-The only errors I had for wave were missing headings and redundant links but I decided to not fix these due to time restraints
+The only errors I had for wave were missing headings and redundant links but I decided to not fix these due to time restraints. I have since added some pagination which is currently being flagged as an empty link by wave but I have decided to ignore this as its not an empty link it just has an icon instead of a text.
 
 ![landing page](/documentation/Wave-landing-page.png)
 ![profile page](/documentation/profile-wave.png)
@@ -304,8 +304,10 @@ I have a series of 66 unit tests that were written in collaboration with copilot
 ![unit tests](/documentation/unit-tests.png)
 
 I also did a series of manual tests with me and a family member checking that each feature worked correctly.
-There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. Some users have reported a bug with the AI saying unexpected token < I have been unable to reproduce this bug so I am unsure as to what it causing it. This is something I would like to spend more time on trying to fix. There is also a bug with the AI sometimes returning its thoughts as well as the answer to the prompt, I have tried to address this in the system prompt but it still sometimes happens.
-I will however be adding a video of some testing of the chatbot incase the API key has been used up by the time of CIs testing.
+There is currently no testing beyond manual testing for the chatbot as it is still a bit unperdictable. Some users have reported a bug with the AI saying unexpected token < I have been unable to reproduce this bug so I am unsure as to what it causing it. This is something I would like to spend more time on trying to fix. There is also a bug with the AI sometimes returning its thoughts as well as the answer to the prompt, I have tried to address this in the system prompt but it still sometimes happens. There is also a final bug were the chatbot performs a task like task creation more then once, this is something I've tried to squash but have been unable to.
+I will however be adding a video of some testing of the chatbot incase the API key has been used up by the time of CIs testing. It can be found inside the documentation file
+
+🎥 **[View Chatbot Demo Video](documentation/chatbot-demo.webm)**
 
 # TaskFlow Application Testing Matrix
 
