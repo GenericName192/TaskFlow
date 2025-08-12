@@ -26,7 +26,7 @@ project board -  https://github.com/users/GenericName192/projects/6/views/1
 
 
 ## Overview
-A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. If you would like to test it the password for all of the test users is Placeholder123 with a username of Testuser0 - testuser20 please do not change the passwords.
+A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. If you would like to test it the password for all of the test users is Placeholder123 with a username of TestUser0 - TestUser20 please do not change the passwords.
 
 ## UX Design Process
 <details>
