@@ -16,14 +16,13 @@ def chatbot_controller(user_id, conversation):
     agent = CodeAgent(
         tools=[create_task,
                find_task,
-               find_user,
                delete_task,
                update_task,
                read_task,
                create_many_tasks,
-               get_users_tasks],
+               get_user_tasks],
         model=model,
-        max_steps=4,
+        max_steps=2,
         verbosity_level=0
         )
 
@@ -41,25 +40,23 @@ def chatbot_controller(user_id, conversation):
 
 
 @tool
-def create_task(assigner: User,
+def create_task(user_id: str,
                 title: str,
                 description: str,
-                target_user: User,
                 due_date: Optional[str] = None) -> str:
     """
-    Use this to create a task You will need to use the find_user tool
-    first to get both the assigner and the target_user. If the user does not
+    Use this to create a task right now you can only create tasks for the
+    user you are talking to, if asked to make a task for another user report
+    this back to them if you are asked to do If the user does not
     provide a description you can either repeat the title or add something
     appropriate. Do not call this function more then once unless expressly
     told to.
     Args:
-        assigner: The user who is currently logged in your system message
-            inculdes their ID, use find_user to get the User object.
+        user_id: The user who is currently logged in your system message
+            inculdes their id
         title: A string the current title of the task
         description: A string the description of a task can be a copy of
             title
-        target_user: The User the task is for, The user will give
-            you a ID a username or a full name, use find_user to find them.
         due_date: Optional date string in format 'YYYY-MM-DD'
             (e.g., '2025-01-15') or None if no due date specified. The system
             will automatically convert this to a proper date object. Do not
@@ -72,20 +69,20 @@ def create_task(assigner: User,
             Will return a string letting you know if the Task has been created
             let the user know what the string says.
     """
-    if Can_assign_task(target_user, assigner):
-        Task.objects.create(
-            title=title,
-            description=description,
-            due_date=due_date,
-            created_by=assigner,
-            assigned_to=target_user
-        )
-        return "Task created successfully."
-    else:
-        return "The user does no have permission to update this user."
+    try:
+        user = find_user(user_id)
+    except User.DoesNotExist:
+        return "Error the user does not exist"
+    Task.objects.create(
+        title=title,
+        description=description,
+        due_date=due_date,
+        created_by=user,
+        assigned_to=user
+    )
+    return "Task created successfully."
 
 
-@tool
 def find_user(input: str) -> Union[str, User]:
     """
     Use this function to get a user object needed for some of the other
@@ -160,23 +157,26 @@ def delete_task(task: Task, confirmation: bool) -> str:
 
 
 @tool
-def find_task(task_title: str, user: User) -> Union[str, Task]:
+def find_task(task_title: str, user_id: str) -> Union[str, Task]:
     """
     Function to help you find a task, it takes the task_title and attempts
-    to find it. You must use find_user first to get the User object you are
-    currently talking to. Then the function will filter their tasks for tasks
-    with the same title.
+    to find it. You must use the user_id from the user you are talking to.
+    Then the function will filter their tasks for tasks with the same title.
     if it fails returns a string to let you know, report this to
     the user
     Args:
         task_title: string the title of the task the user is looking for.
-        user: The current user you are talking to.
+        user_id: The current user_id of the user you are talking to.
 
     returns:
         String: if the Task has not been found, report this to the user
         Task: if the Task has been found this can now be used in other
         functions
     """
+    try:
+        user = find_user(user_id)
+    except User.DoesNotExist:
+        return "Cannot find user"
     users_tasks = Task.objects.filter(assigned_to=user)
     if not users_tasks:
         return "You currently have no tasks"
@@ -253,7 +253,7 @@ def read_task(task: Task) -> dict:
 
 
 @tool
-def create_many_tasks(assigner: User, title: str,
+def create_many_tasks(user_id: str, title: str,
                       description: str, type: str,
                       due_date: Optional[str] = None) -> str:
     """
@@ -262,8 +262,7 @@ def create_many_tasks(assigner: User, title: str,
     to which one it is ask the user for clarification before calling
     this function. Only ever run this function once.
     Args:
-        assigner: User object for the user that you are talking to must
-        find_user to get.
+        user_id: The user_id if the user you're talking to.
         title: The title of the task that is being created
         description: The description of the task that is being created
         type: The type of subordinates that the user wants to create tasks for
@@ -274,6 +273,10 @@ def create_many_tasks(assigner: User, title: str,
             string: either a success message or an error message, report it
             back to the user.
     """
+    try:
+        assigner = find_user(user_id)
+    except User.DoesNotExist:
+        return "Error the user does not exist"
     if type in ["direct", "all"]:
         subordinates = get_subordinates(assigner, type)
         if isinstance(subordinates, list):
@@ -312,7 +315,7 @@ def get_subordinates(user: User, type: str) -> Union[str, list]:
 
 
 @tool
-def get_users_tasks(user: User) -> list:
+def get_user_tasks(user_id: str) -> list:
     """
     This function is used to collect a list of dictionaries of all of the
     users tasks ordered by due date, use this to asnwer any questions the
@@ -322,13 +325,16 @@ def get_users_tasks(user: User) -> list:
     When returning this to the user add new lines between each dictionary
     to help keep the data readable to the user.
     Args:
-        user: User the user you are currently talking to. You must use the
-        find_user tool with the id provided to get this user object.
+        user_id: The user_id for the user you are currently talking to.
 
     returns:
         list: a list of dictionaries each one holding all the infomation
         related to a task.
     """
+    try:
+        user = find_user(user_id)
+    except User.DoesNotExist:
+        return "Error the user does not exist"
     tasks = user.tasks.all().select_related("assigned_to", "created_by")
     if len(tasks) >= 1:
         task_list = []
