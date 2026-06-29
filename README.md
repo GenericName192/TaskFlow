@@ -26,7 +26,29 @@ project board -  https://github.com/users/GenericName192/projects/6/views/1
 
 
 ## Overview
-A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. If you would like to test it the password for all of the test users is Placeholder123 with a username of TestUser0 - TestUser20 please do not change the passwords.
+A to do website created using Django allowing you to track yours and your subordinates tasks with the additon of a chatbot to help you perform these tasks. 
+If you would like to test it the password for all of the test users is Placeholder123 with a username of TestUser0 - TestUser20 please do not change the passwords.
+
+### Key Features
+- Task management
+- Team hierarchy support
+- AI-powered task creation
+- Role-based access and permissions
+- PostgreSQL backend
+
+### Tech Stack
+- Python
+- Django
+- PostgreSQL
+- Bootstrap
+- JavaScript
+- SmolAgents
+
+### Highlights
+- 66 automated tests
+- Deployed application
+- Custom user hierarchy system
+- AI agent integration
 
 ## UX Design Process
 <details>
@@ -62,46 +84,23 @@ project board -  https://github.com/users/GenericName192/projects/6/views/1
 - As a manager, I want to ask the chatbot to assign a task to all my subordinates so that I can quickly delegate work.
 - As a user, I want the chatbot to list my pending tasks so that I can quickly review my workload.
 
-All have been achived at this point but the last chatbot story the feature works but it doesnt return a very user friendly response, this is something I'm working on.
+All have been achieved at this point but the last chatbot story the feature works but it doesnt return a very user friendly response, this is something I'm working on.
 </details>
 
 ### Wireframes
 
 <details>
-Task list page
 
-![moblie wireframe](/documentation/capstone-moblie-main-page.png)
-
-![tablet wireframe](/documentation/capstone-tablet-main-page.png)
-
-![desktop wireframe](/documentation/capstone-pc-main-page.png)
-
-![chatbot wireframe](/documentation/capstone-chat-bot-view.png)
-
-These were the orginal wireframes I designed for the project, however the project ended up growing in scoop
-and new wireframes were needed and some designers were changed, for example the desktop wireframe ended up
-making the page feel too cluttered so I went with the tablet wireframe for all sizes above the tablet.
-and the moblie wireframe for anything smaller.
-
-here are the wireframes for the addiontal pages added:
-
-![moblie wireframe landing page](/documentation/landing-page-wireframe-moblie.png)
-
-![tablet and up wireframe landing page](/documentation/landing-page-wireframe-tablet-up.png)
-
-![moblie wireframe profile page](/documentation/profile-moblie-view.png)
-
-![tablet and up wireframe profile page](/documentation/profile-tablet-and-up-wireframe.png)
-</details>
+There are several which can be found inside the documentation folder. During the project the wireframes were changed to due the scope 
+of the project growing as well as the desktop design feeling too cluttered causing me to swap to the tablet wireframe.
 
 ### Color schemes
 
 <details>
-The color scheme grew as the scoop of the project did, orginally I had the following planned with the help of chatGPT:
+The color scheme grew as the scope of the project did, originally I had the following planned with the help of chatGPT:
 
-but in the end the scheme grew with the end result being:
+but in the end the scheme grew with the end result being visable in the documentation folder.
 
-![color scheme](/documentation/TaskFlow-color-scheme.png)
 
 ##### Primary Colors
 
@@ -148,7 +147,7 @@ Profile page
  - list of subordinates
  - managers name
 
-These were the orginally planned features with an optional chatbot if I had time, however as I started to make the project I added an additional landing page
+These were the originally planned features with an optional chatbot if I had time, however as I started to make the project I added an additional landing page
 
 #### Landing page
 
@@ -183,7 +182,7 @@ This is where you can perform your crud functionality on your tasks, can create 
 
 ![profile page](/documentation/TaskFlow-profile-two.png)
 
-This is where you can view your user account aswell as update infomation to it, you can also view a list of all direct and indirect subordinates. I in the end decided to remove the profile picture part as I was running low on the API key I had planned to use for this and felt it didnt really add anything
+This is where you can view your user account aswell as update information to it, you can also view a list of all direct and indirect subordinates. I in the end decided to remove the profile picture part as I was running low on the API key I had planned to use for this and felt it didnt really add anything
 
 ##### Change user details
 
@@ -198,7 +197,7 @@ This is where you can view your user account aswell as update infomation to it, 
 ![chatbot](/documentation/capstone-chat-bot-view.png)
 
 Is part of of the base.html therefore can be viewed on any page.
-It currently can create tasks, update tasks, read tasks, delete tasks, create tasks for both direct and indirect subordinates and return infomation on all of your current tasks.
+It currently can create tasks, update tasks, read tasks, delete tasks, create tasks for both direct and indirect subordinates and return information on all of your current tasks.
 
 #### Custom error pages
 
@@ -227,75 +226,20 @@ I also once again did not spend enough time planning and as such there were a lo
 <details>
 ### HTML Validation
 
-There was some feedback under info for each page but I decided to ignore this as it was an error introduced by prettier my formatter.
-
-Users
-
-![landing page](/documentation/landingpage-val.png)
-![profile](/documentation/profile-val.png)
-![edit profile](/documentation/profile-edit-val.png)
-![change password](/documentation/change-password-val.png)
-
-Tasks
-
-![task list](/documentation/task-view-val.png)
-![task details](/documentation/task-detail-val.png)
-![task update](/documentation/task-update-val.png)
-![bulk task creation](/documentation/bulk-create-val.png)
-
-Errors
-
-![404](/documentation/404val.png)
-![403](/documentation/403-val.png)
-![500](/documentation/500-val.png)
-
-### CSS validation
-
-![css validation](/documentation/css-validation.png)
-
-### Python validation
-
-authuser model
-![authuser model](/documentation/authuser-model-val.png)
-
-authuser views
-![authuser views](/documentation/authuser-views-val.png)
-
-chatbot tools
-![chatbot tools](/documentation/chatbot-tools-val.png)
-
-chatbot views
-![chatbot views](/documentation/chatbot-views-val.png)
-
-task models
-![task models](/documentation/python-task-view-val.png)
-
-task views
-![task views](/documentation/task-view-val.png)
-
-utils
-![utils](/documentation/utils-val.png)
-
-### JS validation
-
-![js val](/documentation/js-val.png)
-
+All Validation passed with some info being added to each page but I decided to ignore this due to it being an error introudced by my formatter prettier. 
+All screenshots can be seen within the documentation folder
 
 ### Lighthouse
 
-I have implimented some caching via whitenoise so performance is a bit hard to test on intial loading of the page so these are for the second loading of the page the one that lighthouse does during the testing.
+I have implemented some caching via whitenoise so performance is a bit hard to test on intial loading of the page so these are for the second loading of the page the one that lighthouse does during the testing.
 
-![landing page](/documentation/landing-page-lighthouse.png)
-![profile page](/documentation/profile-lighthouse.png)
-![task page](/documentation/task-list-lighthouse.png)
+Screenshots can be seen within the documentation folder.
 
 ### Wave
 
 The only errors I had for wave were missing headings and redundant links but I decided to not fix these due to time restraints. I have since added some pagination which is currently being flagged as an empty link by wave but I have decided to ignore this as its not an empty link it just has an icon instead of a text.
 
-![landing page](/documentation/Wave-landing-page.png)
-![profile page](/documentation/profile-wave.png)
-![task page](/documentation/task-list-wave.png)
+Screenshots can be seen within the documentation folder
 
 ### Testing
 
@@ -442,6 +386,11 @@ I will however be adding a video of some testing of the chatbot incase the API k
 ## AI Implmentation
 
 <details>
+
+### Chatbot Implmentation
+
+I added a chatbot using GPT4.1 via a GitHub API connected to a smolagents agent that can control the basic CRUD functionality of the website using tools I created.
+
 ### Code Creation
 
 Copilot did alot of the styling on this project I wired up the front end pages and then let Copilot take the lead on the visuals of it and then tweaked them as and when I felt it was needed. I think it did a smashing job as the website looks good and required fairly limited intervention beyond giving it things like the fonts to use and the general color schemee. Beyond that I didnt user code creation much opting to ask Copilot for hints rather then code generation, I know I want to work in the back end side of things and I felt because of this it was important I got as much practice as I could in this area.
