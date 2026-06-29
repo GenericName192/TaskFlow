@@ -318,7 +318,7 @@ def get_subordinates(user: User, type: str) -> Union[str, list]:
 def get_user_tasks(user_id: str) -> list:
     """
     This function is used to collect a list of dictionaries of all of the
-    users tasks ordered by due date, use this to asnwer any questions the
+    users tasks ordered by due date, use this to answer any questions the
     user asks about their tasks. Only collect infomation about tasks from
     the user you are currently talking to, if they ask you to collect the
     tasks of another user tell them at this time you are unable to.
